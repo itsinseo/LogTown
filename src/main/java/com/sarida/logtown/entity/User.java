@@ -4,12 +4,14 @@ import jakarta.persistence.*;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.DynamicInsert;
 
 @Entity
 @Getter
 @NoArgsConstructor
 @Table(name = "user")
 @EqualsAndHashCode
+@DynamicInsert
 public class User {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,4 +28,23 @@ public class User {
 
 	@Column(nullable = false)
 	private String introduction;
+
+	@Column(name = "role")
+	@Enumerated(value = EnumType.STRING)
+	private UserRoleEnum role;
+
+
+	public User(String username, String password, String nickname, String introduction, UserRoleEnum role) {
+		this.username = username;
+		this.password = password;
+		this.nickname = nickname;
+		this.introduction = introduction;
+		this.role = role;
+	}
+
+	// 값을 입력하지 않는다면 default => "USER"
+	@PrePersist
+	public void prePersist(){
+		this.role = this.role == null ? UserRoleEnum.valueOf("USER") : this.role;
+	}
 }
