@@ -7,6 +7,7 @@ import com.sarida.logtown.dto.PostResponseDto;
 import com.sarida.logtown.security.UserDetailsImpl;
 import com.sarida.logtown.service.PostServiceImpl;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Slice;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
@@ -30,6 +31,11 @@ public class PostController {
     @GetMapping("")
     public PostListResponseDto getPostList() {
         return postService.getPostList();
+    }
+
+    @GetMapping("/slice")
+    public Slice<PostResponseDto> getPostSlice(@RequestParam("page") int page) {
+        return postService.getPostSlice(page);
     }
 
     @PutMapping("/{postId}")

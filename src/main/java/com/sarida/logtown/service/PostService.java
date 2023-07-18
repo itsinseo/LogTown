@@ -6,6 +6,7 @@ import com.sarida.logtown.dto.PostRequestDto;
 import com.sarida.logtown.dto.PostResponseDto;
 import com.sarida.logtown.entity.Post;
 import com.sarida.logtown.security.UserDetailsImpl;
+import org.springframework.data.domain.Slice;
 
 import java.util.List;
 
@@ -17,6 +18,13 @@ public interface PostService {
      * @return 생성된 게시글 정보
      */
     PostResponseDto createPost(PostRequestDto requestDto, UserDetailsImpl userDetails);
+
+    /**
+     * 10개 단위로 끊어서 보기
+     * @param page 현재 페이지
+     * @return
+     */
+    Slice<PostResponseDto> getPostSlice(int page);
 
     /**
      * 게시글 수정
