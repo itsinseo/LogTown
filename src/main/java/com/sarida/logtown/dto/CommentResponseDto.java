@@ -14,16 +14,18 @@ public class CommentResponseDto extends ApiResponseDto {
 
     private final Long id;
     private final String content;
+    private final String username;
     private final LocalDateTime createdAt;
     private final LocalDateTime modifiedAt;
-    private final List<ReCommentResponseDto> commentList;
+    private final List<ReCommentResponseDto> reCommentList;
 
     public CommentResponseDto(Comment comment) {
         this.id = comment.getId();
         this.content = comment.getContent();
+        this.username = comment.getUser().getUsername();
         this.createdAt = comment.getCreatedAt();
         this.modifiedAt = comment.getModifiedAt();
-        this.commentList = comment.getChildCommentList().stream().map(ReCommentResponseDto::new)
+        this.reCommentList = comment.getChildCommentList().stream().map(ReCommentResponseDto::new)
                 .sorted(Comparator.comparing(ReCommentResponseDto::getCreatedAt).reversed())
                 .toList();
     }
