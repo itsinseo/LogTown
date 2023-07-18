@@ -10,6 +10,4 @@ public class ProfileRequestDto {
 
     String nickname;
     String introduction;
-    String password;
-    String confirmPassword;
 }
