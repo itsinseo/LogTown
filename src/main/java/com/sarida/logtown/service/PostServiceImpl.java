@@ -4,6 +4,7 @@ import com.sarida.logtown.dto.ApiResponseDto;
 import com.sarida.logtown.dto.PostRequestDto;
 import com.sarida.logtown.dto.PostResponseDto;
 import com.sarida.logtown.entity.Post;
+import com.sarida.logtown.entity.User;
 import com.sarida.logtown.repository.PostRepository;
 import com.sarida.logtown.security.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
@@ -43,9 +44,9 @@ public class PostServiceImpl implements PostService {
                 () -> new NullPointerException("존재하지 않는 게시글입니다.")
         );
 
+
         // 작성자 확인
-//        if(post.getUser().equals(userDetails.getUser())) {
-        if(post.getUser().getUsername().equals(userDetails.getUser().getUsername())) {
+        if(post.getUser().equals(userDetails.getUser())) {
             post.setContent(requestDto.getContent());
             postRepository.save(post);
         } else {
@@ -64,7 +65,7 @@ public class PostServiceImpl implements PostService {
         );
 
         // 작성자 확인
-        if(post.getUser().getUsername().equals(userDetails.getUser().getUsername())) {
+        if(post.getUser().equals(userDetails.getUser())) {
             postRepository.delete(post);
         } else {
             throw new IllegalArgumentException("작성자만 수정/삭제할 수 있습니다.");

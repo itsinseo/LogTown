@@ -9,6 +9,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Getter
@@ -37,7 +38,7 @@ public class User {
 	@Enumerated(value = EnumType.STRING)
 	private UserRoleEnum role;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Password> passwordList = new LinkedList<>();
 
 	public User(String username, String password, String nickname, String introduction, UserRoleEnum role) {
@@ -65,4 +66,15 @@ public class User {
 	public void prePersist(){
 		this.role = this.role == null ? UserRoleEnum.valueOf("USER") : this.role;
 	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+
+		User otherUser = (User) o;
+
+		return Objects.equals(id, otherUser.id);
+	}
+
 }
