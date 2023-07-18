@@ -42,7 +42,7 @@ public class ProfileService {
         // 현재 비밀번호 체크
         if(passwordEncoder.matches(currentPassword, user.getPassword())) {
             // 변경할 비밀번호하고 ccnfirm 비밀번호 체크
-            if(passwordEncoder.matches(changedPassword, confirmedPassword)) {
+            if(changedPassword.equals(confirmedPassword)) {
                 Password password = new Password(changedPassword);
                 if(!user.isRecentPassword(password)) {
                     user.addPassword(password);
