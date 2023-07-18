@@ -9,7 +9,7 @@ import org.hibernate.annotations.DynamicInsert;
 @Entity
 @Getter
 @NoArgsConstructor
-@Table(name = "user")
+@Table(name = "users")
 @EqualsAndHashCode
 @DynamicInsert
 public class User {
@@ -23,7 +23,7 @@ public class User {
 	@Column(nullable = false)
 	private String password;
 
-	@Column(nullable = false)
+	@Column(nullable = false, unique = true)
 	private String nickname;
 
 	@Column(nullable = false)
