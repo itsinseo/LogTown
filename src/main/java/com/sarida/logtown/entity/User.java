@@ -1,5 +1,11 @@
 package com.sarida.logtown.entity;
 
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.OneToMany;
+
+import java.util.LinkedList;
+import java.util.Queue;
+
 import jakarta.persistence.*;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -47,4 +53,9 @@ public class User {
 	public void prePersist(){
 		this.role = this.role == null ? UserRoleEnum.valueOf("USER") : this.role;
 	}
+
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
+    private Queue<Password> passwordQueue = new LinkedList<>();
+
 }
