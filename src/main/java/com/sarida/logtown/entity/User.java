@@ -1,10 +1,18 @@
 package com.sarida.logtown.entity;
 
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.OneToMany;
+
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Queue;
+
 import jakarta.persistence.*;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.DynamicInsert;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 @Entity
 @Getter
@@ -33,6 +41,8 @@ public class User {
 	@Enumerated(value = EnumType.STRING)
 	private UserRoleEnum role;
 
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private List<Password> passwordList = new LinkedList<>();
 
 	public User(String username, String password, String nickname, String introduction, UserRoleEnum role) {
 		this.username = username;
@@ -40,6 +50,18 @@ public class User {
 		this.nickname = nickname;
 		this.introduction = introduction;
 		this.role = role;
+	}
+
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
+    }
+
+    public void setIntroduction(String introduction) {
+        this.introduction = introduction;
+    }
+
+	public void setPassword(String password) {
+		this.password = new BCryptPasswordEncoder().encode(password);
 	}
 
 	// 값을 입력하지 않는다면 default => "USER"

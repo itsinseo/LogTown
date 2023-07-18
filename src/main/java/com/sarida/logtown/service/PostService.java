@@ -4,6 +4,7 @@ import com.sarida.logtown.dto.ApiResponseDto;
 import com.sarida.logtown.dto.PostListResponseDto;
 import com.sarida.logtown.dto.PostRequestDto;
 import com.sarida.logtown.dto.PostResponseDto;
+import com.sarida.logtown.entity.Post;
 import com.sarida.logtown.security.UserDetailsImpl;
 
 import java.util.List;
@@ -39,4 +40,11 @@ public interface PostService {
      * @return 완료 응답
      */
     ApiResponseDto deletePost(Long postId, UserDetailsImpl userDetails);
+
+    /**
+     * 게시글 조회
+     * @param postId 조회할 게시글 id
+     * @return 조회한 게시글
+     */
+    Post findPost(Long postId);
 }

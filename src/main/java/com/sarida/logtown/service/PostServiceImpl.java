@@ -74,6 +74,7 @@ public class PostServiceImpl implements PostService {
         return new ApiResponseDto("게시글 삭제 완료", HttpStatus.OK.value());
     }
 
+    @Override
     public Post findPost(Long postId) {
         return postRepository.findById(postId).orElseThrow(
                 () -> new IllegalArgumentException("존재하지 않는 게시글입니다.")
