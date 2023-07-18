@@ -28,6 +28,11 @@ public class PostController {
         return postService.createPost(requestDto, userDetails);
     }
 
+    @GetMapping("/{postId}")
+    public PostResponseDto getPost(@PathVariable Long postId) {
+        return postService.getPost(postId);
+    }
+
     @GetMapping("")
     public PostListResponseDto getPostList() {
         return postService.getPostList();

@@ -34,7 +34,11 @@ public class PostServiceImpl implements PostService {
         return new PostResponseDto(post);
     }
 
-
+    @Override
+    public PostResponseDto getPost(Long postId) {
+        Post post = findPost(postId);
+        return new PostResponseDto(post);
+    }
 
     // modifiedAt 기준 내림차순
     @Override

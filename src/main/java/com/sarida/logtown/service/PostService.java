@@ -20,6 +20,13 @@ public interface PostService {
     PostResponseDto createPost(PostRequestDto requestDto, UserDetailsImpl userDetails);
 
     /**
+     * 게시글 1개 보기
+     * @param postId 볼 게시글 id
+     * @return 게시글 내용
+     */
+    PostResponseDto getPost(Long postId);
+
+    /**
      * 10개 단위로 끊어서 보기
      * @param page 현재 페이지
      * @return
