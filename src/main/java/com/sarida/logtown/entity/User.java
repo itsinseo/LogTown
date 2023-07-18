@@ -1,18 +1,14 @@
 package com.sarida.logtown.entity;
 
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.OneToMany;
-
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Queue;
-
 import jakarta.persistence.*;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.DynamicInsert;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+
+import java.util.LinkedList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -41,7 +37,7 @@ public class User {
 	@Enumerated(value = EnumType.STRING)
 	private UserRoleEnum role;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Password> passwordList = new LinkedList<>();
 
 	public User(String username, String password, String nickname, String introduction, UserRoleEnum role) {

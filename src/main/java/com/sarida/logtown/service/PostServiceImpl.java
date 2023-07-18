@@ -44,7 +44,8 @@ public class PostServiceImpl implements PostService {
         );
 
         // 작성자 확인
-        if(post.getUser().equals(userDetails.getUser())) {
+//        if(post.getUser().equals(userDetails.getUser())) {
+        if(post.getUser().getUsername().equals(userDetails.getUser().getUsername())) {
             post.setContent(requestDto.getContent());
             postRepository.save(post);
         } else {
@@ -63,7 +64,7 @@ public class PostServiceImpl implements PostService {
         );
 
         // 작성자 확인
-        if(post.getUser().equals(userDetails.getUser())) {
+        if(post.getUser().getUsername().equals(userDetails.getUser().getUsername())) {
             postRepository.delete(post);
         } else {
             throw new IllegalArgumentException("작성자만 수정/삭제할 수 있습니다.");
