@@ -1,6 +1,7 @@
 package com.sarida.logtown.service;
 
 import com.sarida.logtown.dto.ApiResponseDto;
+import com.sarida.logtown.dto.PostListResponseDto;
 import com.sarida.logtown.dto.PostRequestDto;
 import com.sarida.logtown.dto.PostResponseDto;
 import com.sarida.logtown.security.UserDetailsImpl;
@@ -29,7 +30,7 @@ public interface PostService {
      * 전체 게시글 조회
      * @return 전체 게시글 List
      */
-    List<PostResponseDto> getPostList();
+    PostListResponseDto getPostList();
 
     /**
      * 게시글 삭제

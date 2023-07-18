@@ -1,6 +1,7 @@
 package com.sarida.logtown.service;
 
 import com.sarida.logtown.dto.ApiResponseDto;
+import com.sarida.logtown.dto.PostListResponseDto;
 import com.sarida.logtown.dto.PostRequestDto;
 import com.sarida.logtown.dto.PostResponseDto;
 import com.sarida.logtown.entity.Post;
@@ -30,8 +31,9 @@ public class PostServiceImpl implements PostService {
 
     // modifiedAt 기준 내림차순
     @Override
-    public List<PostResponseDto> getPostList() {
-        return postRepository.findAllByOrderByModifiedAtDesc().stream().map(PostResponseDto::new).toList();
+    public PostListResponseDto getPostList() {
+        List<PostResponseDto> postList = postRepository.findAllByOrderByModifiedAtDesc().stream().map(PostResponseDto::new).toList();
+        return new PostListResponseDto(postList);
     }
 
     //게시글 수정

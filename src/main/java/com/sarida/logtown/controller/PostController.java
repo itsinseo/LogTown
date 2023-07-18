@@ -1,10 +1,11 @@
 package com.sarida.logtown.controller;
 
 import com.sarida.logtown.dto.ApiResponseDto;
+import com.sarida.logtown.dto.PostListResponseDto;
 import com.sarida.logtown.dto.PostRequestDto;
 import com.sarida.logtown.dto.PostResponseDto;
 import com.sarida.logtown.security.UserDetailsImpl;
-import com.sarida.logtown.service.PostService;
+import com.sarida.logtown.service.PostServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
@@ -16,7 +17,8 @@ import java.util.List;
 @RequestMapping("/api/posts")
 public class PostController {
 
-    private final PostService postService;
+    private final PostServiceImpl postService;
+
     @PostMapping("")
     public PostResponseDto createPost(
             @RequestBody PostRequestDto requestDto,
@@ -26,7 +28,7 @@ public class PostController {
     }
 
     @GetMapping("")
-    public List<PostResponseDto> getPostList() {
+    public PostListResponseDto getPostList() {
         return postService.getPostList();
     }
 
