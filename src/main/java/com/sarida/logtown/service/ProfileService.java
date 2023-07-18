@@ -17,6 +17,7 @@ import java.util.concurrent.RejectedExecutionException;
 public class ProfileService {
     private UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private static final int MAX_HISTORY = 3;
 
     @Transactional
     public void updateProfile(User user, ProfileRequestDto requestDto) {
@@ -32,20 +33,21 @@ public class ProfileService {
         user.setNickname(nickname);
     }
 
-
     @Transactional
     public void updatePassword(PasswordRequestDto requestDto, User user) {
         String currentPassword = requestDto.getCurrentPassword();
         String changedPassword = requestDto.getChangedPassword();
         String confirmedPassword = requestDto.getConfirmedPassword();
 
+        String encodedCurrentUserPassword = user.getPassword();
+
         // 현재 비밀번호 체크
-        if(passwordEncoder.matches(currentPassword, user.getPassword())) {
+        if(passwordEncoder.matches(currentPassword, encodedCurrentUserPassword)) {
             // 변경할 비밀번호하고 ccnfirm 비밀번호 체크
             if(changedPassword.equals(confirmedPassword)) {
                 Password password = new Password(changedPassword);
-                if(!user.isRecentPassword(password)) {
-                    user.addPassword(password);
+                if(!user.isRecentPassword(user,password)) {
+                    user.addPassword(user,password);
                 }
                 else {
                     throw new RejectedExecutionException("최근 3번이내에 사용한 비밀번호 입니다.");
@@ -58,5 +60,16 @@ public class ProfileService {
         else {
             throw new RejectedExecutionException("현재 비밀번호가 일치하지 않습니다.");
         }
+    }
+
+    private void addPassword(User user, Password password) {
+        user.getPasswordQueue().offer(password);
+        if (user.getPasswordQueue().size() > MAX_HISTORY) {
+            user.getPasswordQueue().poll();
+        }
+    }
+
+    private boolean isRecentPassword(User user, Password password) {
+        return user.getPasswordQueue().contains(password);
     }
 }
