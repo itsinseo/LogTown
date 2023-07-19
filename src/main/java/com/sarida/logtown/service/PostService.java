@@ -51,7 +51,7 @@ public interface PostService {
      *
      * @return 전체 게시글 List
      */
-    PostListResponseDto getPostList();
+    PostListResponseDto getAllPosts();
 
     /**
      * 게시글 삭제

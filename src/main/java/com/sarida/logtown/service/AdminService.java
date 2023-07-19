@@ -33,5 +33,5 @@ public interface AdminService {
      *
      * @return 사용자 dto list
      */
-    UserInfoListResponseDto getUserInfoList();
+    UserInfoListResponseDto getAllUserInfos();
 }

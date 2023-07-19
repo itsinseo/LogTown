@@ -42,7 +42,7 @@ public class PostServiceImpl implements PostService {
 
     // modifiedAt 기준 내림차순
     @Override
-    public PostListResponseDto getPostList() {
+    public PostListResponseDto getAllPosts() {
         List<PostResponseDto> postList = postRepository.findAllByOrderByModifiedAtDesc().stream().map(PostResponseDto::new).toList();
         return new PostListResponseDto(postList);
     }
@@ -69,7 +69,7 @@ public class PostServiceImpl implements PostService {
 
 
         // 작성자 확인
-        if(post.getUser().getId().equals(userDetails.getUser().getId())) {
+        if (post.getUser().getId().equals(userDetails.getUser().getId())) {
             post.setContent(requestDto.getContent());
             postRepository.save(post);
         } else {
@@ -88,7 +88,7 @@ public class PostServiceImpl implements PostService {
         );
 
         // 작성자 확인
-        if(post.getUser().getId().equals(userDetails.getUser().getId())) {
+        if (post.getUser().getId().equals(userDetails.getUser().getId())) {
             postRepository.delete(post);
         } else {
             throw new IllegalArgumentException("작성자만 수정/삭제할 수 있습니다.");

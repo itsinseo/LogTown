@@ -54,7 +54,7 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
-    public UserInfoListResponseDto getUserInfoList() {
+    public UserInfoListResponseDto getAllUserInfos() {
         List<UserInfoResponseDto> userInfoList = userRepository.findAllByOrderByUsername().stream().map(UserInfoResponseDto::new).toList();
         return new UserInfoListResponseDto(userInfoList);
     }

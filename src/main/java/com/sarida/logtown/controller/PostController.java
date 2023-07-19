@@ -1,7 +1,6 @@
 package com.sarida.logtown.controller;
 
 import com.sarida.logtown.dto.ApiResponseDto;
-import com.sarida.logtown.dto.PostListResponseDto;
 import com.sarida.logtown.dto.PostRequestDto;
 import com.sarida.logtown.dto.PostResponseDto;
 import com.sarida.logtown.security.UserDetailsImpl;

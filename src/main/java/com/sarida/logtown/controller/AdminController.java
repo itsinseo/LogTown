@@ -36,14 +36,15 @@ public class AdminController {
 
     // 글 전체 보기
     @GetMapping("/posts")
-    public PostListResponseDto getPostList() {
-        return postService.getPostList();
+    public PostListResponseDto getAllPosts() {
+        return postService.getAllPosts();
     }
 
 
     // 사용자 전체 보기
     @GetMapping("/users")
-    public UserInfoListResponseDto getUserInfoList() {
-        return adminService.getUserInfoList();
+    public UserInfoListResponseDto getAllUserInfos() {
+        return adminService.getAllUserInfos();
     }
+
 }
