@@ -66,15 +66,4 @@ public class User {
 	public void prePersist(){
 		this.role = this.role == null ? UserRoleEnum.valueOf("USER") : this.role;
 	}
-
-	@Override
-	public boolean equals(Object o) {
-		if (this == o) return true;
-		if (o == null || getClass() != o.getClass()) return false;
-
-		User otherUser = (User) o;
-
-		return Objects.equals(id, otherUser.id);
-	}
-
 }

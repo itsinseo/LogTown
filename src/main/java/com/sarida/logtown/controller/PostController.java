@@ -1,22 +1,24 @@
 package com.sarida.logtown.controller;
 
 import com.sarida.logtown.dto.ApiResponseDto;
+import com.sarida.logtown.dto.PostListResponseDto;
 import com.sarida.logtown.dto.PostRequestDto;
 import com.sarida.logtown.dto.PostResponseDto;
 import com.sarida.logtown.security.UserDetailsImpl;
-import com.sarida.logtown.service.PostService;
+import com.sarida.logtown.service.PostServiceImpl;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Slice;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/posts")
 public class PostController {
 
-    private final PostService postService;
+    private final PostServiceImpl postService;
+
     @PostMapping("")
     public PostResponseDto createPost(
             @RequestBody PostRequestDto requestDto,
@@ -25,9 +27,19 @@ public class PostController {
         return postService.createPost(requestDto, userDetails);
     }
 
+    @GetMapping("/{postId}")
+    public PostResponseDto getPost(@PathVariable Long postId) {
+        return postService.getPost(postId);
+    }
+
     @GetMapping("")
-    public List<PostResponseDto> getPostList() {
+    public PostListResponseDto getPostList() {
         return postService.getPostList();
+    }
+
+    @GetMapping("/slice")
+    public Slice<PostResponseDto> getPostSlice(@RequestParam("page") int page) {
+        return postService.getPostSlice(page);
     }
 
     @PutMapping("/{postId}")
@@ -44,6 +56,6 @@ public class PostController {
             @PathVariable Long postId,
             @AuthenticationPrincipal UserDetailsImpl userDetails
     ) {
-        return postService.deletePost(postId,userDetails);
+        return postService.deletePost(postId, userDetails);
     }
 }

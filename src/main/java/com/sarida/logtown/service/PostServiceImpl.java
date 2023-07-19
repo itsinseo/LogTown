@@ -1,6 +1,7 @@
 package com.sarida.logtown.service;
 
 import com.sarida.logtown.dto.ApiResponseDto;
+import com.sarida.logtown.dto.PostListResponseDto;
 import com.sarida.logtown.dto.PostRequestDto;
 import com.sarida.logtown.dto.PostResponseDto;
 import com.sarida.logtown.entity.Post;
@@ -8,6 +9,10 @@ import com.sarida.logtown.entity.User;
 import com.sarida.logtown.repository.PostRepository;
 import com.sarida.logtown.security.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,6 +24,7 @@ import java.util.List;
 public class PostServiceImpl implements PostService {
 
     private final PostRepository postRepository;
+    private static final int PAGE_SIZE = 10;
 
     // 게시글 생성
     @Override
@@ -29,10 +35,28 @@ public class PostServiceImpl implements PostService {
         return new PostResponseDto(post);
     }
 
+    @Override
+    public PostResponseDto getPost(Long postId) {
+        Post post = findPost(postId);
+        return new PostResponseDto(post);
+    }
+
     // modifiedAt 기준 내림차순
     @Override
-    public List<PostResponseDto> getPostList() {
-        return postRepository.findAllByOrderByModifiedAtDesc().stream().map(PostResponseDto::new).toList();
+    public PostListResponseDto getPostList() {
+        List<PostResponseDto> postList = postRepository.findAllByOrderByModifiedAtDesc().stream().map(PostResponseDto::new).toList();
+        return new PostListResponseDto(postList);
+    }
+
+    @Override
+    public Slice<PostResponseDto> getPostSlice(int page) {
+        Sort sort = Sort.by(Sort.Direction.DESC, "modifiedAt");
+        Pageable pageable = PageRequest.of(page, PAGE_SIZE, sort);
+
+        Slice<Post> postSlice = postRepository.findAllBy(pageable);
+        Slice<PostResponseDto> postResponseDtoSlice = postSlice.map(PostResponseDto::new);
+
+        return postResponseDtoSlice;
     }
 
     //게시글 수정
@@ -46,7 +70,7 @@ public class PostServiceImpl implements PostService {
 
 
         // 작성자 확인
-        if(post.getUser().equals(userDetails.getUser())) {
+        if(post.getUser().getId().equals(userDetails.getUser().getId())) {
             post.setContent(requestDto.getContent());
             postRepository.save(post);
         } else {
@@ -65,7 +89,7 @@ public class PostServiceImpl implements PostService {
         );
 
         // 작성자 확인
-        if(post.getUser().equals(userDetails.getUser())) {
+        if(post.getUser().getId().equals(userDetails.getUser().getId())) {
             postRepository.delete(post);
         } else {
             throw new IllegalArgumentException("작성자만 수정/삭제할 수 있습니다.");
