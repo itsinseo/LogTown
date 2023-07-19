@@ -49,7 +49,7 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public Slice<PostResponseDto> getPostSlice(int page) {
-        Sort sort = Sort.by(Sort.Direction.DESC,"modifiedAt");
+        Sort sort = Sort.by(Sort.Direction.DESC, "modifiedAt");
         Pageable pageable = PageRequest.of(page, PAGE_SIZE, sort);
 
         Slice<Post> postSlice = postRepository.findAllBy(pageable);
@@ -68,7 +68,7 @@ public class PostServiceImpl implements PostService {
         );
 
         // 작성자 확인
-        if(post.getUser().equals(userDetails.getUser())) {
+        if (post.getUser().equals(userDetails.getUser())) {
             post.setContent(requestDto.getContent());
             postRepository.save(post);
         } else {
@@ -87,7 +87,7 @@ public class PostServiceImpl implements PostService {
         );
 
         // 작성자 확인
-        if(post.getUser().equals(userDetails.getUser())) {
+        if (post.getUser().equals(userDetails.getUser())) {
             postRepository.delete(post);
         } else {
             throw new IllegalArgumentException("작성자만 수정/삭제할 수 있습니다.");

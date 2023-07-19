@@ -11,7 +11,6 @@ import org.springframework.data.domain.Slice;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -57,6 +56,6 @@ public class PostController {
             @PathVariable Long postId,
             @AuthenticationPrincipal UserDetailsImpl userDetails
     ) {
-        return postService.deletePost(postId,userDetails);
+        return postService.deletePost(postId, userDetails);
     }
 }
