@@ -32,11 +32,6 @@ public class PostController {
         return postService.getPost(postId);
     }
 
-    @GetMapping("")
-    public PostListResponseDto getPostList() {
-        return postService.getPostList();
-    }
-
     @GetMapping("/slice")
     public Slice<PostResponseDto> getPostSlice(@RequestParam("page") int page) {
         return postService.getPostSlice(page);
