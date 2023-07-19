@@ -42,10 +42,10 @@ public class User {
     private List<Password> passwordList = new LinkedList<>();
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    private List<Post> postList = new ArrayList<>();
+    private List<Post> myPostList = new ArrayList<>();
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    private List<Comment> commentList = new ArrayList<>();
+    private List<Comment> myCommentList = new ArrayList<>();
 
     public User(String username, String password, String nickname, String introduction, UserRoleEnum role) {
         this.username = username;
