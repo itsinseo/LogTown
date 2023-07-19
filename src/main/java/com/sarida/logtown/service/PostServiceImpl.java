@@ -5,7 +5,6 @@ import com.sarida.logtown.dto.PostListResponseDto;
 import com.sarida.logtown.dto.PostRequestDto;
 import com.sarida.logtown.dto.PostResponseDto;
 import com.sarida.logtown.entity.Post;
-import com.sarida.logtown.entity.User;
 import com.sarida.logtown.repository.PostRepository;
 import com.sarida.logtown.security.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
