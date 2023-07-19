@@ -41,7 +41,7 @@ public class CommentServiceImpl implements CommentService {
     @Transactional
     public ApiResponseDto putComment(Comment comment, CommentRequestDto requestDto, UserDetailsImpl userDetails) {
         // 댓글 작성자 확인
-        if (comment.getUser().equals(userDetails.getUser())) {
+        if (comment.getUser().getId().equals(userDetails.getUser().getId())) {
             comment.setContent(requestDto.getContent());
         } else {
             throw new IllegalArgumentException("작성자만 수정/삭제할 수 있습니다.");
@@ -53,7 +53,7 @@ public class CommentServiceImpl implements CommentService {
     @Override
     public ApiResponseDto deleteComment(Comment comment, UserDetailsImpl userDetails) {
         // 댓글 작성자 확인
-        if (comment.getUser().equals(userDetails.getUser())) {
+        if (comment.getUser().getId().equals(userDetails.getUser().getId())) {
             commentRepository.delete(comment);
         } else {
             throw new IllegalArgumentException("작성자만 수정/삭제할 수 있습니다.");

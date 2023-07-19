@@ -21,7 +21,6 @@ public class ProfileService {
     private final PasswordEncoder passwordEncoder;
     private static final int MAX_HISTORY = 3;
 
-    @Transactional
     public void updateProfile(ProfileRequestDto requestDto, User user) {
         String introduction = requestDto.getIntroduction();
         String nickname = requestDto.getNickname();
