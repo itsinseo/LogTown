@@ -15,11 +15,13 @@ public class PostResponseDto {
     private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;
     private List<CommentResponseDto> commentList;
+    private Integer likeCnt;
 
     public PostResponseDto(Post post) {
         this.id = post.getId();
         this.content = post.getContent();
         this.username = post.getUser().getUsername();
+        this.likeCnt = post.getPostLikes().size();
         this.createdAt = post.getCreatedAt();
         this.modifiedAt = post.getModifiedAt();
         this.commentList = post.getCommentList().stream().map(CommentResponseDto::new)
