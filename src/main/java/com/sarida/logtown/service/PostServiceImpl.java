@@ -53,9 +53,8 @@ public class PostServiceImpl implements PostService {
         Pageable pageable = PageRequest.of(page, PAGE_SIZE, sort);
 
         Slice<Post> postSlice = postRepository.findAllBy(pageable);
-        Slice<PostResponseDto> postResponseDtoSlice = postSlice.map(PostResponseDto::new);
 
-        return postResponseDtoSlice;
+        return postSlice.map(PostResponseDto::new);
     }
 
     //게시글 수정

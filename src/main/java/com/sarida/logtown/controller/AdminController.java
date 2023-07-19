@@ -1,10 +1,7 @@
 package com.sarida.logtown.controller;
 
-import com.sarida.logtown.dto.ApiResponseDto;
-import com.sarida.logtown.dto.PostListResponseDto;
-import com.sarida.logtown.dto.UserInfoListResponseDto;
-import com.sarida.logtown.service.AdminServiceImpl;
-import com.sarida.logtown.service.PostServiceImpl;
+import com.sarida.logtown.dto.*;
+import com.sarida.logtown.service.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,8 +10,9 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/admin")
 public class AdminController {
 
-    private final AdminServiceImpl adminService;
-    private final PostServiceImpl postService;
+    private final AdminService adminService;
+    private final PostService postService;
+    private final CommentService commentService;
 
     // 게시글 관리자 삭제
     @DeleteMapping("/posts/{postId}/delete")
@@ -40,11 +38,16 @@ public class AdminController {
         return postService.getAllPosts();
     }
 
-
     // 사용자 전체 보기
     @GetMapping("/users")
     public UserInfoListResponseDto getAllUserInfos() {
         return adminService.getAllUserInfos();
+    }
+
+    // 댓글 전체 보기
+    @GetMapping("/comments")
+    public CommentListResponseDto getAllComments() {
+        return commentService.getAllComments();
     }
 
 }
