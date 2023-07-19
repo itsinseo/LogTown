@@ -5,6 +5,7 @@ import com.sarida.logtown.dto.PostListResponseDto;
 import com.sarida.logtown.dto.PostRequestDto;
 import com.sarida.logtown.dto.PostResponseDto;
 import com.sarida.logtown.entity.Post;
+import com.sarida.logtown.entity.User;
 import com.sarida.logtown.repository.PostRepository;
 import com.sarida.logtown.security.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
@@ -66,6 +67,7 @@ public class PostServiceImpl implements PostService {
         Post post = postRepository.findById(postId).orElseThrow(
                 () -> new NullPointerException("존재하지 않는 게시글입니다.")
         );
+
 
         // 작성자 확인
         if (post.getUser().equals(userDetails.getUser())) {

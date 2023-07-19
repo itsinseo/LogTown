@@ -1,18 +1,15 @@
 package com.sarida.logtown.entity;
 
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.OneToMany;
-
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Queue;
-
 import jakarta.persistence.*;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.DynamicInsert;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Getter
@@ -69,4 +66,15 @@ public class User {
 	public void prePersist(){
 		this.role = this.role == null ? UserRoleEnum.valueOf("USER") : this.role;
 	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+
+		User otherUser = (User) o;
+
+		return Objects.equals(id, otherUser.id);
+	}
+
 }
