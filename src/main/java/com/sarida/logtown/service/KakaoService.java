@@ -33,7 +33,7 @@ public class KakaoService {
         User kakaoUser = new User("kakaousername", passwordEncoder.encode("password"), "카카오닉네임", "카카오안녕하세요", UserRoleEnum.USER);
 
         // 4. JWT 토큰 반환
-        String createToken = jwtUtil.createToken(kakaoUser.getUsername());
+        String createToken = jwtUtil.createToken(kakaoUser.getUsername(), kakaoUser.getRole());
 
         return createToken;
     }
