@@ -24,4 +24,9 @@ public class AdminController {
     public ApiResponseDto deleteComment(@PathVariable Long commentId) {
         return adminService.deleteComment(commentId);
     }
+
+    @DeleteMapping("/users/{userId}/closing")
+    public ApiResponseDto deleteUser(@PathVariable Long userId) {
+        return adminService.deleteUser(userId);
+    }
 }

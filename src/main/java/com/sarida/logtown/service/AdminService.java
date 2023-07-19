@@ -18,4 +18,11 @@ public interface AdminService {
      * @return 완료 응답
      */
     ApiResponseDto deleteComment(Long commentId);
+
+    /**
+     * 관리자 권한 user 삭제
+     * @param userId 삭제할 user id
+     * @return 완료 응답
+     */
+    ApiResponseDto deleteUser(Long userId);
 }
