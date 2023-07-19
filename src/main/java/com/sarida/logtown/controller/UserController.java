@@ -18,6 +18,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.UnsupportedEncodingException;
+
 @Slf4j
 @Controller
 @RequiredArgsConstructor
@@ -73,7 +75,7 @@ public class UserController {
 
     @ResponseBody // 테스트 목적
     @GetMapping("/auth/naver/callback")
-    public String naverLogin(@RequestParam String code, HttpServletResponse response) throws JsonProcessingException {
+    public String naverLogin(@RequestParam String code, HttpServletResponse response) throws JsonProcessingException, UnsupportedEncodingException {
         String token = naverService.naverLogin(code);
 
 //        Cookie cookie = new Cookie(JwtUtil.AUTHORIZATION_HEADER, token.substring(7));
