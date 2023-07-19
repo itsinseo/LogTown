@@ -1,10 +1,16 @@
-<!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Kakao Login</title>
 </head>
 <body>
-
+<div>
+    <button style="background-color: yellow" onclick="location.href='https://kauth.kakao.com/oauth/authorize?client_id=9ba390d13032486e1e0ad77185ef66f3&redirect_uri=http://localhost:8080/api/auth/kakao/callback&response_type=code'">
+        카카오로 로그인하기
+    </button>
+    <button style="background-color: green" onclick="location.href='https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=8IyE9FmLtg4bdRwCsFBn&redirect_uri=http://localhost:8080/api/auth/naver/callback&response_type=code'">
+        네이버로 로그인하기
+    </button>
+</div>
 </body>
 </html>
