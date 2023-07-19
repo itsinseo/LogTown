@@ -14,7 +14,7 @@ public class CommentResponseDto extends ApiResponseDto {
 
     private final Long id;
     private final String content;
-    private final String username;
+    private final String nickname;
     private final LocalDateTime createdAt;
     private final LocalDateTime modifiedAt;
     private final List<ReCommentResponseDto> reCommentList;
@@ -22,7 +22,7 @@ public class CommentResponseDto extends ApiResponseDto {
     public CommentResponseDto(Comment comment) {
         this.id = comment.getId();
         this.content = comment.getContent();
-        this.username = comment.getUser().getUsername();
+        this.nickname = comment.getUser().getNickname();
         this.createdAt = comment.getCreatedAt();
         this.modifiedAt = comment.getModifiedAt();
         this.reCommentList = comment.getChildCommentList().stream().map(ReCommentResponseDto::new)

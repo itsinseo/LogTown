@@ -8,7 +8,6 @@ import com.sarida.logtown.entity.Post;
 import com.sarida.logtown.security.UserDetailsImpl;
 import org.springframework.data.domain.Slice;
 
-import java.util.List;
 
 public interface PostService {
     /**
@@ -32,7 +31,7 @@ public interface PostService {
      * 10개 단위로 끊어서 보기
      *
      * @param page 현재 페이지
-     * @return
+     * @return 게시글 10개 slice
      */
     Slice<PostResponseDto> getPostSlice(int page);
 
@@ -47,11 +46,11 @@ public interface PostService {
     PostResponseDto updatePost(Long postId, PostRequestDto requestDto, UserDetailsImpl userDetails);
 
     /**
-     * 전체 게시글 조회
+     * 전체 게시글 조회(관리자)
      *
-     * @return 전체 게시글 List
+     * @return 전체 게시글
      */
-    PostListResponseDto getPostList();
+    PostListResponseDto getAllPosts();
 
     /**
      * 게시글 삭제

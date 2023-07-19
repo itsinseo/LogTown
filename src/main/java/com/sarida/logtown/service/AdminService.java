@@ -1,6 +1,7 @@
 package com.sarida.logtown.service;
 
 import com.sarida.logtown.dto.ApiResponseDto;
+import com.sarida.logtown.dto.UserInfoListResponseDto;
 
 public interface AdminService {
     /**
@@ -21,8 +22,16 @@ public interface AdminService {
 
     /**
      * 관리자 권한 user 삭제
+     *
      * @param userId 삭제할 user id
      * @return 완료 응답
      */
     ApiResponseDto deleteUser(Long userId);
+
+    /**
+     * 모든 사용자 조회
+     *
+     * @return 사용자 dto list
+     */
+    UserInfoListResponseDto getAllUserInfos();
 }

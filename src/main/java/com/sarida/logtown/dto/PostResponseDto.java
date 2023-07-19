@@ -11,7 +11,7 @@ import java.util.List;
 public class PostResponseDto {
     private Long id;
     private String content;
-    private String username;
+    private String nickname;
     private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;
     private List<CommentResponseDto> commentList;
@@ -19,7 +19,7 @@ public class PostResponseDto {
     public PostResponseDto(Post post) {
         this.id = post.getId();
         this.content = post.getContent();
-        this.username = post.getUser().getUsername();
+        this.nickname = post.getUser().getNickname();
         this.createdAt = post.getCreatedAt();
         this.modifiedAt = post.getModifiedAt();
         this.commentList = post.getCommentList().stream().map(CommentResponseDto::new)

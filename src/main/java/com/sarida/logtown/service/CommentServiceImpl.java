@@ -1,7 +1,6 @@
 package com.sarida.logtown.service;
 
-import com.sarida.logtown.dto.ApiResponseDto;
-import com.sarida.logtown.dto.CommentRequestDto;
+import com.sarida.logtown.dto.*;
 import com.sarida.logtown.entity.Comment;
 import com.sarida.logtown.entity.Post;
 import com.sarida.logtown.repository.CommentRepository;
@@ -10,6 +9,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -67,5 +68,11 @@ public class CommentServiceImpl implements CommentService {
         return commentRepository.findById(commentId).orElseThrow(() ->
                 new NullPointerException("해당 댓글이 존재하지 않습니다.")
         );
+    }
+
+    @Override
+    public CommentListResponseDto getAllComments() {
+        List<CommentResponseDto> commentList = commentRepository.findAllByOrderByModifiedAtDesc().stream().map(CommentResponseDto::new).toList();
+        return new CommentListResponseDto(commentList);
     }
 }
