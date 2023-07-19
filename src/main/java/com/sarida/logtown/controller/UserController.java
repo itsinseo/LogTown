@@ -41,14 +41,15 @@ public class UserController {
         return ResponseEntity.status(201).body(new ApiResponseDto("회원가입 성공", HttpStatus.CREATED.value()));
     }
 
-    @PostMapping("/auth/signin")
-    public ResponseEntity<ApiResponseDto> signIn(@RequestBody SigninRequestDto requestDto, HttpServletResponse response) {
-        try {
-            userService.signIn(requestDto);
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.badRequest().body(new ApiResponseDto("회원을 찾을 수 없습니다.", HttpStatus.BAD_REQUEST.value()));
-        }
-        response.addHeader(JwtUtil.AUTHORIZATION_HEADER, jwtUtil.createToken(requestDto.getUsername()));
-        return ResponseEntity.ok().body(new ApiResponseDto("로그인 성공", HttpStatus.CREATED.value()));
-    }
+
+	  @PostMapping("/auth/signin")
+	  public ResponseEntity<ApiResponseDto> signIn(@RequestBody SigninRequestDto requestDto, HttpServletResponse response) {
+		  try {
+			  userService.signIn(requestDto);
+		  } catch (IllegalArgumentException e) {
+			  return ResponseEntity.badRequest().body(new ApiResponseDto("회원을 찾을 수 없습니다.", HttpStatus.BAD_REQUEST.value()));
+		  }
+		  response.addHeader(JwtUtil.AUTHORIZATION_HEADER, jwtUtil.createToken(requestDto.getUsername(), requestDto.getRole()));
+		  return ResponseEntity.ok().body(new ApiResponseDto("로그인 성공", HttpStatus.CREATED.value()));
+	  }
 }
