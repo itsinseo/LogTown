@@ -30,6 +30,7 @@ public class FollowController {
 		return ResponseEntity.status(400).body(new ApiResponseDto("오류", HttpStatus.BAD_REQUEST.value()));
 	}
 
+	// REFACTORING : 팔로우 취소까지 완료한 뒤 전체적인 에러메시지 수정
 	// TODO : 언팔로우, 팔로워/팔로잉 리스트 가져오기, 팔로잉 글만 가져오기
 	// 언팔로우
 //	@DeleteMapping("/{toUsername}/{fromUsername}")
