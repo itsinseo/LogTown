@@ -7,8 +7,10 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.DynamicInsert;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Getter
@@ -30,23 +32,29 @@ public class User {
 	@Column(nullable = false, unique = true)
 	private String nickname;
 
-	@Column(nullable = false)
-	private String introduction;
+    @Column(nullable = false)
+    private String introduction;
 
-	@Column(name = "role")
-	@Enumerated(value = EnumType.STRING)
-	private UserRoleEnum role;
+    @Column(name = "role")
+    @Enumerated(value = EnumType.STRING)
+    private UserRoleEnum role;
 
 	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	private List<Password> passwordList = new LinkedList<>();
 
-	public User(String username, String password, String nickname, String introduction, UserRoleEnum role) {
-		this.username = username;
-		this.password = password;
-		this.nickname = nickname;
-		this.introduction = introduction;
-		this.role = role;
-	}
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<Post> myPostList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<Comment> myCommentList = new ArrayList<>();
+
+    public User(String username, String password, String nickname, String introduction, UserRoleEnum role) {
+        this.username = username;
+        this.password = password;
+        this.nickname = nickname;
+        this.introduction = introduction;
+        this.role = role;
+    }
 
 	public void setNickname(String nickname) {
 		this.nickname = nickname;
@@ -56,9 +64,9 @@ public class User {
 		this.introduction = introduction;
 	}
 
-	public void setPassword(String password) {
-		this.password = new BCryptPasswordEncoder().encode(password);
-	}
+    public void setPassword(String password) {
+        this.password = new BCryptPasswordEncoder().encode(password);
+    }
 
 	// 값을 입력하지 않는다면 default => "USER"
 	@PrePersist

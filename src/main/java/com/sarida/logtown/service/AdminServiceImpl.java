@@ -1,6 +1,8 @@
 package com.sarida.logtown.service;
 
 import com.sarida.logtown.dto.ApiResponseDto;
+import com.sarida.logtown.dto.UserInfoListResponseDto;
+import com.sarida.logtown.dto.UserInfoResponseDto;
 import com.sarida.logtown.entity.Comment;
 import com.sarida.logtown.entity.Post;
 import com.sarida.logtown.entity.User;
@@ -10,6 +12,8 @@ import com.sarida.logtown.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -49,4 +53,9 @@ public class AdminServiceImpl implements AdminService {
         return new ApiResponseDto("관리자 권한 사용자 삭제", HttpStatus.OK.value());
     }
 
+    @Override
+    public UserInfoListResponseDto getAllUserInfos() {
+        List<UserInfoResponseDto> userInfoList = userRepository.findAllByOrderByUsername().stream().map(UserInfoResponseDto::new).toList();
+        return new UserInfoListResponseDto(userInfoList);
+    }
 }
