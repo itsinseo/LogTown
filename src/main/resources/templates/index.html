@@ -1,16 +1,38 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>Kakao Login</title>
+    <title>LogTown Login</title>
 </head>
 <body>
-<div>
-    <button style="background-color: yellow" onclick="location.href='https://kauth.kakao.com/oauth/authorize?client_id=9ba390d13032486e1e0ad77185ef66f3&redirect_uri=http://localhost:8080/api/auth/kakao/callback&response_type=code'">
-        카카오로 로그인하기
+
+<div style="width: 100%; height: 100%; position: relative; background: white">
+    <div style="width: 234px; height: 59px; left: 65px; top: 70px; position: absolute; text-align: center; color: black; font-size: 40px; font-family: Abel; font-weight: 400; word-wrap: break-word">
+        LogTown
+    </div>
+    <button onclick="location.href='https://kauth.kakao.com/oauth/authorize?client_id=9ba390d13032486e1e0ad77185ef66f3&redirect_uri=http://localhost:8080/api/auth/kakao/callback&response_type=code'"
+            style="width: 240px; height: 34px; padding: 10px; left: 73px; top: 316px; position: absolute; background: #FFF500; box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25); border-radius: 20px; justify-content: center; align-items: center; gap: 10px; display: inline-flex">
+        <div style="text-align: center; color: black; font-size: 20px; font-family: Inter; font-weight: 400; word-wrap: break-word">
+            카카오 로그인
+        </div>
     </button>
-    <button style="background-color: green" onclick="location.href='https://nid.naver.com/oauth2.0/authorize?client_id=8IyE9FmLtg4bdRwCsFBn&redirect_uri=http://localhost:8080/api/auth/naver/callback&response_type=code'">
-        네이버로 로그인하기
+    <button onclick="location.href='https://nid.naver.com/oauth2.0/authorize?client_id=8IyE9FmLtg4bdRwCsFBn&redirect_uri=http://localhost:8080/api/auth/naver/callback&response_type=code'"
+            style="width: 240px; height: 34px; padding: 10px; left: 73px; top: 264px; position: absolute; background: #00FF66; box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25); border-radius: 20px; justify-content: center; align-items: center; gap: 10px; display: inline-flex">
+        <div style="text-align: center; color: black; font-size: 20px; font-family: Inter; font-weight: 400; word-wrap: break-word">
+            네이버 로그인
+        </div>
     </button>
+    <button style="width: 240px; height: 34px; padding: 10px; left: 73px; top: 368px; position: absolute; background: #DB00FF; box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25); border-radius: 20px; justify-content: center; align-items: center; gap: 10px; display: inline-flex">
+        <div style="text-align: center; color: black; font-size: 20px; font-family: Inter; font-weight: 400; word-wrap: break-word">
+            로그인
+        </div>
+    </button>
+    <button style="width: 240px; height: 34px; padding: 10px; left: 73px; top: 460px; position: absolute; background: #00FF66; box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25); border-radius: 20px; justify-content: center; align-items: center; gap: 10px; display: inline-flex">
+        <div style="text-align: center; color: black; font-size: 20px; font-family: Inter; font-weight: 400; word-wrap: break-word">
+            회원가입
+        </div>
+    </button>
+    <div style="width: 206px; height: 0px; left: 90px; top: 433px; position: absolute; border: 0.50px black solid"></div>
 </div>
+
 </body>
 </html>
