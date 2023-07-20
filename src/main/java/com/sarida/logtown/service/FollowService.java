@@ -19,19 +19,17 @@ public class FollowService {
 	private final UserRepository userRepository;
 	private final FollowRepository followRepository;
 
-	public Boolean addFollow(String toUsername, String fromUsername) {
+	public Boolean addFollow(String toUsername, User fromUser) {
 		logger.info("addFollow 메서드 진입");
-		if (toUsername.equals(fromUsername)) {
+		if (toUsername.equals(fromUser.getUsername())) {
 			throw new IllegalArgumentException();
 		}
-		User toUser = userRepository.findByUsername(toUsername).orElseThrow(IllegalArgumentException::new);
-		logger.info("toUser 가져오기" + toUser.getUsername());
 
-		User fromUser = userRepository.findByUsername(fromUsername).orElseThrow(IllegalArgumentException::new);
-		logger.info("fromUser 가져오기" + fromUser.getUsername());
+		User toUser = userRepository.findByUsername(toUsername).orElseThrow(IllegalArgumentException::new);
+		logger.info("toUser 가져오기 : " + toUser.getUsername());
 
 		Optional<Follow> relation = getFollowRelation(toUser.getUsername(), fromUser.getUsername());
-		logger.info("relation findByToUserAndFromUser" + relation);
+		logger.info("relation findByToUserAndFromUser : " + relation);
 		if (relation.isPresent()) {
 			throw new IllegalArgumentException();
 		}
@@ -41,9 +39,25 @@ public class FollowService {
 		return true;
 	}
 
-//	public Boolean unFollow(String toUsername, String fromUsername) {
-//		return true;
-//	}
+	public Boolean unFollow(String toUsername, User fromUser) {
+		logger.info("unFollow 메서드 진입");
+		if (toUsername.equals(fromUser.getUsername())) {
+			throw new IllegalArgumentException();
+		}
+
+		User toUser = userRepository.findByUsername(toUsername).orElseThrow(IllegalArgumentException::new);
+		logger.info("toUser 가져오기 : " + toUser.getUsername());
+
+		Optional<Follow> relation = getFollowRelation(toUser.getUsername(), fromUser.getUsername());
+		logger.info("relation findByToUserAndFromUser : " + relation);
+		if (relation.isEmpty()) {
+			throw new IllegalArgumentException();
+		}
+		logger.info("followRepository.delete 전");
+		followRepository.delete(relation.get());
+		logger.info("followRepository.delete 후");
+		return true;
+	}
 
 	private Optional<Follow> getFollowRelation(String toUsername, String fromUsername) {
 		logger.info("getFollowRelation 메서드 진입");
