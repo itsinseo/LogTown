@@ -8,6 +8,8 @@ import com.sarida.logtown.entity.User;
 import com.sarida.logtown.security.UserDetailsImpl;
 import org.springframework.data.domain.Slice;
 
+import java.util.List;
+
 
 public interface PostService {
     /**
@@ -63,6 +65,22 @@ public interface PostService {
     Post findPost(Long postId);
 
     /**
+     * 좋아요 취소
+     *
+     * @param postId 조회할 게시글 id
+     * @param user   게시글 좋아요 취소를 할 유저
+     */
+    void deleteLikePost(Long postId, User user);
+
+    /**
+     * 좋아요 남기기
+     *
+     * @param postId 조회할 게시글 id
+     * @param user   게시글 좋아요할 유저
+     */
+    void likePost(Long postId, User user);
+
+    /**
      * 내가 쓴 게시글 보기
      *
      * @param page        페이지 번호
@@ -72,16 +90,10 @@ public interface PostService {
     Slice<PostResponseDto> getMyPosts(int page, UserDetailsImpl userDetails);
 
     /**
-     * 좋아요 취소
-     * @param postId 조회할 게시글 id
-     * @param user 게시글 좋아요 취소를 할 유저
+     * 팔로잉 하는 사람들의 게시글 보기
+     *
+     * @param userDetails 로그인된 사용자
+     * @return 게시글 list
      */
-    void deleteLikePost(Long postId, User user);
-
-    /**
-     * 좋아요 남기기
-     * @param postId 조회할 게시글 id
-     * @param user 게시글 좋아요할 유저
-     */
-    void likePost(Long postId, User user);
+    List<PostResponseDto> getFollowingPosts(UserDetailsImpl userDetails);
 }

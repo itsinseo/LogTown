@@ -12,6 +12,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 
 @RestController
 @RequiredArgsConstructor
@@ -58,6 +60,11 @@ public class PostController {
     @GetMapping("/myposts")
     public Slice<PostResponseDto> getMyPosts(@RequestParam("page") int page, @AuthenticationPrincipal UserDetailsImpl userDetails) {
         return postService.getMyPosts(page, userDetails);
+    }
+
+    @GetMapping("/followingposts")
+    public List<PostResponseDto> getFollowingPosts(@AuthenticationPrincipal UserDetailsImpl userDetails) {
+        return postService.getFollowingPosts(userDetails);
     }
 
     @PostMapping("/{postId}/like")

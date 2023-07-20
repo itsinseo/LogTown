@@ -6,9 +6,13 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.util.List;
+
 
 public interface PostRepository extends JpaRepository<Post, Long> {
     Slice<Post> findAllBy(Pageable pageable);
 
     Slice<Post> findAllByUser(User user, Pageable pageable);
+
+    List<Post> findAllByUserInOrderByModifiedAtDesc(List<User> followingUserList);
 }
