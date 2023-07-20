@@ -12,34 +12,22 @@ public class AdminController {
 
     private final AdminService adminService;
 
-    // 게시글 관리자 삭제
-    @DeleteMapping("/posts/{postId}/delete")
-    public ApiResponseDto deletePost(@PathVariable Long postId) {
-        return adminService.deletePost(postId);
-    }
-
     // 게시글 여러개 삭제
-    @PostMapping("/posts/delete")
-    public ApiResponseDto deletePosts(@RequestBody SelectPostDto selectPostDto) {
-        return adminService.deletePosts(selectPostDto);
+    @DeleteMapping("/posts/delete")
+    public ApiResponseDto deletePosts(@RequestBody SelectedIdsDto selectedIds) {
+        return adminService.deletePosts(selectedIds);
     }
 
-    // 댓글 관리자 삭제
-    @DeleteMapping("/comments/{commentId}/delete")
-    public ApiResponseDto deleteComment(@PathVariable Long commentId) {
-        return adminService.deleteComment(commentId);
+    // 댓글 여러개 삭제
+    @DeleteMapping("/comments/delete")
+    public ApiResponseDto deleteComments(@RequestBody SelectedIdsDto selectedIds) {
+        return adminService.deleteComments(selectedIds);
     }
 
-    // user 관리자 삭제
-    @DeleteMapping("/users/{userId}/closing")
-    public ApiResponseDto deleteUser(@PathVariable Long userId) {
-        return adminService.deleteUser(userId);
-    }
-
-    // 글 전체 보기
-    @GetMapping("/posts")
-    public PostListResponseDto getAllPosts() {
-        return adminService.getAllPosts();
+    // user 여러개 삭제
+    @DeleteMapping("/users/delete")
+    public ApiResponseDto deleteUsers(@RequestBody SelectedIdsDto selectedIds) {
+        return adminService.deleteUsers(selectedIds);
     }
 
     // 글 전체 보기 (Page)
@@ -51,12 +39,6 @@ public class AdminController {
         return adminService.getPostsByPage(page, isAsc);
     }
 
-    // 사용자 전체 보기
-    @GetMapping("/users")
-    public UserInfoListResponseDto getAllUserInfos() {
-        return adminService.getAllUserInfos();
-    }
-
     // 사용자 전체 보기 (Page)
     @GetMapping("/users/paging")
     public PageUserInfosDto getUserInfosByPage(
@@ -64,12 +46,6 @@ public class AdminController {
             @RequestParam("isAsc") boolean isAsc
     ) {
         return adminService.getUserInfosByPage(page, isAsc);
-    }
-
-    // 댓글 전체 보기
-    @GetMapping("/comments")
-    public CommentListResponseDto getAllComments() {
-        return adminService.getAllComments();
     }
 
     // 댓글 전체 보기 (Page)
