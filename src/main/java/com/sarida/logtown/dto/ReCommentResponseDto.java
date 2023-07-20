@@ -18,7 +18,7 @@ public class ReCommentResponseDto {
         this.id = reComment.getId();
         this.content = reComment.getContent();
         this.username = reComment.getUser().getUsername();
-        this.likeCnt = reComment.getRecommentLikes().size();
+        this.likeCnt = reComment.getCommentLikes().size();
         this.createdAt = reComment.getCreatedAt();
         this.modifiedAt = reComment.getModifiedAt();
     }

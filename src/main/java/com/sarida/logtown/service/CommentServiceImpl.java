@@ -5,12 +5,10 @@ import com.sarida.logtown.dto.CommentRequestDto;
 import com.sarida.logtown.entity.*;
 import com.sarida.logtown.repository.CommentLikeRepository;
 import com.sarida.logtown.repository.CommentRepository;
-import com.sarida.logtown.repository.RecommentLikeRepository;
 import com.sarida.logtown.security.UserDetailsImpl;
 import com.sun.jdi.request.DuplicateRequestException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,7 +20,6 @@ public class CommentServiceImpl implements CommentService {
 
     private final CommentRepository commentRepository;
     private final CommentLikeRepository commentLikeRepository;
-    private final RecommentLikeRepository recommentLikeRepository;
     private final PostService postService;
 
     @Override
@@ -93,40 +90,6 @@ public class CommentServiceImpl implements CommentService {
             commentLikeRepository.delete(commentLikeOptional.get());
         } else {
             throw new IllegalArgumentException("해당 댓글에 취소할 좋아요가 없습니다.");
-        }
-    }
-
-    @Override
-    @Transactional
-    public void likeRecomment(Long recommentId, User user) {
-        Comment recomment = commentRepository.findByParentCommentId(recommentId);
-
-        if(recomment == null) {
-            throw new NullPointerException("해당 대댓글이 존재하지 않습니다.");
-        }
-
-        if (recommentLikeRepository.existsByUserAndRecomment(user, recomment)) {
-            throw new DuplicateRequestException("이미 좋아요 한 대댓글입니다.");
-        } else {
-            RecommentLike recommentLike = new RecommentLike(user, recomment);
-            recommentLikeRepository.save(recommentLike);
-        }
-    }
-
-    @Override
-    @Transactional
-    public void deleteLikeRecomment(Long recommentId, User user) {
-        Comment recomment = commentRepository.findByParentCommentId(recommentId);
-
-        if(recomment == null) {
-            throw new NullPointerException("해당 대댓글이 존재하지 않습니다.");
-        }
-
-        Optional<RecommentLike> recommentLikeOptional = recommentLikeRepository.findByUserAndRecomment(user, recomment);
-        if (recommentLikeOptional.isPresent()) {
-            recommentLikeRepository.delete(recommentLikeOptional.get());
-        } else {
-            throw new IllegalArgumentException("해당 대댓글에 취소할 좋아요가 없습니다.");
         }
     }
 
