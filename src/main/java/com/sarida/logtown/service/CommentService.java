@@ -52,14 +52,28 @@ public interface CommentService {
     /**
      * 댓글 좋아요
      * @param commentId 좋아요할 댓글 id
-     * @param user 좋아요한 유저의 정보
+     * @param user 좋아요할 유저
      */
     void likeComment(Long commentId, User user);
 
     /**
      * 댓글 좋아요 삭제
      * @param commentId 좋아요 삭제할 댓글 id
-     * @param user 좋아요 삭제할 유저의 정보
+     * @param user 좋아요 삭제할 유저
      */
     void deleteLikeComment(Long commentId, User user);
+
+    /**
+     * 대댓글 좋아요
+     * @param recommentId 좋아요할 대댓글 id
+     * @param user 좋아요할 유저
+     */
+    void likeRecomment(Long recommentId, User user);
+
+    /**
+     * 대댓글 좋아요 삭제
+     * @param recommentId 좋아요 삭제할 대댓글 id
+     * @param user 좋아요 삭제할 유저
+     */
+    void deleteLikeRecomment(Long recommentId, User user);
 }
