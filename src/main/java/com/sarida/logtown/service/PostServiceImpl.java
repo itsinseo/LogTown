@@ -1,7 +1,6 @@
 package com.sarida.logtown.service;
 
 import com.sarida.logtown.dto.ApiResponseDto;
-import com.sarida.logtown.dto.PostListResponseDto;
 import com.sarida.logtown.dto.PostRequestDto;
 import com.sarida.logtown.dto.PostResponseDto;
 import com.sarida.logtown.entity.Post;
@@ -46,22 +45,14 @@ public class PostServiceImpl implements PostService {
         return new PostResponseDto(post);
     }
 
-    // modifiedAt 기준 내림차순
-    @Override
-    public PostListResponseDto getPostList() {
-        List<PostResponseDto> postList = postRepository.findAllByOrderByModifiedAtDesc().stream().map(PostResponseDto::new).toList();
-        return new PostListResponseDto(postList);
-    }
-
     @Override
     public Slice<PostResponseDto> getPostSlice(int page) {
         Sort sort = Sort.by(Sort.Direction.DESC, "modifiedAt");
         Pageable pageable = PageRequest.of(page, PAGE_SIZE, sort);
 
         Slice<Post> postSlice = postRepository.findAllBy(pageable);
-        Slice<PostResponseDto> postResponseDtoSlice = postSlice.map(PostResponseDto::new);
 
-        return postResponseDtoSlice;
+        return postSlice.map(PostResponseDto::new);
     }
 
     //게시글 수정
@@ -74,10 +65,10 @@ public class PostServiceImpl implements PostService {
         // 작성자 확인
         if (post.getUser().getId().equals(userDetails.getUser().getId())) {
             post.setContent(requestDto.getContent());
-            postRepository.save(post);
         } else {
             throw new IllegalArgumentException("작성자만 수정/삭제할 수 있습니다.");
         }
+
         return new PostResponseDto(post);
     }
 
@@ -93,6 +84,7 @@ public class PostServiceImpl implements PostService {
         } else {
             throw new IllegalArgumentException("작성자만 수정/삭제할 수 있습니다.");
         }
+
         return new ApiResponseDto("게시글 삭제 완료", HttpStatus.OK.value());
     }
 

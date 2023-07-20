@@ -2,7 +2,10 @@ package com.sarida.logtown.service;
 
 import com.sarida.logtown.dto.ApiResponseDto;
 import com.sarida.logtown.dto.CommentRequestDto;
-import com.sarida.logtown.entity.*;
+import com.sarida.logtown.entity.Comment;
+import com.sarida.logtown.entity.CommentLike;
+import com.sarida.logtown.entity.Post;
+import com.sarida.logtown.entity.User;
 import com.sarida.logtown.repository.CommentLikeRepository;
 import com.sarida.logtown.repository.CommentRepository;
 import com.sarida.logtown.security.UserDetailsImpl;

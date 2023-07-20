@@ -9,5 +9,5 @@ public interface CommentRepository extends JpaRepository<Comment, Long> {
 
     List<Comment> findByParentCommentIsNullOrderByCreatedAtDesc();
 
-    Comment findByParentCommentId(Long recommentId);
+    List<Comment> findAllByOrderByModifiedAtDesc();
 }

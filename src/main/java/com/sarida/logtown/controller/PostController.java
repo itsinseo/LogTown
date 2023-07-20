@@ -1,11 +1,10 @@
 package com.sarida.logtown.controller;
 
 import com.sarida.logtown.dto.ApiResponseDto;
-import com.sarida.logtown.dto.PostListResponseDto;
 import com.sarida.logtown.dto.PostRequestDto;
 import com.sarida.logtown.dto.PostResponseDto;
 import com.sarida.logtown.security.UserDetailsImpl;
-import com.sarida.logtown.service.PostServiceImpl;
+import com.sarida.logtown.service.PostService;
 import com.sun.jdi.request.DuplicateRequestException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Slice;
@@ -19,7 +18,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/posts")
 public class PostController {
 
-    private final PostServiceImpl postService;
+    private final PostService postService;
 
     @PostMapping("")
     public PostResponseDto createPost(
@@ -32,11 +31,6 @@ public class PostController {
     @GetMapping("/{postId}")
     public PostResponseDto getPost(@PathVariable Long postId) {
         return postService.getPost(postId);
-    }
-
-    @GetMapping("")
-    public PostListResponseDto getPostList() {
-        return postService.getPostList();
     }
 
     @GetMapping("/slice")
