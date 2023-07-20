@@ -4,6 +4,7 @@ import com.sarida.logtown.dto.ApiResponseDto;
 import com.sarida.logtown.dto.PostRequestDto;
 import com.sarida.logtown.dto.PostResponseDto;
 import com.sarida.logtown.entity.Post;
+import com.sarida.logtown.entity.User;
 import com.sarida.logtown.security.UserDetailsImpl;
 import org.springframework.data.domain.Slice;
 
@@ -69,4 +70,18 @@ public interface PostService {
      * @return 내가 쓴 게시글 10개씩 보기
      */
     Slice<PostResponseDto> getMyPosts(int page, UserDetailsImpl userDetails);
+
+    /**
+     * 좋아요 취소
+     * @param postId 조회할 게시글 id
+     * @param user 게시글 좋아요 취소를 할 유저
+     */
+    void deleteLikePost(Long postId, User user);
+
+    /**
+     * 좋아요 남기기
+     * @param postId 조회할 게시글 id
+     * @param user 게시글 좋아요할 유저
+     */
+    void likePost(Long postId, User user);
 }
