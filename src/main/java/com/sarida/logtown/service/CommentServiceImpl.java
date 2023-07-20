@@ -10,7 +10,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -70,9 +69,4 @@ public class CommentServiceImpl implements CommentService {
         );
     }
 
-    @Override
-    public CommentListResponseDto getAllComments() {
-        List<CommentResponseDto> commentList = commentRepository.findAllByOrderByModifiedAtDesc().stream().map(CommentResponseDto::new).toList();
-        return new CommentListResponseDto(commentList);
-    }
 }

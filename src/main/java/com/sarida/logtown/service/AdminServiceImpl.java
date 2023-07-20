@@ -1,8 +1,6 @@
 package com.sarida.logtown.service;
 
-import com.sarida.logtown.dto.ApiResponseDto;
-import com.sarida.logtown.dto.UserInfoListResponseDto;
-import com.sarida.logtown.dto.UserInfoResponseDto;
+import com.sarida.logtown.dto.*;
 import com.sarida.logtown.entity.Comment;
 import com.sarida.logtown.entity.Post;
 import com.sarida.logtown.entity.User;
@@ -51,6 +49,18 @@ public class AdminServiceImpl implements AdminService {
 
         userRepository.delete(user);
         return new ApiResponseDto("관리자 권한 사용자 삭제", HttpStatus.OK.value());
+    }
+
+    @Override
+    public PostListResponseDto getAllPosts() {
+        List<PostResponseDto> postList = postRepository.findAllByOrderByModifiedAtDesc().stream().map(PostResponseDto::new).toList();
+        return new PostListResponseDto(postList);
+    }
+
+    @Override
+    public CommentListResponseDto getAllComments() {
+        List<CommentResponseDto> commentList = commentRepository.findAllByOrderByModifiedAtDesc().stream().map(CommentResponseDto::new).toList();
+        return new CommentListResponseDto(commentList);
     }
 
     @Override

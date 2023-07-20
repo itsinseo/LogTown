@@ -1,7 +1,6 @@
 package com.sarida.logtown.service;
 
 import com.sarida.logtown.dto.ApiResponseDto;
-import com.sarida.logtown.dto.PostListResponseDto;
 import com.sarida.logtown.dto.PostRequestDto;
 import com.sarida.logtown.dto.PostResponseDto;
 import com.sarida.logtown.entity.Post;
@@ -16,7 +15,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -38,13 +36,6 @@ public class PostServiceImpl implements PostService {
     public PostResponseDto getPost(Long postId) {
         Post post = findPost(postId);
         return new PostResponseDto(post);
-    }
-
-    // modifiedAt 기준 내림차순
-    @Override
-    public PostListResponseDto getAllPosts() {
-        List<PostResponseDto> postList = postRepository.findAllByOrderByModifiedAtDesc().stream().map(PostResponseDto::new).toList();
-        return new PostListResponseDto(postList);
     }
 
     @Override
