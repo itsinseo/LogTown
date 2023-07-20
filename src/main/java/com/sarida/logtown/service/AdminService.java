@@ -64,4 +64,22 @@ public interface AdminService {
      * @return 페이지
      */
     PagePostsDto getPostsByPage(int page, boolean isAsc);
+
+    /**
+     * 사용자 전체 보기 (Page)
+     *
+     * @param page  페이지 번호
+     * @param isAsc 오름차순인가?
+     * @return 페이지
+     */
+    PageUserInfosDto getUserInfosByPage(int page, boolean isAsc);
+
+    /**
+     * 댓글 전체 보기 (Page)
+     *
+     * @param page  페이지 번호
+     * @param isAsc 오름차순인가?
+     * @return 페이지
+     */
+    PageCommentsDto getCommentsByPage(int page, boolean isAsc);
 }

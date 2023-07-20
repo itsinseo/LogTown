@@ -44,7 +44,10 @@ public class AdminController {
 
     // 글 전체 보기 (Page)
     @GetMapping("/posts/paging")
-    public PagePostsDto getPostsByPage(@RequestParam("page") int page, @RequestParam("isAsc") boolean isAsc) {
+    public PagePostsDto getPostsByPage(
+            @RequestParam("page") int page,
+            @RequestParam("isAsc") boolean isAsc
+    ) {
         return adminService.getPostsByPage(page, isAsc);
     }
 
@@ -54,10 +57,28 @@ public class AdminController {
         return adminService.getAllUserInfos();
     }
 
+    // 사용자 전체 보기 (Page)
+    @GetMapping("/users/paging")
+    public PageUserInfosDto getUserInfosByPage(
+            @RequestParam("page") int page,
+            @RequestParam("isAsc") boolean isAsc
+    ) {
+        return adminService.getUserInfosByPage(page, isAsc);
+    }
+
     // 댓글 전체 보기
     @GetMapping("/comments")
     public CommentListResponseDto getAllComments() {
         return adminService.getAllComments();
+    }
+
+    // 댓글 전체 보기 (Page)
+    @GetMapping("/comments/paging")
+    public PageCommentsDto getCommentsByPage(
+            @RequestParam("page") int page,
+            @RequestParam("isAsc") boolean isAsc
+    ) {
+        return adminService.getCommentsByPage(page, isAsc);
     }
 
 }

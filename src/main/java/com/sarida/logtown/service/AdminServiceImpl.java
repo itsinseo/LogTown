@@ -94,9 +94,33 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
+    public PageCommentsDto getCommentsByPage(int page, boolean isAsc) {
+        // 페이징
+        Sort.Direction direction = isAsc ? Sort.Direction.ASC : Sort.Direction.DESC;
+        Sort sort = Sort.by(direction, "modifiedAt");
+        Pageable pageable = PageRequest.of(page, PAGE_SIZE, sort);
+
+        Page<Comment> commentPage = commentRepository.findAll(pageable);
+
+        return new PageCommentsDto(commentPage.map(CommentResponseDto::new));
+    }
+
+    @Override
     public UserInfoListResponseDto getAllUserInfos() {
         List<UserInfoResponseDto> userInfoList = userRepository.findAllByOrderByUsername().stream().map(UserInfoResponseDto::new).toList();
         return new UserInfoListResponseDto(userInfoList);
+    }
+
+    @Override
+    public PageUserInfosDto getUserInfosByPage(int page, boolean isAsc) {
+        // 페이징
+        Sort.Direction direction = isAsc ? Sort.Direction.ASC : Sort.Direction.DESC;
+        Sort sort = Sort.by(direction, "username");
+        Pageable pageable = PageRequest.of(page, PAGE_SIZE, sort);
+
+        Page<User> userInfoPage = userRepository.findAll(pageable);
+
+        return new PageUserInfosDto(userInfoPage.map(UserInfoResponseDto::new));
     }
 
     public Post findPost(Long postId) {

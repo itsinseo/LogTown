@@ -1,6 +1,5 @@
 package com.sarida.logtown.dto;
 
-import com.sarida.logtown.entity.Post;
 import lombok.Getter;
 import org.springframework.data.domain.Page;
 
