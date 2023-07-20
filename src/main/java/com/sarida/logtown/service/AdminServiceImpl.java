@@ -23,12 +23,24 @@ public class AdminServiceImpl implements AdminService {
 
     @Override
     public ApiResponseDto deletePost(Long postId) {
-        Post post = postRepository.findById(postId).orElseThrow(
-                () -> new NullPointerException("존재하지 않는 게시글입니다.")
-        );
+        Post post = findPost(postId);
 
         postRepository.delete(post);
         return new ApiResponseDto("관리자 권한 게시글 삭제", HttpStatus.OK.value());
+    }
+
+    @Override
+    public ApiResponseDto deletePosts(SelectPostDto selectPostDto) {
+        List<Long> postIds = selectPostDto.getPostIds();
+        for (Long id : postIds) {
+            Post post = postRepository.findById(id).orElse(null);
+            if (post == null) {
+                continue;
+            }
+            postRepository.delete(post);
+        }
+
+        return new ApiResponseDto("관리자 권한 게시글 여러개 삭제", HttpStatus.OK.value());
     }
 
     @Override
@@ -67,5 +79,11 @@ public class AdminServiceImpl implements AdminService {
     public UserInfoListResponseDto getAllUserInfos() {
         List<UserInfoResponseDto> userInfoList = userRepository.findAllByOrderByUsername().stream().map(UserInfoResponseDto::new).toList();
         return new UserInfoListResponseDto(userInfoList);
+    }
+
+    public Post findPost(Long postId) {
+        return postRepository.findById(postId).orElseThrow(
+                () -> new IllegalArgumentException("존재하지 않는 게시글입니다.")
+        );
     }
 }

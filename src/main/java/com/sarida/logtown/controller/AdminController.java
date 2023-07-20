@@ -11,13 +11,17 @@ import org.springframework.web.bind.annotation.*;
 public class AdminController {
 
     private final AdminService adminService;
-    private final PostService postService;
-    private final CommentService commentService;
 
     // 게시글 관리자 삭제
     @DeleteMapping("/posts/{postId}/delete")
     public ApiResponseDto deletePost(@PathVariable Long postId) {
         return adminService.deletePost(postId);
+    }
+
+    // 게시글 여러개 삭제
+    @PostMapping("/posts/delete")
+    public ApiResponseDto deletePosts(@RequestBody SelectPostDto selectPostDto) {
+        return adminService.deletePosts(selectPostDto);
     }
 
     // 댓글 관리자 삭제
@@ -35,7 +39,7 @@ public class AdminController {
     // 글 전체 보기
     @GetMapping("/posts")
     public PostListResponseDto getAllPosts() {
-        return postService.getAllPosts();
+        return adminService.getAllPosts();
     }
 
     // 사용자 전체 보기
@@ -47,7 +51,7 @@ public class AdminController {
     // 댓글 전체 보기
     @GetMapping("/comments")
     public CommentListResponseDto getAllComments() {
-        return commentService.getAllComments();
+        return adminService.getAllComments();
     }
 
 }

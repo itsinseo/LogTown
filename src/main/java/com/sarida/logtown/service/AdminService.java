@@ -1,11 +1,6 @@
 package com.sarida.logtown.service;
 
-import com.sarida.logtown.dto.ApiResponseDto;
-import com.sarida.logtown.dto.CommentListResponseDto;
-import com.sarida.logtown.dto.PostListResponseDto;
-import com.sarida.logtown.dto.UserInfoListResponseDto;
-
-import java.util.List;
+import com.sarida.logtown.dto.*;
 
 public interface AdminService {
     /**
@@ -15,6 +10,14 @@ public interface AdminService {
      * @return 완료 응답
      */
     ApiResponseDto deletePost(Long postId);
+
+    /**
+     * 게시글 여러개 삭제하기
+     *
+     * @param selectPostDto 선택된 게시글 id들
+     * @return 완료 응답
+     */
+    ApiResponseDto deletePosts(SelectPostDto selectPostDto);
 
     /**
      * 관리자 권한 댓글 삭제
