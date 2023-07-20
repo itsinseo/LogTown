@@ -4,8 +4,12 @@ import com.sarida.logtown.dto.ApiResponseDto;
 import com.sarida.logtown.dto.PostRequestDto;
 import com.sarida.logtown.dto.PostResponseDto;
 import com.sarida.logtown.entity.Post;
+import com.sarida.logtown.entity.PostLike;
+import com.sarida.logtown.entity.User;
+import com.sarida.logtown.repository.PostLikeRepository;
 import com.sarida.logtown.repository.PostRepository;
 import com.sarida.logtown.security.UserDetailsImpl;
+import com.sun.jdi.request.DuplicateRequestException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -15,12 +19,15 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
 public class PostServiceImpl implements PostService {
 
     private final PostRepository postRepository;
+    private final PostLikeRepository postLikeRepository;
     private static final int PAGE_SIZE = 10;
 
     // 게시글 생성
@@ -79,6 +86,31 @@ public class PostServiceImpl implements PostService {
         }
 
         return new ApiResponseDto("게시글 삭제 완료", HttpStatus.OK.value());
+    }
+
+    @Override
+    @Transactional
+    public void likePost(Long postId, User user) {
+        Post post = findPost(postId);
+
+        if (postLikeRepository.existsByUserAndPost(user, post)) {
+            throw new DuplicateRequestException("이미 좋아요 한 게시물입니다.");
+        } else {
+            PostLike postLike = new PostLike(user, post);
+            postLikeRepository.save(postLike);
+        }
+    }
+
+    @Override
+    @Transactional
+    public void deleteLikePost(Long postId, User user) {
+        Post post = findPost(postId);
+        Optional<PostLike> postLikeOptional = postLikeRepository.findByUserAndPost(user, post);
+        if (postLikeOptional.isPresent()) {
+            postLikeRepository.delete(postLikeOptional.get());
+        } else {
+            throw new IllegalArgumentException("해당 게시글에 취소할 좋아요가 없습니다.");
+        }
     }
 
     @Override
