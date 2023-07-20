@@ -1,7 +1,6 @@
 package com.sarida.logtown.service;
 
 import com.sarida.logtown.dto.ApiResponseDto;
-import com.sarida.logtown.dto.PostListResponseDto;
 import com.sarida.logtown.dto.PostRequestDto;
 import com.sarida.logtown.dto.PostResponseDto;
 import com.sarida.logtown.entity.Post;
@@ -44,13 +43,6 @@ public interface PostService {
      * @return 수정된 게시글 정보
      */
     PostResponseDto updatePost(Long postId, PostRequestDto requestDto, UserDetailsImpl userDetails);
-
-    /**
-     * 전체 게시글 조회(관리자)
-     *
-     * @return 전체 게시글
-     */
-    PostListResponseDto getAllPosts();
 
     /**
      * 게시글 삭제

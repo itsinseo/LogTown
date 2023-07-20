@@ -1,7 +1,6 @@
 package com.sarida.logtown.service;
 
 import com.sarida.logtown.dto.ApiResponseDto;
-import com.sarida.logtown.dto.PostListResponseDto;
 import com.sarida.logtown.dto.PostRequestDto;
 import com.sarida.logtown.dto.PostResponseDto;
 import com.sarida.logtown.entity.Post;
@@ -16,7 +15,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -40,13 +38,6 @@ public class PostServiceImpl implements PostService {
         return new PostResponseDto(post);
     }
 
-    // modifiedAt 기준 내림차순
-    @Override
-    public PostListResponseDto getAllPosts() {
-        List<PostResponseDto> postList = postRepository.findAllByOrderByModifiedAtDesc().stream().map(PostResponseDto::new).toList();
-        return new PostListResponseDto(postList);
-    }
-
     @Override
     public Slice<PostResponseDto> getPostSlice(int page) {
         Sort sort = Sort.by(Sort.Direction.DESC, "modifiedAt");
@@ -62,15 +53,11 @@ public class PostServiceImpl implements PostService {
     @Transactional
     public PostResponseDto updatePost(Long postId, PostRequestDto requestDto, UserDetailsImpl userDetails) {
         // 게시글 존재 여부 확인
-        Post post = postRepository.findById(postId).orElseThrow(
-                () -> new NullPointerException("존재하지 않는 게시글입니다.")
-        );
-
+        Post post = findPost(postId);
 
         // 작성자 확인
         if (post.getUser().getId().equals(userDetails.getUser().getId())) {
             post.setContent(requestDto.getContent());
-            postRepository.save(post);
         } else {
             throw new IllegalArgumentException("작성자만 수정/삭제할 수 있습니다.");
         }
@@ -82,9 +69,7 @@ public class PostServiceImpl implements PostService {
     @Override
     public ApiResponseDto deletePost(Long postId, UserDetailsImpl userDetails) {
         // 게시글 존재 여부 확인
-        Post post = postRepository.findById(postId).orElseThrow(
-                () -> new NullPointerException("존재하지 않는 게시글입니다.")
-        );
+        Post post = findPost(postId);
 
         // 작성자 확인
         if (post.getUser().getId().equals(userDetails.getUser().getId())) {
