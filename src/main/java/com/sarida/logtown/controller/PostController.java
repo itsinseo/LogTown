@@ -52,4 +52,9 @@ public class PostController {
     ) {
         return postService.deletePost(postId, userDetails);
     }
+
+    @GetMapping("/myposts")
+    public Slice<PostResponseDto> getMyPosts(@RequestParam("page") int page, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        return postService.getMyPosts(page, userDetails);
+    }
 }

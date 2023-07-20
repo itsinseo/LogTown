@@ -87,4 +87,14 @@ public class PostServiceImpl implements PostService {
                 () -> new IllegalArgumentException("존재하지 않는 게시글입니다.")
         );
     }
+
+    @Override
+    public Slice<PostResponseDto> getMyPosts(int page, UserDetailsImpl userDetails) {
+        Sort sort = Sort.by(Sort.Direction.DESC, "modifiedAt");
+        Pageable pageable = PageRequest.of(page, PAGE_SIZE, sort);
+
+        Slice<Post> postSlice = postRepository.findAllByUser(userDetails.getUser(), pageable);
+
+        return postSlice.map(PostResponseDto::new);
+    }
 }
