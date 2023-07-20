@@ -55,4 +55,13 @@ public interface AdminService {
      * @return 전체 댓글 list
      */
     CommentListResponseDto getAllComments();
+
+    /**
+     * 게시글 전체 보기 (Page)
+     *
+     * @param page  페이지 번호
+     * @param isAsc 오름차순인가?
+     * @return 페이지
+     */
+    PagePostsDto getPostsByPage(int page, boolean isAsc);
 }

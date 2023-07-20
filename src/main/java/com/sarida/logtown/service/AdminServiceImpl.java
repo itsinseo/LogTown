@@ -8,6 +8,10 @@ import com.sarida.logtown.repository.CommentRepository;
 import com.sarida.logtown.repository.PostRepository;
 import com.sarida.logtown.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -20,6 +24,8 @@ public class AdminServiceImpl implements AdminService {
     private final PostRepository postRepository;
     private final CommentRepository commentRepository;
     private final UserRepository userRepository;
+
+    private static final int PAGE_SIZE = 10;
 
     @Override
     public ApiResponseDto deletePost(Long postId) {
@@ -67,6 +73,18 @@ public class AdminServiceImpl implements AdminService {
     public PostListResponseDto getAllPosts() {
         List<PostResponseDto> postList = postRepository.findAllByOrderByModifiedAtDesc().stream().map(PostResponseDto::new).toList();
         return new PostListResponseDto(postList);
+    }
+
+    @Override
+    public PagePostsDto getPostsByPage(int page, boolean isAsc) {
+        // 페이징
+        Sort.Direction direction = isAsc ? Sort.Direction.ASC : Sort.Direction.DESC;
+        Sort sort = Sort.by(direction, "modifiedAt");
+        Pageable pageable = PageRequest.of(page, PAGE_SIZE, sort);
+
+        Page<Post> postPage = postRepository.findAll(pageable);
+
+        return new PagePostsDto(postPage.map(PostResponseDto::new));
     }
 
     @Override

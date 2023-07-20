@@ -42,6 +42,12 @@ public class AdminController {
         return adminService.getAllPosts();
     }
 
+    // 글 전체 보기 (Page)
+    @GetMapping("/posts/paging")
+    public PagePostsDto getPostsByPage(@RequestParam("page") int page, @RequestParam("isAsc") boolean isAsc) {
+        return adminService.getPostsByPage(page, isAsc);
+    }
+
     // 사용자 전체 보기
     @GetMapping("/users")
     public UserInfoListResponseDto getAllUserInfos() {
