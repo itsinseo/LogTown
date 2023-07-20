@@ -3,6 +3,7 @@ package com.sarida.logtown.service;
 import com.sarida.logtown.dto.ApiResponseDto;
 import com.sarida.logtown.dto.CommentRequestDto;
 import com.sarida.logtown.entity.Comment;
+import com.sarida.logtown.entity.User;
 import com.sarida.logtown.security.UserDetailsImpl;
 
 public interface CommentService {
@@ -47,4 +48,18 @@ public interface CommentService {
      * @return 조회한 댓글
      */
     Comment findComment(Long commentId);
+
+    /**
+     * 댓글 좋아요
+     * @param commentId 좋아요할 댓글 id
+     * @param user 좋아요한 유저의 정보
+     */
+    void likeComment(Long commentId, User user);
+
+    /**
+     * 댓글 좋아요 삭제
+     * @param commentId 좋아요 삭제할 댓글 id
+     * @param user 좋아요 삭제할 유저의 정보
+     */
+    void deleteLikeComment(Long commentId, User user);
 }

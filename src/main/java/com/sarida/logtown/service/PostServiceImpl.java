@@ -78,7 +78,6 @@ public class PostServiceImpl implements PostService {
         } else {
             throw new IllegalArgumentException("작성자만 수정/삭제할 수 있습니다.");
         }
-
         return new PostResponseDto(post);
     }
 
@@ -94,7 +93,6 @@ public class PostServiceImpl implements PostService {
         } else {
             throw new IllegalArgumentException("작성자만 수정/삭제할 수 있습니다.");
         }
-
         return new ApiResponseDto("게시글 삭제 완료", HttpStatus.OK.value());
     }
 
@@ -104,7 +102,7 @@ public class PostServiceImpl implements PostService {
         Post post = findPost(postId);
 
         if (postLikeRepository.existsByUserAndPost(user, post)) {
-            throw new DuplicateRequestException("이미 좋아요를 누르셨습니다.");
+            throw new DuplicateRequestException("이미 좋아요 한 게시물입니다.");
         } else {
             PostLike postLike = new PostLike(user, post);
             postLikeRepository.save(postLike);
@@ -119,7 +117,7 @@ public class PostServiceImpl implements PostService {
         if (postLikeOptional.isPresent()) {
             postLikeRepository.delete(postLikeOptional.get());
         } else {
-            throw new IllegalArgumentException("취소할 좋아요가 없습니다.");
+            throw new IllegalArgumentException("해당 게시글에 취소할 좋아요가 없습니다.");
         }
     }
 

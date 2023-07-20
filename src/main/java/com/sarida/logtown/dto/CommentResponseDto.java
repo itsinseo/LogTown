@@ -18,11 +18,13 @@ public class CommentResponseDto extends ApiResponseDto {
     private final LocalDateTime createdAt;
     private final LocalDateTime modifiedAt;
     private final List<ReCommentResponseDto> reCommentList;
+    private final Integer likeCnt;
 
     public CommentResponseDto(Comment comment) {
         this.id = comment.getId();
         this.content = comment.getContent();
         this.username = comment.getUser().getUsername();
+        this.likeCnt = comment.getCommentLikes().size();
         this.createdAt = comment.getCreatedAt();
         this.modifiedAt = comment.getModifiedAt();
         this.reCommentList = comment.getChildCommentList().stream().map(ReCommentResponseDto::new)
