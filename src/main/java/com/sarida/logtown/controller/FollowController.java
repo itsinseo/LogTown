@@ -34,9 +34,7 @@ public class FollowController {
 		}
 	}
 
-	// TODO : 팔로워/팔로잉 리스트 가져오기, 팔로잉 글만 가져오기
-
-	//	 언팔로우
+	// 언팔로우
 	@DeleteMapping("/{toUsername}")
 	public ResponseEntity<?> unFollow(@PathVariable String toUsername, @AuthenticationPrincipal UserDetailsImpl userDetails) {
 		try {

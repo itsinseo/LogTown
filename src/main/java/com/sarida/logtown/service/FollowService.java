@@ -26,7 +26,7 @@ public class FollowService {
 
 	public ApiResponseDto addFollow(String toUsername, User fromUser) {
 		logger.info("addFollow 메서드 진입");
-		Optional<Follow> relation = checkUserInfo(toUsername, fromUser);
+		Optional<Follow> relation = checkFollowInfo(toUsername, fromUser);
 
 		if (relation.isPresent()) {
 			throw new IllegalArgumentException("현재 팔로우 중입니다.");
@@ -39,7 +39,7 @@ public class FollowService {
 
 	public ApiResponseDto unFollow(String toUsername, User fromUser) {
 		logger.info("unFollow 메서드 진입");
-		Optional<Follow> relation = checkUserInfo(toUsername, fromUser);
+		Optional<Follow> relation = checkFollowInfo(toUsername, fromUser);
 
 		if (relation.isEmpty()) {
 			throw new IllegalArgumentException("현재 팔로우 중이 아닙니다.");
@@ -51,7 +51,7 @@ public class FollowService {
 	}
 
 	// 팔로우할 유저가 존재하는지, 스스로를 팔로우 하는지 검증
-	public Optional<Follow> checkUserInfo(String toUsername, User fromUser) {
+	public Optional<Follow> checkFollowInfo(String toUsername, User fromUser) {
 		logger.info("checkUserInfo 메서드 진입");
 		if (toUsername.equals(fromUser.getUsername())) {
 			throw new IllegalArgumentException("스스로는 팔로우 할 수 없습니다.");
@@ -94,12 +94,13 @@ public class FollowService {
 		return followerList;
 	}
 
-	// 이미 팔로잉/팔로우 중인 관계가 있는지
+	// 이미 팔로잉,팔로우 중인 관계가 있는지
 	private Optional<Follow> getFollowRelation(String toUsername, String fromUsername) {
 		logger.info("getFollowRelation 메서드 진입");
 		return followRepository.findByToUserAndFromUser(toUsername, fromUsername);
 	}
 
+	// to가 해당 유저인 경우의 from을 가져옴
 	public List<FollowInfoDto> getAllByToUser(String username) {
 		List<User> users = followRepository.findAllByToUser(username);
 		List<FollowInfoDto> followerList = new ArrayList<>();
@@ -109,6 +110,7 @@ public class FollowService {
 		return followerList;
 	}
 
+	// from이 해당 유저인 경우의 to를 가져옴
 	public List<FollowInfoDto> getAllByFromUser(String username) {
 		List<User> users = followRepository.findAllByFromUser(username);
 		List<FollowInfoDto> followingList = new ArrayList<>();
