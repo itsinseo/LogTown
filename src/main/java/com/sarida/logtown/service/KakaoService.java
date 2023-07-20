@@ -10,6 +10,7 @@ import com.sarida.logtown.jwt.JwtUtil;
 import com.sarida.logtown.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
@@ -33,6 +34,9 @@ public class KakaoService {
     private final RestTemplate restTemplate;
     private final JwtUtil jwtUtil;
 
+    @Value("${kakao.client.id}")
+    private String kakaoClientId;
+
     public String kakaoLogin(String code) throws JsonProcessingException {
 
         // 1. "인가 코드"로 "액세스 토큰" 요청
@@ -40,7 +44,7 @@ public class KakaoService {
 
         // 2. 토큰으로 카카오 API 호출 : "액세스 토큰"으로 "카카오 사용자 정보" 가져오기
         KakaoUserInfoDto kakaoUserInfo = getKakaoUserInfo(accessToken);
-//
+
         // 3. 필요시에 회원가입
         User kakaoUser = registerKakaoUserIfNeeded(kakaoUserInfo);
 
@@ -66,7 +70,7 @@ public class KakaoService {
         // HTTP Body 생성
         MultiValueMap<String, String> body = new LinkedMultiValueMap<>();
         body.add("grant_type", "authorization_code");
-        body.add("client_id", "9ba390d13032486e1e0ad77185ef66f3");
+        body.add("client_id", kakaoClientId);
         body.add("redirect_uri", "http://localhost:8080/api/auth/kakao/callback");
         body.add("code", code);
 
@@ -115,7 +119,6 @@ public class KakaoService {
         log.info(response.getBody());
 
         String id = jsonNode.get("id").asText();
-        // nickname의 경우 무작위 UUID로 변경 예정 -> 가입 시점에서
         String nickname = jsonNode.get("properties")
                 .get("nickname").asText();
 
@@ -129,12 +132,14 @@ public class KakaoService {
         User kakaoUser = userRepository.findByUsername(kakaoUsername).orElse(null);
 
         if (kakaoUser == null) {
-//            // 중복을 피하기 위한 랜덤 닉네임 -> 프로필 재설정 필요 메세지 띄우기
-//            String nickname = UUID.randomUUID().toString();
             String password = UUID.randomUUID().toString();
             String encodedPassword = passwordEncoder.encode(password);
 
-            kakaoUser = new User(kakaoUsername, encodedPassword, kakaoUserInfo.getNickname(), "", UserRoleEnum.USER);
+            // nickname의 경우 중복 방지를 위해 무작위 UUID 추가 -> 프론트에서 프로필 재설정 필요 메세지 띄우기
+            String uniqueNickname = kakaoUserInfo.getNickname() + "@KAKAO" + UUID.randomUUID();
+
+            kakaoUser = new User(kakaoUsername, encodedPassword, uniqueNickname,
+                    "소개 문구를 추가해주세요.", UserRoleEnum.USER);
 
             userRepository.save(kakaoUser);
         }

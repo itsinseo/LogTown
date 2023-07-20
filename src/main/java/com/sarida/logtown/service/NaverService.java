@@ -10,9 +10,9 @@ import com.sarida.logtown.jwt.JwtUtil;
 import com.sarida.logtown.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.io.*;
@@ -28,8 +28,13 @@ public class NaverService {
 
     private final PasswordEncoder passwordEncoder;
     private final UserRepository userRepository;
-    private final RestTemplate restTemplate;
     private final JwtUtil jwtUtil;
+
+    @Value("${naver.client.id}")
+    private String naverClientId;
+
+    @Value("${naver.client.secret}")
+    private String naverClientSecret;
 
     public String naverLogin(String code) throws JsonProcessingException, UnsupportedEncodingException {
 
@@ -54,10 +59,10 @@ public class NaverService {
                 .fromUriString("https://nid.naver.com")
                 .path("/oauth2.0/token")
                 .queryParam("grant_type", "authorization_code")
-                .queryParam("client_id", "8IyE9FmLtg4bdRwCsFBn")
-                .queryParam("client_secret", "GDZNxTImnX")
+                .queryParam("client_id", naverClientId)
+                .queryParam("client_secret", naverClientSecret)
                 .queryParam("code", code)
-                .queryParam("state", URLEncoder.encode("1234", "UTF-8"))
+                .queryParam("state", URLEncoder.encode("1234", "UTF-8")) //state: 임의 값 1234로 설정
                 .encode()
                 .build()
                 .toUri();
@@ -93,8 +98,7 @@ public class NaverService {
     }
 
     private NaverUserInfoDto getNaverUserInfo(String accessToken) throws JsonProcessingException {
-        String token = accessToken; // 네이버 로그인 접근 토큰;
-        String header = "Bearer " + token; // Bearer 다음에 공백 추가
+        String header = "Bearer " + accessToken; // Bearer 다음에 공백 추가
 
         String apiURL = "https://openapi.naver.com/v1/nid/me";
 
@@ -164,12 +168,14 @@ public class NaverService {
         User naverUser = userRepository.findByUsername(naverUsername).orElse(null);
 
         if (naverUser == null) {
-//            // 중복을 피하기 위한 랜덤 닉네임 -> 프로필 재설정 필요 메세지 띄우기
-//            String nickname = UUID.randomUUID().toString();
             String password = UUID.randomUUID().toString();
             String encodedPassword = passwordEncoder.encode(password);
 
-            naverUser = new User(naverUsername, encodedPassword, naverUserInfo.getNickname(), "", UserRoleEnum.USER);
+            // nickname의 경우 중복 방지를 위해 무작위 UUID 추가 -> 프론트에서 프로필 재설정 필요 메세지 띄우기
+            String uniqueNickname = naverUserInfo.getNickname() + "@Naver" + UUID.randomUUID();
+
+            naverUser = new User(naverUsername, encodedPassword, uniqueNickname,
+                    "소개 문구를 추가해주세요.", UserRoleEnum.USER);
 
             userRepository.save(naverUser);
         }
