@@ -12,9 +12,11 @@
     <script src="https://code.jquery.com/jquery-3.7.0.min.js"
             integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/js-cookie@3.0.5/dist/js.cookie.min.js"></script>
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Gaegu&family=Jua&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Gaegu&family=Jua&family=Mynerve&family=Nanum+Gothic&display=swap"
+          rel="stylesheet">
 </head>
 <body>
 <div style="font-family: 'Gaegu', cursive;">
@@ -31,13 +33,14 @@
          style="background-color: burlywood; margin: 10px; font-size: 20px">
         게시글 목록
     </div>
+    <button type="button" class="btn btn-primary" id="logout-btn">로그아웃</button>
 </div>
 </body>
 <script>
-    let authCookie = Cookies.get("Authorization");
+    let authCookie = decodeURIComponent(Cookies.get("Authorization"));
     let postListSample = $('#postListSample');
-    let postSample = `<div class="postSample">
-                            AuthCookie=${authCookie}
+    let postSample =    `<div class="postSample">
+                            AuthCookie=${authCookie}<br>
                         </div>`
     postListSample.append(postSample);
 
@@ -58,5 +61,13 @@
     //         alert("상태 코드 " + xhr.status + ": " + xhr.responseJSON.message);
     //         window.location.href="/home";
     //     });
+
+    $('#logout-btn').click(
+        function logout() {
+            // 토큰 삭제
+            Cookies.remove('Authorization', {path: '/'});
+            window.location.href = "/home";
+        }
+    )
 </script>
 </html>
