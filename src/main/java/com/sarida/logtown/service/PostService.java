@@ -8,7 +8,6 @@ import com.sarida.logtown.entity.User;
 import com.sarida.logtown.security.UserDetailsImpl;
 import org.springframework.data.domain.Slice;
 
-import java.util.List;
 
 
 public interface PostService {
@@ -90,10 +89,11 @@ public interface PostService {
     Slice<PostResponseDto> getMyPosts(int page, UserDetailsImpl userDetails);
 
     /**
-     * 팔로잉 하는 사람들의 게시글 보기
+     * 팔로잉 하는 사용자 게시글 보기
      *
-     * @param userDetails 로그인된 사용자
-     * @return 게시글 list
+     * @param page        페이지 번호
+     * @param userDetails 요청자
+     * @return 게시글 10개씩 보기
      */
-    List<PostResponseDto> getFollowingPosts(UserDetailsImpl userDetails);
+    Slice<PostResponseDto> getFollowingPosts(int page, UserDetailsImpl userDetails);
 }

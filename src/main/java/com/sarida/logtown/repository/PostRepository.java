@@ -14,5 +14,5 @@ public interface PostRepository extends JpaRepository<Post, Long> {
 
     Slice<Post> findAllByUser(User user, Pageable pageable);
 
-    List<Post> findAllByUserInOrderByModifiedAtDesc(List<User> followingUserList);
+    Slice<Post> findAllByUserInOrderByModifiedAtDesc(Pageable pageable, List<User> followingUserList);
 }

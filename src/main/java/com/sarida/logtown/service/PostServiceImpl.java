@@ -140,17 +140,24 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public List<PostResponseDto> getFollowingPosts(UserDetailsImpl userDetails) {
+    public Slice<PostResponseDto> getFollowingPosts(int page, UserDetailsImpl userDetails) {
+        // 페이징
+        Sort sort = Sort.by(Sort.Direction.DESC, "modifiedAt");
+        Pageable pageable = PageRequest.of(page, PAGE_SIZE, sort);
+
         // user의 팔로잉 목록
         List<Follow> followList = followRepository.findByFromUser(userDetails.getUser().getUsername());
         List<User> followingUserList = new ArrayList<>();
         for (Follow follow : followList) {
             log.info("ToUser : " + follow.getToUser());
-            User user = userRepository.findByUsername(follow.getToUser()).orElseThrow(null);
-            log.info("UserId : " + user.getId());
+            User user = userRepository.findByUsername(follow.getToUser()).orElse(null);
+            if (user == null) {
+                continue;
+            }
             followingUserList.add(user);
         }
+        Slice<Post> postSlice = postRepository.findAllByUserInOrderByModifiedAtDesc(pageable, followingUserList);
 
-        return postRepository.findAllByUserInOrderByModifiedAtDesc(followingUserList).stream().map(PostResponseDto::new).toList();
+        return postSlice.map(PostResponseDto::new);
     }
 }
