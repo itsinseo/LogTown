@@ -1,37 +1,58 @@
 package com.sarida.logtown.service;
 
-import com.sarida.logtown.dto.ApiResponseDto;
-import com.sarida.logtown.dto.UserInfoListResponseDto;
+import com.sarida.logtown.dto.*;
 
 public interface AdminService {
-    /**
-     * 관리자 권한 게시글 삭제
-     *
-     * @param postId 삭제할 게시글 id
-     * @return 완료 응답
-     */
-    ApiResponseDto deletePost(Long postId);
 
     /**
-     * 관리자 권한 댓글 삭제
+     * 게시글 여러개 삭제하기
      *
-     * @param commentId 삭제할 댓글 id
+     * @param selectedIds 선택된 게시글 id들
      * @return 완료 응답
      */
-    ApiResponseDto deleteComment(Long commentId);
+    ApiResponseDto deletePosts(SelectedIdsDto selectedIds);
 
     /**
-     * 관리자 권한 user 삭제
+     * 댓글 여러개 삭제
      *
-     * @param userId 삭제할 user id
+     * @param selectedIds 선택된 댓글 id들
      * @return 완료 응답
      */
-    ApiResponseDto deleteUser(Long userId);
+    ApiResponseDto deleteComments(SelectedIdsDto selectedIds);
 
     /**
-     * 모든 사용자 조회
+     * user 여러개 삭제
      *
-     * @return 사용자 dto list
+     * @param selectedIds 선택된 user id들
+     * @return 완료 응답
      */
-    UserInfoListResponseDto getAllUserInfos();
+    ApiResponseDto deleteUsers(SelectedIdsDto selectedIds);
+
+    /**
+     * 게시글 전체 보기 (Page)
+     *
+     * @param page  페이지 번호
+     * @param isAsc 오름차순인가?
+     * @return 페이지
+     */
+    PagePostsDto getPostsByPage(int page, boolean isAsc);
+
+    /**
+     * 사용자 전체 보기 (Page)
+     *
+     * @param page  페이지 번호
+     * @param isAsc 오름차순인가?
+     * @return 페이지
+     */
+    PageUserInfosDto getUserInfosByPage(int page, boolean isAsc);
+
+    /**
+     * 댓글 전체 보기 (Page)
+     *
+     * @param page  페이지 번호
+     * @param isAsc 오름차순인가?
+     * @return 페이지
+     */
+    PageCommentsDto getCommentsByPage(int page, boolean isAsc);
+
 }

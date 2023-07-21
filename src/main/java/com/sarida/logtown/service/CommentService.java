@@ -1,9 +1,9 @@
 package com.sarida.logtown.service;
 
 import com.sarida.logtown.dto.ApiResponseDto;
-import com.sarida.logtown.dto.CommentListResponseDto;
 import com.sarida.logtown.dto.CommentRequestDto;
 import com.sarida.logtown.entity.Comment;
+import com.sarida.logtown.entity.User;
 import com.sarida.logtown.security.UserDetailsImpl;
 
 public interface CommentService {
@@ -55,9 +55,19 @@ public interface CommentService {
     Comment findComment(Long commentId);
 
     /**
-     * 모든 댓글 조회(관리자)
+     * 댓글 좋아요
      *
-     * @return 모든 댓글
+     * @param commentId 좋아요할 댓글 id
+     * @param user      좋아요할 유저
      */
-    CommentListResponseDto getAllComments();
+    void likeComment(Long commentId, User user);
+
+    /**
+     * 댓글 좋아요 삭제
+     *
+     * @param commentId 좋아요 삭제할 댓글 id
+     * @param user      좋아요 삭제할 유저
+     */
+    void deleteLikeComment(Long commentId, User user);
+
 }

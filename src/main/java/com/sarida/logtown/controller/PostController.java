@@ -5,10 +5,13 @@ import com.sarida.logtown.dto.PostRequestDto;
 import com.sarida.logtown.dto.PostResponseDto;
 import com.sarida.logtown.security.UserDetailsImpl;
 import com.sarida.logtown.service.PostService;
+import com.sun.jdi.request.DuplicateRequestException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Slice;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+
 
 
 @RestController
@@ -51,5 +54,35 @@ public class PostController {
             @AuthenticationPrincipal UserDetailsImpl userDetails
     ) {
         return postService.deletePost(postId, userDetails);
+    }
+
+    @GetMapping("/myposts")
+    public Slice<PostResponseDto> getMyPosts(@RequestParam("page") int page, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        return postService.getMyPosts(page, userDetails);
+    }
+
+    @GetMapping("/followingposts")
+    public Slice<PostResponseDto> getFollowingPosts(@RequestParam("page") int page, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        return postService.getFollowingPosts(page, userDetails);
+    }
+
+    @PostMapping("/{postId}/like")
+    public ApiResponseDto likePost(@PathVariable Long postId, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        try {
+            postService.likePost(postId, userDetails.getUser());
+        } catch (DuplicateRequestException e) {
+            return new ApiResponseDto(e.getMessage(), HttpStatus.BAD_REQUEST.value());
+        }
+        return new ApiResponseDto("게시글에 좋아요를 남기셨습니다", HttpStatus.ACCEPTED.value());
+    }
+
+    @DeleteMapping("/{postId}/like")
+    public ApiResponseDto deleteLikePost(@PathVariable Long postId, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        try {
+            postService.deleteLikePost(postId, userDetails.getUser());
+        } catch (IllegalArgumentException e) {
+            return new ApiResponseDto(e.getMessage(), HttpStatus.BAD_REQUEST.value());
+        }
+        return new ApiResponseDto("게시글에 있는 좋아요를 취소하셨습니다", HttpStatus.ACCEPTED.value());
     }
 }
