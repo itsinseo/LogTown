@@ -28,16 +28,8 @@ public class AdminServiceImpl implements AdminService {
     private static final int PAGE_SIZE = 10;
 
     @Override
-    public ApiResponseDto deletePost(Long postId) {
-        Post post = findPost(postId);
-
-        postRepository.delete(post);
-        return new ApiResponseDto("관리자 권한 게시글 삭제", HttpStatus.OK.value());
-    }
-
-    @Override
-    public ApiResponseDto deletePosts(SelectPostDto selectPostDto) {
-        List<Long> postIds = selectPostDto.getPostIds();
+    public ApiResponseDto deletePosts(SelectedIdsDto selectedIds) {
+        List<Long> postIds = selectedIds.getSelectedIds();
         for (Long id : postIds) {
             Post post = postRepository.findById(id).orElse(null);
             if (post == null) {
@@ -50,29 +42,31 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
-    public ApiResponseDto deleteComment(Long commentId) {
-        Comment comment = commentRepository.findById(commentId).orElseThrow(
-                () -> new NullPointerException("존재하지 않는 댓글입니다.")
-        );
+    public ApiResponseDto deleteComments(SelectedIdsDto selectedIds) {
+        List<Long> commentIds = selectedIds.getSelectedIds();
+        for (Long id : commentIds) {
+            Comment comment = commentRepository.findById(id).orElse(null);
+            if (comment == null) {
+                continue;
+            }
+            commentRepository.delete(comment);
+        }
 
-        commentRepository.delete(comment);
-        return new ApiResponseDto("관리자 권한 댓글 삭제", HttpStatus.OK.value());
+        return new ApiResponseDto("관리자 권한 댓글 여러개 삭제", HttpStatus.OK.value());
     }
 
     @Override
-    public ApiResponseDto deleteUser(Long userId) {
-        User user = userRepository.findById(userId).orElseThrow(
-                () -> new NullPointerException("존재하지 않는 사용자입니다.")
-        );
+    public ApiResponseDto deleteUsers(SelectedIdsDto selectedIds) {
+        List<Long> userIds = selectedIds.getSelectedIds();
+        for (Long id : userIds) {
+            User user = userRepository.findById(id).orElse(null);
+            if (user == null) {
+                continue;
+            }
+            userRepository.delete(user);
+        }
 
-        userRepository.delete(user);
-        return new ApiResponseDto("관리자 권한 사용자 삭제", HttpStatus.OK.value());
-    }
-
-    @Override
-    public PostListResponseDto getAllPosts() {
-        List<PostResponseDto> postList = postRepository.findAllByOrderByModifiedAtDesc().stream().map(PostResponseDto::new).toList();
-        return new PostListResponseDto(postList);
+        return new ApiResponseDto("관리자 권한 계정 여러개 삭제", HttpStatus.OK.value());
     }
 
     @Override
@@ -88,12 +82,6 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
-    public CommentListResponseDto getAllComments() {
-        List<CommentResponseDto> commentList = commentRepository.findAllByOrderByModifiedAtDesc().stream().map(CommentResponseDto::new).toList();
-        return new CommentListResponseDto(commentList);
-    }
-
-    @Override
     public PageCommentsDto getCommentsByPage(int page, boolean isAsc) {
         // 페이징
         Sort.Direction direction = isAsc ? Sort.Direction.ASC : Sort.Direction.DESC;
@@ -103,12 +91,6 @@ public class AdminServiceImpl implements AdminService {
         Page<Comment> commentPage = commentRepository.findAll(pageable);
 
         return new PageCommentsDto(commentPage.map(CommentResponseDto::new));
-    }
-
-    @Override
-    public UserInfoListResponseDto getAllUserInfos() {
-        List<UserInfoResponseDto> userInfoList = userRepository.findAllByOrderByUsername().stream().map(UserInfoResponseDto::new).toList();
-        return new UserInfoListResponseDto(userInfoList);
     }
 
     @Override
@@ -123,9 +105,4 @@ public class AdminServiceImpl implements AdminService {
         return new PageUserInfosDto(userInfoPage.map(UserInfoResponseDto::new));
     }
 
-    public Post findPost(Long postId) {
-        return postRepository.findById(postId).orElseThrow(
-                () -> new IllegalArgumentException("존재하지 않는 게시글입니다.")
-        );
-    }
 }

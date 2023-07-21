@@ -6,6 +6,34 @@ import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 
+//@NoArgsConstructor
+//@Entity
+//@Getter
+//@Table(
+//		uniqueConstraints = @UniqueConstraint(columnNames = {"to_user", "from_user"})
+//)
+//@IdClass(Follow.PK.class)
+//public class Follow {
+//
+//	@Id
+//	@Column(name = "to_user", insertable = false, updatable = false)
+//	private String toUser;
+//
+//	@Id
+//	@Column(name = "from_user", insertable = false, updatable = false)
+//	private String fromUser;
+//
+//	public Follow(String toAccount, String fromAccount) {
+//		this.toUser = toUser;
+//		this.fromUser = fromUser;
+//	}
+//
+//	public static class PK implements Serializable {
+//		String toUser;
+//		String fromUser;
+//	}
+//}
+
 @Entity
 @Getter
 @NoArgsConstructor
