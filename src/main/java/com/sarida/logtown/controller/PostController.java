@@ -13,6 +13,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/posts")
@@ -53,6 +54,16 @@ public class PostController {
             @AuthenticationPrincipal UserDetailsImpl userDetails
     ) {
         return postService.deletePost(postId, userDetails);
+    }
+
+    @GetMapping("/myposts")
+    public Slice<PostResponseDto> getMyPosts(@RequestParam("page") int page, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        return postService.getMyPosts(page, userDetails);
+    }
+
+    @GetMapping("/followingposts")
+    public Slice<PostResponseDto> getFollowingPosts(@RequestParam("page") int page, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        return postService.getFollowingPosts(page, userDetails);
     }
 
     @PostMapping("/{postId}/like")
