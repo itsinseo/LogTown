@@ -35,9 +35,6 @@ public class Comment extends Timestamped {
     @OneToMany(mappedBy = "comment", cascade = CascadeType.ALL)
     private List<CommentLike> CommentLikes = new ArrayList<>();
 
-//    @OneToMany(mappedBy = "recomment", cascade = CascadeType.ALL)
-//    private List<RecommentLike> RecommentLikes = new ArrayList<>();
-
     public Comment(String content) {
         this.content = content;
     }

@@ -3,14 +3,18 @@ package com.sarida.logtown.service;
 import com.sarida.logtown.dto.ApiResponseDto;
 import com.sarida.logtown.dto.PostRequestDto;
 import com.sarida.logtown.dto.PostResponseDto;
+import com.sarida.logtown.entity.Follow;
 import com.sarida.logtown.entity.Post;
 import com.sarida.logtown.entity.PostLike;
 import com.sarida.logtown.entity.User;
+import com.sarida.logtown.repository.FollowRepository;
 import com.sarida.logtown.repository.PostLikeRepository;
 import com.sarida.logtown.repository.PostRepository;
+import com.sarida.logtown.repository.UserRepository;
 import com.sarida.logtown.security.UserDetailsImpl;
 import com.sun.jdi.request.DuplicateRequestException;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
@@ -19,15 +23,20 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 @Service
+@Slf4j(topic = "PostService")
 @RequiredArgsConstructor
 public class PostServiceImpl implements PostService {
 
     private final PostRepository postRepository;
     private final PostLikeRepository postLikeRepository;
+    private final FollowRepository followRepository;
+    private final UserRepository userRepository;
+
     private static final int PAGE_SIZE = 10;
 
     // 게시글 생성
@@ -118,5 +127,37 @@ public class PostServiceImpl implements PostService {
         return postRepository.findById(postId).orElseThrow(
                 () -> new IllegalArgumentException("존재하지 않는 게시글입니다.")
         );
+    }
+
+    @Override
+    public Slice<PostResponseDto> getMyPosts(int page, UserDetailsImpl userDetails) {
+        Sort sort = Sort.by(Sort.Direction.DESC, "modifiedAt");
+        Pageable pageable = PageRequest.of(page, PAGE_SIZE, sort);
+
+        Slice<Post> postSlice = postRepository.findAllByUser(userDetails.getUser(), pageable);
+
+        return postSlice.map(PostResponseDto::new);
+    }
+
+    @Override
+    public Slice<PostResponseDto> getFollowingPosts(int page, UserDetailsImpl userDetails) {
+        // 페이징
+        Sort sort = Sort.by(Sort.Direction.DESC, "modifiedAt");
+        Pageable pageable = PageRequest.of(page, PAGE_SIZE, sort);
+
+        // user의 팔로잉 목록
+        List<Follow> followList = followRepository.findByFromUser(userDetails.getUser().getUsername());
+        List<User> followingUserList = new ArrayList<>();
+        for (Follow follow : followList) {
+            log.info("ToUser : " + follow.getToUser());
+            User user = userRepository.findByUsername(follow.getToUser()).orElse(null);
+            if (user == null) {
+                continue;
+            }
+            followingUserList.add(user);
+        }
+        Slice<Post> postSlice = postRepository.findAllByUserInOrderByModifiedAtDesc(pageable, followingUserList);
+
+        return postSlice.map(PostResponseDto::new);
     }
 }
