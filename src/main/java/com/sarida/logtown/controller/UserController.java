@@ -8,6 +8,7 @@ import com.sarida.logtown.jwt.JwtUtil;
 import com.sarida.logtown.service.KakaoService;
 import com.sarida.logtown.service.NaverService;
 import com.sarida.logtown.service.UserService;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -59,31 +60,25 @@ public class UserController {
         return ResponseEntity.ok().body(new ApiResponseDto("로그인 성공", HttpStatus.CREATED.value()));
     }
 
-    @ResponseBody // 테스트 목적
     @GetMapping("/auth/kakao/callback")
     public String kakaoLogin(@RequestParam String code, HttpServletResponse response) throws JsonProcessingException {
         String token = kakaoService.kakaoLogin(code);
 
-//        Cookie cookie = new Cookie(JwtUtil.AUTHORIZATION_HEADER, token.substring(7));
-//        cookie.setPath("/");
-//        response.addCookie(cookie);
+        Cookie cookie = new Cookie(JwtUtil.AUTHORIZATION_HEADER, token.substring(7));
+        cookie.setPath("/");
+        response.addCookie(cookie);
 
-//        return "redirect:/";
-
-        return token;
+        return "redirect:/home/mainpage";
     }
 
-    @ResponseBody // 테스트 목적
     @GetMapping("/auth/naver/callback")
     public String naverLogin(@RequestParam String code, HttpServletResponse response) throws JsonProcessingException, UnsupportedEncodingException {
         String token = naverService.naverLogin(code);
 
-//        Cookie cookie = new Cookie(JwtUtil.AUTHORIZATION_HEADER, token.substring(7));
-//        cookie.setPath("/");
-//        response.addCookie(cookie);
+        Cookie cookie = new Cookie(JwtUtil.AUTHORIZATION_HEADER, token.substring(7));
+        cookie.setPath("/");
+        response.addCookie(cookie);
 
-//        return "redirect:/";
-
-        return token;
+        return "redirect:/home/mainpage";
     }
 }

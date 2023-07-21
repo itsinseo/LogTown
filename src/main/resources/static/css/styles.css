@@ -1,0 +1,94 @@
+/* styles.css */
+body {
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    width: 100%;
+    height: 100%;
+    background: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 50px;
+}
+
+.logo {
+    width: 650px;
+    height: 100px;
+    padding: 10px;
+    font-size: 65px;
+    font-weight: 400;
+    color: black;
+    text-align: center;
+    word-wrap: break-word;
+    margin: 50px;
+}
+
+.sub-logo {
+    width: 650px;
+    height: 100px;
+    padding: 10px;
+    font-size: 40px;
+    font-weight: 300;
+    color: black;
+    text-align: center;
+    word-wrap: break-word;
+    margin: 50px;
+}
+
+.button-container {
+    display: flex;
+    flex-direction: column;
+    margin-top: 50px;
+}
+
+.login-button {
+    width: 400px;
+    height: 60px;
+    padding: 10px;
+    font-size: 25px;
+    font-weight: 400;
+    text-align: center;
+    word-wrap: break-word;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 20px;
+    color: white;
+    margin: 10px;
+    border: none;
+    background: #9747FF;
+}
+
+.login-button:active {
+    transform: scale(0.99);
+}
+
+#kakao-login-button {
+    background: #F7E600;
+    color: black;
+}
+
+#naver-login-button {
+    background: #1EC800;
+}
+
+.line {
+    width: 400px;
+    height: 3px;
+    background-color: black;
+    margin: 20px 0 20px 0;
+}
+
+.mb-3 {
+    width: 400px;
+}
+
+.postSample {
+    margin: 10px;
+    background-color: beige;
+    word-wrap: break-word;
+}
