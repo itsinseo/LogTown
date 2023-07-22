@@ -48,7 +48,7 @@ public class NaverService {
         User naverUser = registerNaverUserIfNeeded(naverUserInfo);
 
         // 4. JWT 토큰 반환
-        String createToken = JwtUtil.BEARER_PREFIX + jwtUtil.createToken(naverUser.getUsername(), naverUser.getRole());
+        String createToken = jwtUtil.createToken(naverUser.getUsername(), naverUser.getRole());
 
         return createToken;
     }
