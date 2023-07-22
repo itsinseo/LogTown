@@ -13,7 +13,7 @@ body {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    padding: 50px;
+    padding: 30px;
 }
 
 .logo {
@@ -25,7 +25,7 @@ body {
     color: black;
     text-align: center;
     word-wrap: break-word;
-    margin: 50px;
+    margin: 30px;
     font-family: 'Mynerve', cursive;
 }
 
@@ -34,11 +34,11 @@ body {
     height: 100px;
     padding: 10px;
     font-size: 40px;
-    font-weight: 300;
+    font-weight: 500;
     color: black;
     text-align: center;
     word-wrap: break-word;
-    margin: 50px;
+    margin: 30px;
 }
 
 .button-container {
@@ -51,8 +51,8 @@ body {
     width: 400px;
     height: 60px;
     padding: 10px;
-    font-size: 25px;
-    font-weight: 400;
+    font-size: 20px;
+    font-weight: 700;
     text-align: center;
     word-wrap: break-word;
     display: inline-flex;
@@ -60,7 +60,7 @@ body {
     align-items: center;
     border-radius: 20px;
     color: white;
-    margin: 10px;
+    margin: 15px;
     border: none;
     background: #A77AFE;
 }
@@ -82,11 +82,17 @@ body {
     width: 400px;
     height: 3px;
     background-color: black;
-    margin: 20px 0 20px 0;
+    margin: 30px 0 30px 0;
 }
 
 .mb-3 {
     width: 400px;
+}
+
+.form-control {
+    height: 50px;
+    margin: 30px 0px 0px 0px;
+    background-color: #e6e6e6;
 }
 
 .postSample {
