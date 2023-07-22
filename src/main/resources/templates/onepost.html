@@ -10,7 +10,7 @@
 
         .myprofile {
             border-radius: 50%;
-            background: #DB00FF;
+            background: #A77AFE;
             width: 50px;
             height: 50px;
             font-size: 1px;
@@ -46,6 +46,7 @@
     <div class="post-body">
         <div class="post-main">
             <div class="one-post">
+                <p id="postIdParagraph" style="display: none;">postId: <span th:text="${postId}"></span></p>
                 <div class="card mb-3" style="max-width: 50rem;">
                     <div class="row g-0">
                         <div class="col-md-1">
@@ -97,8 +98,12 @@
 
 <script>
     $(document).ready(function () {
-
+        // const urlParams = new URLSearchParams(window.location.search);
+        // const postId = urlParams.get('postId');
+        let postId = document.getElementById('postIdParagraph').querySelector('span').innerText;
         let authCookie = Cookies.get("Authorization");  // cookie 중 Authorization
+
+        console.log(postId);
 
         // 댓글 등록
         $('#submitComment').click(function (event) {
@@ -116,7 +121,7 @@
             }
 
             $.ajax({
-                url: '/api/posts/50/comments',
+                url: `/api/posts/${postId}/comments`,
                 type: 'POST',
                 contentType: 'application/json',
                 headers: {
@@ -138,7 +143,7 @@
 
         // 게시글 가져오는 부분
         $.ajax({
-            url: `/api/posts/50`,
+            url: `/api/posts/${postId}`,
             type: 'GET',
             contentType: 'application/json',
             headers: {

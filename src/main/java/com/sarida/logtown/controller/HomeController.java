@@ -3,6 +3,7 @@ package com.sarida.logtown.controller;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
@@ -34,9 +35,9 @@ public class HomeController {
         return "mainpageMJ";
     }
 
-    @GetMapping("/home/onepost")
-    public String getOnePost() {
-        //model.addAttribute("postId", postId);
+    @GetMapping("/home/onepost/{postId}")
+    public String getOnePost(@PathVariable Long postId, Model model) {
+        model.addAttribute("postId", postId);
 
         return "onepost";
     }

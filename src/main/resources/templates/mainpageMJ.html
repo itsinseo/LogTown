@@ -24,7 +24,7 @@
 
         .myprofile {
             border-radius: 50%;
-            background: #DB00FF;
+            background: #A77AFE;
             width: 50px;
             height: 50px;
             font-size: 1px;
@@ -45,9 +45,6 @@
             flex-direction: row;
         }
 
-        .card-profile {
-            background: #1EC800;
-        }
     </style>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/js-cookie@3.0.5/dist/js.cookie.min.js"></script>
@@ -88,10 +85,12 @@
                             <p class="card-text">This is a wider card with supporting text below as a natural lead-in to
                                 additional content. This content is a little bit longer.</p>
                             <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+                            <button id="gotopost">보기</button>
                         </div>
                     </div>
                 </div>
                 <div class="card-footer" style="color:red">
+<!--                    <button id="gotopost">보기</button>-->
                     ❤
                 </div>
             </div>
@@ -106,6 +105,35 @@
 
         let authCookie = Cookies.get("Authorization");  // cookie 중 Authorization
         let page = 0;
+
+
+        //게시글 하나 선택
+        $(document).on("click","#gotopost", function(event) {
+            event.preventDefault();
+
+            let postId = $(this).closest('.card').attr('id');
+
+            console.log(postId);
+            alert('된다');
+
+            $.ajax({
+                url: `/api/posts/${postId}`,
+                type: 'GET',
+                contentType: 'application/json',
+                headers: {
+                    'Authorization': authCookie // 클라이언트 쿠키의 값을 전달
+                },
+                success: function (xhr) {
+                    console.log('이동');
+                    //console.log(response.id);
+
+                    window.location.href = `${window.location.origin}/home/onepost/${postId}`;
+                },
+                error: function () {
+                    console.log('게시글 등록 error 실패');
+                }
+            });
+        })
 
         // 게시글 가져오는 부분
         $.ajax({
@@ -128,7 +156,7 @@
 
                     let card_html = `
                                     <div class="one-post" id="getOnePost">
-                                        <div class="card mb-3" style="width: 50rem;">
+                                        <div class="card mb-3" style="width: 50rem;" id="${post.id}">
                                             <div class="row g-0" id="goclick">
                                                 <div class="col-md-1">
                                                     <div class="myprofile">프로필</div>
@@ -138,6 +166,7 @@
                                                         <h5 class="card-title">${post.nickname}</h5>
                                                         <p class="card-text">${post.content}</p>
                                                         <p class="card-text"><small class="text-muted">${post.modifiedAt}</small></p>
+                                                        <button id="gotopost">보기</button>
                                                     </div>
                                                 </div>
                                             </div>
@@ -193,7 +222,7 @@
 
                                 let card_html = `
                                     <div class="one-post" id="getOnePost">
-                                        <div class="card mb-3" style="width: 50rem;">
+                                        <div class="card mb-3" style="width: 50rem;" id="${post.id}">
                                             <div class="row g-0" id="goclick">
                                                 <div class="col-md-1">
                                                     <div class="myprofile">프로필</div>
@@ -203,6 +232,7 @@
                                                         <h5 class="card-title">${post.nickname}</h5>
                                                         <p class="card-text">${post.content}</p>
                                                         <p class="card-text"><small class="text-muted">${post.modifiedAt}</small></p>
+                                                        <button id="gotopost">보기</button>
                                                     </div>
                                                 </div>
                                             </div>
@@ -263,12 +293,6 @@
             });
         });
 
-        //게시글 하나 선택
-        $('#goclick').on('click', function (event) {
-            event.preventDefault();
-            let postId = event.target.id;
-            console.log(postId);
-        })
     });
 </script>
 </body>
