@@ -51,6 +51,19 @@
     <button type="button" class="btn btn-primary" id="logout-btn">로그아웃</button>
     <button type="button" class="btn btn-primary" id="changepassword-btn">비밀번호 변경</button>
     <button type="button" class="btn btn-primary" id="checkpassword-btn">비밀번호 확인</button>
+
+    <div style="height: 500px; background-color: brown; margin: 50px; color: white; font-size: 100px">
+        빈 div!
+    </div>
+    <div style="height: 500px; background-color: brown; margin: 50px; color: white; font-size: 100px">
+        빈 div!
+    </div>
+    <div style="height: 500px; background-color: brown; margin: 50px; color: white; font-size: 100px">
+        빈 div!
+    </div>
+    <div style="height: 500px; background-color: brown; margin: 50px; color: white; font-size: 100px">
+        빈 div!
+    </div>
 </div>
 
 <script src="/js/basic.js"></script>
@@ -66,5 +79,21 @@
     $('#logout-btn').click(logout);
     $('#changepassword-btn').click(toChangePassword);
     $('#checkpassword-btn').click(toCheckPassword);
+
+    // 스크롤 테스트
+    document.addEventListener('scroll', function () {
+        var currentScrollValue = document.documentElement.scrollTop;
+        console.log('현재 스크롤:' + currentScrollValue);
+    });
+
+    // 스크롤 바닥 감지 테스트
+    var docHeight = $(document).height();
+    var winHeight = $(window).height();
+
+    $(window).scroll(function () {
+        if ($(window).scrollTop() + winHeight >= docHeight) {
+            alert('페이지 최하단까지 스크롤을 내렸네요!');
+        }
+    })
 </script>
 </html>
