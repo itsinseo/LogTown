@@ -156,6 +156,7 @@ public class PostServiceImpl implements PostService {
             }
             followingUserList.add(user);
         }
+        followingUserList.add(userDetails.getUser());
         Slice<Post> postSlice = postRepository.findAllByUserInOrderByModifiedAtDesc(pageable, followingUserList);
 
         return postSlice.map(PostResponseDto::new);
