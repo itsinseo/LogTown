@@ -52,6 +52,8 @@
     <button type="button" class="btn btn-primary" id="changepassword-btn">비밀번호 변경</button>
     <button type="button" class="btn btn-primary" id="checkpassword-btn">비밀번호 확인</button>
 </div>
+
+<script src="/js/basic.js"></script>
 </body>
 <script>
     let authCookie = decodeURIComponent(Cookies.get("Authorization"));
@@ -61,46 +63,8 @@
                         </div>`
     postListSample.append(postSample);
 
-    // $(document).ready(function () {
-    //     $.ajax({
-    //         url: "/api/posts/slice",
-    //         type: "GET",
-    //         headers: {
-    //             "Authorization": authCookie
-    //         }
-    //     })
-    // })
-    //     .done(function () {
-    //         console.log("게시글 불러오기");
-    //     })
-    //     .fail(function (xhr) {
-    //         alert('게시글 불러오기 오류 - 토큰 오류!');
-    //         alert("상태 코드 " + xhr.status + ": " + xhr.responseJSON.message);
-    //         window.location.href="/home";
-    //     });
-
-    $('#logout-btn').click(
-        function logout() {
-            // 토큰 삭제
-            Cookies.remove('Authorization', {path: '/'});
-            window.location.href = "/home";
-        }
-    )
-
-    $('#changepassword-btn').click(
-        function changePassword() {
-            window.location.href = "/home/changepassword";
-
-            // // 토큰 삭제
-            // Cookies.remove('Authorization', {path: '/'});
-            // window.location.href = "/home";
-        }
-    )
-
-    $('#checkpassword-btn').click(
-        function checkPassword() {
-            window.location.href = "/home/checkpassword";
-        }
-    )
+    $('#logout-btn').click(logout);
+    $('#changepassword-btn').click(toChangePassword);
+    $('#checkpassword-btn').click(toCheckPassword);
 </script>
 </html>

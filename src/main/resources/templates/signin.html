@@ -48,12 +48,13 @@
         </form>
     </div>
     <div class="line" style="opacity: 0;"></div>
-    <button class="login-button" onclick="confirmSignin()">로그인</button>
+    <button class="login-button" id="signin-btn">로그인</button>
 </div>
+
+<script src="/js/basic.js"></script>
 </body>
 <script>
     const host = 'http://' + window.location.host;
-
     const href = location.href;
 
     // 쿠키 만료 시간(초 단위) 설정
@@ -63,37 +64,7 @@
     var expirationDate = new Date();
     expirationDate.setTime(expirationDate.getTime() + (maxAgeInSeconds * 1000));
 
-    function confirmSignin() {
-        let username = $('#inputUsername').val();
-        let password = $('#inputPassword').val();
-
-        $.ajax({
-            type: "POST",
-            url: "/api/auth/signin",
-            contentType: "application/json",
-            data: JSON.stringify({username: username, password: password})
-        })
-            .done(function (res, status, xhr) {
-                // console.log(xhr);
-                // console.log(xhr.responseJSON.message);
-
-                const token = xhr.getResponseHeader('Authorization');
-
-                // 쿠키 저장
-                Cookies.set('Authorization', token, {path: '/', expires: expirationDate});
-
-                $.ajaxPrefilter(function (options, originalOptions, jqXHR) {
-                    jqXHR.setRequestHeader('Authorization', token);
-                });
-                alert("로그인 성공!");
-
-                window.location.href = "/home/mainpage";
-            })
-            .fail(function (xhr) {
-                alert('로그인 오류!');
-                alert("상태 코드 " + xhr.status + ": " + xhr.responseJSON.message);
-            });
-    }
+    $('#signin-btn').click(confirmSignin);
 </script>
 
 </html>

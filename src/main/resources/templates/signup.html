@@ -71,37 +71,13 @@
         </form>
     </div>
     <div class="line" style="opacity: 0;"></div>
-    <button class="login-button" onclick="confirmSignup()">가입</button>
+    <button class="login-button" id="signup-btn">가입</button>
 </div>
+
+<script src="/js/basic.js"></script>
 </body>
 <script>
-    function confirmSignup() {
-        let username = $('#inputUsername').val();
-        let nickname = $('#inputNickname').val();
-        let password = $('#inputPassword').val();
-        let introduction = $('#inputIntroduction').val();
-
-        $.ajax({
-            type: "POST",
-            url: "/api/auth/signup",
-            contentType: "application/json; charset=utf-8",
-            data: JSON.stringify({
-                username: username,
-                nickname: nickname,
-                password: password,
-                introduction: introduction
-            })
-        })
-            .done(function () {
-                    alert('회원가입 완료!');
-                    window.location.href = "/home";
-                }
-            )
-            .fail(function (xhr) {
-                alert('회원가입 오류!');
-                alert("상태 코드 " + xhr.status + ": " + xhr.responseJSON.message);
-            });
-    }
+    $('#signup-btn').click(confirmSignup);
 </script>
 
 </html>

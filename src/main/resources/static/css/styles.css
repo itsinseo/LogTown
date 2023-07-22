@@ -1,4 +1,3 @@
-/* styles.css */
 body {
     margin: 0;
     padding: 0;
@@ -69,12 +68,12 @@ body {
     transform: scale(0.99);
 }
 
-#kakao-login-button {
+#kakao-login-btn {
     background: #F7E600;
     color: black;
 }
 
-#naver-login-button {
+#naver-login-btn {
     background: #1EC800;
 }
 

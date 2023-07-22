@@ -38,27 +38,24 @@
 <div class="container">
     <div class="logo">LogTown</div>
     <div class="button-container">
-        <button class="login-button" id="login-button" onclick="onSignin()">LogTown계정 로그인</button>
-        <button class="login-button" id="kakao-login-button"
+        <button class="login-button" id="login-btn">LogTown계정 로그인</button>
+        <button class="login-button" id="kakao-login-btn"
                 onclick="location.href='https://kauth.kakao.com/oauth/authorize?client_id=9ba390d13032486e1e0ad77185ef66f3&redirect_uri=http://localhost:8080/api/auth/kakao/callback&response_type=code'">
             카카오계정 로그인
         </button>
-        <button class="login-button" id="naver-login-button"
+        <button class="login-button" id="naver-login-btn"
                 onclick="location.href='https://nid.naver.com/oauth2.0/authorize?client_id=8IyE9FmLtg4bdRwCsFBn&redirect_uri=http://localhost:8080/api/auth/naver/callback&response_type=code'">
             네이버계정 로그인
         </button>
     </div>
     <div class="line"></div>
-    <button class="login-button" id="signup-button" onclick="onSignup()">회원가입</button>
+    <button class="login-button" id="signup-btn">회원가입</button>
 </div>
+
+<script src="/js/basic.js"></script>
 </body>
 <script>
-    function onSignin() {
-        window.location.href = "/home/signin"
-    }
-
-    function onSignup() {
-        window.location.href = "/home/signup"
-    }
+    $('#login-btn').click(toSignin);
+    $('#signup-btn').click(toSignup);
 </script>
 </html>
