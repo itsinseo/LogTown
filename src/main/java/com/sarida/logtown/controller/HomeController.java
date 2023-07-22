@@ -25,7 +25,7 @@ public class HomeController {
         return "signup";
     }
 
-    @GetMapping("/home/mainpage") // !!임시 메인페이지
+    @GetMapping("/home/mainpage") // !!임시 테스트페이지
     public String mainPage() {
         return "mainpage";
     }

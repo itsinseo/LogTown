@@ -1,6 +1,7 @@
 package com.sarida.logtown.service;
 
 import com.sarida.logtown.dto.ApiResponseDto;
+import com.sarida.logtown.dto.FollowCntDto;
 import com.sarida.logtown.dto.FollowInfoDto;
 import com.sarida.logtown.entity.Follow;
 import com.sarida.logtown.entity.User;
@@ -118,6 +119,12 @@ public class FollowService {
 			followingList.add(new FollowInfoDto(user.getUsername(), user.getNickname()));
 		}
 		return followingList;
+	}
+
+	public FollowCntDto getFollowCnt(String username) {
+		long followingCnt = getAllByFromUser(username).size();
+		long followerCnt = getAllByToUser(username).size();
+		return new FollowCntDto(followingCnt, followerCnt);
 	}
 }
 
