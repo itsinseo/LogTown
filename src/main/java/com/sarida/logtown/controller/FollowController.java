@@ -1,6 +1,7 @@
 package com.sarida.logtown.controller;
 
 import com.sarida.logtown.dto.ApiResponseDto;
+import com.sarida.logtown.dto.FollowCntDto;
 import com.sarida.logtown.dto.FollowInfoDto;
 import com.sarida.logtown.exception.RestApiException;
 import com.sarida.logtown.security.UserDetailsImpl;
@@ -62,6 +63,17 @@ public class FollowController {
 		try {
 			List<FollowInfoDto> followerList = followService.getFollowerList(username);
 			return new ResponseEntity<>(followerList, HttpStatus.OK);
+		} catch (NullPointerException e) {
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new RestApiException(e.getMessage(), HttpStatus.BAD_REQUEST.value()));
+		}
+	}
+
+	// username(user)의 팔로잉,팔로우 수 가져오기
+	@GetMapping("/{username}/followingCnt")
+	public ResponseEntity<?> getFollowCnt(@PathVariable String username) {
+		try {
+			FollowCntDto result = followService.getFollowCnt(username);
+			return new ResponseEntity<>(result, HttpStatus.OK);
 		} catch (NullPointerException e) {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new RestApiException(e.getMessage(), HttpStatus.BAD_REQUEST.value()));
 		}

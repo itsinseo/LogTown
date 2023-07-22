@@ -1,45 +1,64 @@
 package com.sarida.logtown.controller;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
-@RequestMapping("/home")
 public class HomeController {
+    // !!모든 경로(URL)은 임시
 
-    @GetMapping("")
+    @GetMapping("/home")
     public String loginSelect() {
         return "loginselect";
     }
 
-    @GetMapping("/signin")
+    @GetMapping("/home/signin")
     public String signin() {
         return "signin";
     }
 
-    @GetMapping("/signup")
+    @GetMapping("/home/signup")
     public String signup() {
         return "signup";
     }
 
-    @GetMapping("/mainpage") // !!임시 메인페이지
-    public String mainpage() {
+    @GetMapping("/home/mainpage") // !!임시 테스트페이지
+    public String mainPage() {
         return "mainpage";
     }
 
-    @GetMapping("/detailpage") // 유저페이지
+    @GetMapping("/home/mainpageMJ") // 민지 메인페이지
+    public String mainPageMJ() {
+        return "mainpageMJ";
+    }
+
+    @GetMapping("/home/onepost/{postId}")
+    public String getOnePost(@PathVariable Long postId, Model model) {
+        model.addAttribute("postId", postId);
+
+        return "onepost";
+    }
+
+    @GetMapping("/home/checkpassword")
+    public String checkPassword() {
+        return "checkpassword";
+    }
+
+    @GetMapping("/home/changepassword")
+    public String changePassword() {
+        return "changepassword";
+    }
+
+    @GetMapping("/home/detailpage")
     public String detailpage() {
         return "detail-profile";
     }
 
-    @GetMapping("/changepassword") // 비밀번호 변경 페이지
-    public String changePasswordPage() {
-        return "changepassword";
-    }
-
-    @GetMapping("/myprofile") // 마이페이지
-    public String myprofiledPage() {
+    @GetMapping("/home/myprofile") // 마이페이지
+    public String myprofilePage() {
         return "myprofile";
     }
 }
