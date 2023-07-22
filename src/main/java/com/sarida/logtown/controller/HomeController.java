@@ -1,7 +1,9 @@
 package com.sarida.logtown.controller;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 public class HomeController {
@@ -30,6 +32,13 @@ public class HomeController {
     @GetMapping("/home/mainpageMJ") // 민지 메인페이지
     public String mainPageMJ() {
         return "mainpageMJ";
+    }
+
+    @GetMapping("/home/onepost")
+    public String getOnePost() {
+        //model.addAttribute("postId", postId);
+
+        return "onepost";
     }
 
     @GetMapping("/home/checkpassword")
