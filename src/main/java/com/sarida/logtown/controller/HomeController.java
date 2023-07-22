@@ -27,6 +27,11 @@ public class HomeController {
         return "mainpage";
     }
 
+    @GetMapping("/home/mainpageMJ") // 민지 메인페이지
+    public String mainPageMJ() {
+        return "mainpageMJ";
+    }
+
     @GetMapping("/home/checkpassword")
     public String checkPassword() {
         return "checkpassword";

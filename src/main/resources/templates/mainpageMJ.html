@@ -162,7 +162,11 @@
       //let page = 0;
       $(window).scroll(function() {
         if($(window).scrollTop() + $(window).height() >= $(document).height()) {
-          alert('페이지 끝');
+          if(page === -1){
+            alert('페이지 끝');
+          }
+
+          // 다음 page 요청
           page++;
           $.ajax({
             url: '/api/posts/followingposts?page=' + page,
@@ -174,6 +178,11 @@
             success: function (xhr) {
               console.log('스크롤 끝 GET 요청 성공');
               console.log(xhr);
+
+              // 이번이 마지막 slice라면
+              if(xhr.content.last === true){
+                page = -1;
+              }
 
               let temp_html = ``;
 
