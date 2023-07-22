@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MainPage</title>
+
+    <!-- bootstrap 스타일 & js -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+            crossorigin="anonymous"></script>
+
+    <!-- 스타일시트 -->
+    <link rel="stylesheet" href="/css/styles.css">
+
+    <!-- vscode용 stylesheet 경로 !!최종 제거 해야함 -->
+    <link rel="stylesheet" href="/static/css/styles.css">
+
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.7.0.min.js"
+            integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="anonymous"></script>
+
+    <!-- js Cookie -->
+    <script src="https://cdn.jsdelivr.net/npm/js-cookie@3.0.5/dist/js.cookie.min.js"></script>
+
+    <!-- 구글 폰트 -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+            href="https://fonts.googleapis.com/css2?family=Gaegu&family=Jua&family=Mynerve&family=Nanum+Gothic&display=swap"
+            rel="stylesheet">
+</head>
+<body>
+<div style="font-family: 'Gaegu', cursive;">
+    <div class="container">
+        <div class="sub-logo">로그인(토큰 인증) 성공!</div>
+    </div>
+    <div class="button-container" style="background-color: aquamarine; margin: 10px; font-family: 'Jua', sans-serif;">
+        메인페이지 자체는 인증 상관없이 접근 허용<br>
+        그러나 메인페이지 로딩 시 동적으로 게시물을 가져오는 메서드를 호출,<br>
+        이 시점에서 토큰을 검사하여 토큰이 없거나 유효하지 않은 경우 ajax -> fail로<br>
+        가장 처음인 로그인 페이지로 리다이렉션하도록 설계
+    </div>
+    <div class="button-container" id="postListSample"
+         style="background-color: burlywood; margin: 10px; font-size: 20px">
+        게시글 목록
+    </div>
+    <button type="button" class="btn btn-primary" id="logout-btn">로그아웃</button>
+    <button type="button" class="btn btn-primary" id="changepassword-btn">비밀번호 변경</button>
+    <button type="button" class="btn btn-primary" id="checkpassword-btn">비밀번호 확인</button>
+
+    <div style="height: 500px; background-color: brown; margin: 50px; color: white; font-size: 100px">
+        빈 div!
+    </div>
+    <div style="height: 500px; background-color: brown; margin: 50px; color: white; font-size: 100px">
+        빈 div!
+    </div>
+    <div style="height: 500px; background-color: brown; margin: 50px; color: white; font-size: 100px">
+        빈 div!
+    </div>
+    <div style="height: 500px; background-color: brown; margin: 50px; color: white; font-size: 100px">
+        빈 div!
+    </div>
+</div>
+
+<script src="/js/basic.js"></script>
+</body>
+<script>
+    let authCookie = decodeURIComponent(Cookies.get("Authorization"));
+    let postListSample = $('#postListSample');
+    let postSample = `<div class="postSample">
+                            AuthCookie=${authCookie}<br>
+                        </div>`
+    postListSample.append(postSample);
+
+    $('#logout-btn').click(logout);
+    $('#changepassword-btn').click(toChangePassword);
+    $('#checkpassword-btn').click(toCheckPassword);
+
+    // 스크롤 테스트
+    document.addEventListener('scroll', function () {
+        var currentScrollValue = document.documentElement.scrollTop;
+        console.log('현재 스크롤:' + currentScrollValue);
+    });
+
+    // 스크롤 바닥 감지 테스트
+    var docHeight = $(document).height();
+    var winHeight = $(window).height();
+
+    $(window).scroll(function () {
+        if ($(window).scrollTop() + winHeight >= docHeight) {
+            alert('페이지 최하단까지 스크롤을 내렸네요!');
+        }
+    })
+</script>
+</html>

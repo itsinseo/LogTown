@@ -5,9 +5,35 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
 public class HomeController {
+    // !!모든 경로(URL)은 임시
 
-    @GetMapping("/")
-    public String home() {
-        return "index";
+    @GetMapping("/home")
+    public String loginSelect() {
+        return "loginselect";
+    }
+
+    @GetMapping("/home/signin")
+    public String signin() {
+        return "signin";
+    }
+
+    @GetMapping("/home/signup")
+    public String signup() {
+        return "signup";
+    }
+
+    @GetMapping("/home/mainpage") // !!임시 테스트페이지
+    public String mainPage() {
+        return "mainpage";
+    }
+
+    @GetMapping("/home/checkpassword")
+    public String checkPassword() {
+        return "checkpassword";
+    }
+
+    @GetMapping("/home/changepassword")
+    public String changePassword() {
+        return "changepassword";
     }
 }
