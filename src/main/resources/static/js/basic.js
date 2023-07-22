@@ -55,7 +55,7 @@ function confirmSignin() {
             });
             alert("로그인 성공!");
 
-            window.location.href = "/home/mainpage";
+            window.location.href = "/home/mainpageMJ";
         })
         .fail(function (xhr) {
             alert('로그인 오류!');
@@ -103,4 +103,46 @@ function toChangePassword() {
 
 function toCheckPassword() {
     window.location.href = "/home/checkpassword";
+}
+
+function getSlicePosts(page) {
+    $.ajax({
+        url: '/api/posts/followingposts?page=' + page,
+        type: 'GET',
+        contentType: 'application/json',
+        headers: {
+            'Authorization': authCookie  // 확실x, 이전 프로젝트에서 cookie로 로그인해서 .cookie였음
+        },
+        success: function (xhr) {
+            console.log('followingposts GET 요청 성공');
+            console.log(xhr);
+
+            let temp_html = ``;
+
+            //console.log(xhr.content[0]);
+            xhr.content.forEach(function (post) {
+                console.log(post);
+
+                let card_html = `
+                                    <div class="one-post">
+                                        <div class="card" style="width: 50rem;">
+                                            <div class="card-body">
+                                                <h5 class="card-title">${post.nickname}</h5>
+                                                <h6 class="card-subtitle mb-2 text-muted">${post.modifiedAt}</h6>
+                                                <p class="card-text">${post.content}</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                    `
+                temp_html += card_html;
+            })
+            temp_html += `
+                              <div id = "listEnd"></div>  `
+            $('.posts-feed').append(temp_html);
+        },
+        error: function () {
+            console.log('게시글 불러오기 실패');
+        }
+
+    });
 }
