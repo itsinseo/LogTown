@@ -24,6 +24,8 @@
         rel="stylesheet">
 </head>
 
+<!-- ... (head 부분은 동일하게 유지) ... -->
+
 <body>
 <div class="container">
   <div class="sub-logo">마이페이지</div>
@@ -35,8 +37,9 @@
     <p><strong>자기 소개:</strong> <span id="introduction">동서남북 어디서든 볼 수 있습니다</span></p>
   </div>
 
-  <!-- 비밀번호 변경 버튼 -->
+  <!-- 닉네임 & 자기 소개 변경 버튼 -->
   <div class="button-container">
+    <button class="login-button" id="change-info-btn">닉네임 및 자기 소개 변경</button>
     <button class="login-button" id="changepassword-btn">비밀번호 변경</button>
   </div>
 </div>
@@ -49,18 +52,6 @@
   document.addEventListener("DOMContentLoaded", function () {
     authCookie = Cookies.get("Authorization");
   });
-
-
-  // 비밀번호 변경 버튼 클릭 이벤트 설정
-  function changePasswordPage() {
-    if (authCookie) {
-      // Assuming the "detail-profile.html" file is in the same directory
-      window.location.href = "/home/changepassword";
-    } else {
-      // Redirect to the login page (replace "login.html" with your actual login page URL)
-      window.location.href = "/home/mainpage";
-    }
-  }
 
   $(document).ready(function () {
     let authCookie = Cookies.get("Authorization");
@@ -88,8 +79,61 @@
     });
   });
 
+  // 닉네임 및 자기 소개 변경 버튼 클릭 이벤트 설정
+  function changeInfo() {
+
+    const newNickname = prompt("새로운 닉네임을 입력하세요.");
+    const newIntroduction = prompt("새로운 자기 소개를 입력하세요.");
+
+    if ((newNickname !== null && newNickname !== "") || (newIntroduction !== null && newIntroduction !== "")) {
+      var authCookie = Cookies.get('Authorization');
+
+      $.ajax({
+        type: "PUT",
+        url: "/api/users/profiles",
+        contentType: 'application/json',
+        headers: {
+          'Authorization': authCookie
+        },
+        data: JSON.stringify({
+          nickname: newNickname,
+          introduction: newIntroduction
+        }),
+        success: function (data) {
+          if (newNickname !== null && newNickname !== "") {
+            const nicknameElement = document.getElementById("nickname");
+            nicknameElement.textContent = data.nickname;
+          }
+
+          if (newIntroduction !== null && newIntroduction !== "") {
+            const introElement = document.getElementById("introduction");
+            introElement.textContent = data.introduction;
+          }
+
+          alert("닉네임 및 자기 소개가 성공적으로 변경되었습니다.");
+          window.location.reload();
+        },
+        error: function (xhr) {
+          alert("닉네임 및 자기 소개 변경에 실패하였습니다.");
+        }
+      });
+    }
+  }
+
+  // 비밀번호 변경 버튼 클릭 이벤트 설정
+  function changePasswordPage() {
+    if (authCookie) {
+      // Assuming the "detail-profile.html" file is in the same directory
+      window.location.href = "/home/changepassword";
+    } else {
+      // Redirect to the login page (replace "login.html" with your actual login page URL)
+      window.location.href = "/home/mainpage";
+    }
+  }
+
   // 버튼에 클릭 이벤트 설정
   $(document).ready(function () {
+    $('#change-info-btn').click(changeInfo);
     $('#changepassword-btn').click(changePasswordPage);
   });
 </script>
