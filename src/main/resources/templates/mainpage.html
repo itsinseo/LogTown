@@ -32,6 +32,7 @@
         게시글 목록
     </div>
     <button onclick="redirectToDetailPage()">상세페이지</button>
+    <button onclick="myProfile()">마이프로필</button>
 </div>
 </body>
 <script>
@@ -52,7 +53,17 @@
             window.location.href = "/home/detailpage";
         } else {
             // Redirect to the login page (replace "login.html" with your actual login page URL)
-            window.location.href = "/home/signin";
+            window.location.href = "/home/mainpage";
+        }
+    }
+
+    function myProfile() {
+        if (authCookie) {
+            // Assuming the "detail-profile.html" file is in the same directory
+            window.location.href = "/home/myprofile";
+        } else {
+            // Redirect to the login page (replace "login.html" with your actual login page URL)
+            window.location.href = "/home/mainpage";
         }
     }
 </script>

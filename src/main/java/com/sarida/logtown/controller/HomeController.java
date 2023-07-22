@@ -32,4 +32,14 @@ public class HomeController {
     public String detailpage() {
         return "detail-profile";
     }
+
+    @GetMapping("/changepassword") // 비밀번호 변경 페이지
+    public String changePasswordPage() {
+        return "changepassword";
+    }
+
+    @GetMapping("/myprofile") // 마이페이지
+    public String myprofiledPage() {
+        return "myprofile";
+    }
 }

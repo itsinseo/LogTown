@@ -46,10 +46,8 @@
   </div>
 </body>
 <script>
-  console.log("Test");
   $(document).ready(function () {
     let authCookie = Cookies.get("Authorization");
-    console.log(authCookie);
     $.ajax({
       type: "GET",
       url: "/api/myself",
@@ -57,14 +55,7 @@
       headers: {
         'Authorization': authCookie
       },
-      // beforeSend: function (xhr) {
-      //   xhr.setRequestHeader("Authorization", authCookie);
-      //   console.log(xhr);
-      // },
-      // data: JSON.stringify(data),
       success: function (data,xhr) {
-        console.log(data);
-        console.log(xhr);
         const nicknameElement = document.getElementById("nickname");
         nicknameElement.textContent = data.nickname;
 
@@ -72,14 +63,11 @@
         usernameElement.textContent = data.username;
 
         const introElement = document.getElementById("intro");
-        introElement.textContent = data.intro;
-
-        // $(".profile-nickname-T9o").text(/* 닉네임을 표시하기 위한 Thymeleaf 표현식 */ data.nickname);
-        // $(".profile-username-K5X").text(/* 사용자명을 표시하기 위한 Thymeleaf 표현식 */ data.username);
+        introElement.textContent = data.introduction;
+        console.log(data);
         alert("성공")
       },
       error: function (xhr) {
-        console.log(xhr);
         console.log('실패!!')
       }
     });

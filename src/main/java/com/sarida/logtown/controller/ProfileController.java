@@ -38,6 +38,7 @@ public class ProfileController {
             profileService.updatePassword(requestDto, userDetails.getUser());
             return ResponseEntity.ok().body(new ApiResponseDto("비밀번호 수정 완료", HttpStatus.OK.value()));
         } catch (RejectedExecutionException e) {
+            System.out.println(e.getMessage());
             return ResponseEntity.badRequest().body(new ApiResponseDto(e.getMessage(), HttpStatus.BAD_REQUEST.value()));
         }
     }
