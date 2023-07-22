@@ -26,7 +26,7 @@
             <div class="frame-2-28M" id="12:26">Unfollow</div>
           </div>
         </div>
-        <p class="profile-intro-gih" id="4:45">I am Mark</p>
+        <p class="profile-intro-gih" id="intro">I am Mark</p>
         <div class="auto-group-pmvu-zDb" id="N3hJeBg51aGeeZdpUzPMvu">
           <p class="num-following-vsw" id="4:43">0 Following</p>
           <p class="num-follwers-4DT" id="4:44">9K Followers</p>
@@ -62,11 +62,18 @@
       //   console.log(xhr);
       // },
       // data: JSON.stringify(data),
-      success: function (data) {
+      success: function (data,xhr) {
+        console.log(data);
+        console.log(xhr);
+        const nicknameElement = document.getElementById("nickname");
+        nicknameElement.textContent = data.nickname;
+
         const usernameElement = document.getElementById("username");
         usernameElement.textContent = data.username;
 
-        console.log(data.username);
+        const introElement = document.getElementById("intro");
+        introElement.textContent = data.intro;
+
         // $(".profile-nickname-T9o").text(/* 닉네임을 표시하기 위한 Thymeleaf 표현식 */ data.nickname);
         // $(".profile-username-K5X").text(/* 사용자명을 표시하기 위한 Thymeleaf 표현식 */ data.username);
         alert("성공")
