@@ -31,32 +31,29 @@
          style="background-color: burlywood; margin: 10px; font-size: 20px">
         게시글 목록
     </div>
+    <button onclick="redirectToDetailPage()">상세페이지</button>
 </div>
 </body>
 <script>
-    let authCookie = Cookies.get("Authorization");
-    let postListSample = $('#postListSample');
-    let postSample = `<div class="postSample">
+    document.addEventListener("DOMContentLoaded", function () {
+        authCookie = Cookies.get("Authorization");
+        let postListSample = $('#postListSample');
+        let postSample = `<div class="postSample">
                             AuthCookie=${authCookie}
-                        </div>`
-    postListSample.append(postSample);
+                        </div>`;
+        postListSample.append(postSample);
+    });
 
-    // $(document).ready(function () {
-    //     $.ajax({
-    //         url: "/api/posts/slice",
-    //         type: "GET",
-    //         headers: {
-    //             "Authorization": authCookie
-    //         }
-    //     })
-    // })
-    //     .done(function () {
-    //         console.log("게시글 불러오기");
-    //     })
-    //     .fail(function (xhr) {
-    //         alert('게시글 불러오기 오류 - 토큰 오류!');
-    //         alert("상태 코드 " + xhr.status + ": " + xhr.responseJSON.message);
-    //         window.location.href="/home";
-    //     });
+    function redirectToDetailPage() {
+        console.log("Test");
+        if (authCookie) {
+            // Assuming the "detail-profile.html" file is in the same directory
+            console.log("Test2");
+            window.location.href = "/home/detailpage";
+        } else {
+            // Redirect to the login page (replace "login.html" with your actual login page URL)
+            window.location.href = "/home/signin";
+        }
+    }
 </script>
 </html>

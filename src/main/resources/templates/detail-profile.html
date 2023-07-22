@@ -1,11 +1,13 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
 
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- Corrected attribute -->
   <title>Document</title> <!-- Removed the extra space before "Document" -->
   <link rel="stylesheet" href="/css/style.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/js-cookie@3.0.5/dist/js.cookie.min.js"></script>
 </head>
 
 <body>
@@ -14,10 +16,10 @@
     <div class="auto-group-q12v-2Rs" id="N3hHHDwdzZ3WBBWXKAq12V">
       <div class="group-2-wYq" id="11:13">
         <div class="ellipse-1-rfo" id="12:28"></div>
-        <div class="auto-group-jhgq-abo" id="N3hJ87hqZvBDTXPYDZjHGq">
+        <div class="auto-group-jhgq-abo" id="user">
           <div class="auto-group-gq6z-hAd" id="N3hJFryvxbPhdvJP5AgQ6Z">
-            <p class="profile-nickname-T9o" id="4:41">Mark Zuckerberg</p>
-            <p class="profile-username-K5X" id="4:52">@Zuckerbergofficial</p>
+            <p class="profile-nickname-T9o" id="nickname">Mark Zuckerberg</p>
+            <p class="profile-username-K5X" id="username" >@Zuckerbergofficial</p>
           </div>
           <div class="auto-group-yjxd-3GR" id="N3hJQC5PLUuxyCq1PaYJxd">
             <div class="frame-1-a1T" id="12:23">Follow</div>
@@ -43,5 +45,38 @@
     </div>
   </div>
 </body>
+<script>
+  console.log("Test");
+  $(document).ready(function () {
+    let authCookie = Cookies.get("Authorization");
+    console.log(authCookie);
+    $.ajax({
+      type: "GET",
+      url: "/api/myself",
+      contentType: 'application/json',
+      headers: {
+        'Authorization': authCookie
+      },
+      // beforeSend: function (xhr) {
+      //   xhr.setRequestHeader("Authorization", authCookie);
+      //   console.log(xhr);
+      // },
+      // data: JSON.stringify(data),
+      success: function (data) {
+        const usernameElement = document.getElementById("username");
+        usernameElement.textContent = data.username;
 
+        console.log(data.username);
+        // $(".profile-nickname-T9o").text(/* 닉네임을 표시하기 위한 Thymeleaf 표현식 */ data.nickname);
+        // $(".profile-username-K5X").text(/* 사용자명을 표시하기 위한 Thymeleaf 표현식 */ data.username);
+        alert("성공")
+      },
+      error: function (xhr) {
+        console.log(xhr);
+        console.log('실패!!')
+      }
+    });
+  });
+
+</script>
 </html>

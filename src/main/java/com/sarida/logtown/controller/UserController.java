@@ -4,7 +4,9 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.sarida.logtown.dto.ApiResponseDto;
 import com.sarida.logtown.dto.SigninRequestDto;
 import com.sarida.logtown.dto.SignupRequestDto;
+import com.sarida.logtown.dto.UserResponseDto;
 import com.sarida.logtown.jwt.JwtUtil;
+import com.sarida.logtown.security.UserDetailsImpl;
 import com.sarida.logtown.service.KakaoService;
 import com.sarida.logtown.service.NaverService;
 import com.sarida.logtown.service.UserService;
@@ -15,6 +17,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -31,6 +34,19 @@ public class UserController {
     private final JwtUtil jwtUtil;
     private final KakaoService kakaoService;
     private final NaverService naverService;
+
+    @ResponseBody
+    @GetMapping("/users/{username}")
+    public UserResponseDto getUserInfo(@PathVariable String username) {
+        return userService.getSelectUsername(username);
+    }
+
+    @ResponseBody
+    @GetMapping("/myself")
+    public UserResponseDto getMyself(@AuthenticationPrincipal UserDetailsImpl userDetails) {
+        System.out.println("================myself================");
+        return userService.getMyself(userDetails.getUser());
+    }
 
     @ResponseBody
     @PostMapping("/auth/signup")
