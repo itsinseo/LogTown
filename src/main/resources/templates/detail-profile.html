@@ -3,48 +3,155 @@
 
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- Corrected attribute -->
-  <title>Document</title> <!-- Removed the extra space before "Document" -->
-  <link rel="stylesheet" href="/css/style.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/js-cookie@3.0.5/dist/js.cookie.min.js"></script>
+
+  <style>
+    body {
+      background-color: #f6f6f6;
+    }
+
+    .header-HSM {
+      background-color: #9747FF;
+      color: white;
+      padding: 10px;
+      font-size: 24px;
+      text-align: center;
+    }
+
+    .profile-section {
+      margin-top: 30px;
+    }
+
+    .profile-picture {
+      background-color: #9747FF;
+      width: 150px;
+      height: 150px;
+      border-radius: 50%;
+      margin: 0; /* Updated to remove auto margin */
+      float: left; /* Added float property */
+      margin-right: 20px; /* Added margin-right to create spacing between profile picture and other elements */
+    }
+
+    .profile-nickname,
+    .profile-username {
+      color: #000000;
+      font-weight: bold;
+    }
+
+    .profile-intro {
+      color: #000000;
+      margin-top: 15px
+    }
+
+    .num-following,
+    .num-followers {
+      color: #000000;
+      margin-right: 15px;
+      margin-top: 3px;
+    }
+
+    .follow-btn,
+    .unfollow-btn {
+      color: white;
+      background-color: #9747FF;
+      padding: 5px 10px;
+      border-radius: 5px;
+      cursor: pointer;
+      margin-right: 5px;
+    }
+
+
+    .post-section {
+      margin-top: 50px;
+    }
+
+    .post {
+      border: 1px solid #000000;
+      padding: 10px;
+      margin-bottom: 20px;
+    }
+
+    .writer-picture {
+      background-color: #9747FF;
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      display: inline-block;
+      vertical-align: middle;
+      margin-right: 10px;
+    }
+
+    .writer-nickname {
+      color: #000000;
+      font-weight: bold;
+    }
+
+    .writer-username {
+      color: #000000;
+    }
+
+    .writer-content {
+      color: #000000;
+    }
+    .group-follow-unfollow-btn{
+      display: flex;
+    }
+
+    .group-num-follower-follwing{
+      display: flex;
+    }
+  </style>
 </head>
 
 <body>
-  <div class="desktop-1-L7o" id="4:26">
-    <div class="header-HSM" id="11:8">log town</div>
-    <div class="auto-group-q12v-2Rs" id="N3hHHDwdzZ3WBBWXKAq12V">
-      <div class="group-2-wYq" id="11:13">
-        <div class="ellipse-1-rfo" id="12:28"></div>
-        <div class="auto-group-jhgq-abo" id="user">
-          <div class="auto-group-gq6z-hAd" id="N3hJFryvxbPhdvJP5AgQ6Z">
-            <p class="profile-nickname-T9o" id="nickname">Mark Zuckerberg</p>
-            <p class="profile-username-K5X" id="username" >@Zuckerbergofficial</p>
-          </div>
-          <div class="auto-group-yjxd-3GR" id="N3hJQC5PLUuxyCq1PaYJxd">
-            <div class="frame-1-a1T" id="12:23">Follow</div>
-            <div class="frame-2-28M" id="12:26">Unfollow</div>
-          </div>
-        </div>
-        <p class="profile-intro-gih" id="intro">I am Mark</p>
-        <div class="auto-group-pmvu-zDb" id="N3hJeBg51aGeeZdpUzPMvu">
-          <p class="num-following-vsw" id="4:43">0 Following</p>
-          <p class="num-follwers-4DT" id="4:44">9K Followers</p>
-        </div>
+<div class="container">
+  <div class="header-HSM">log town</div>
+
+  <div class="profile-section">
+    <div class="profile-picture"></div>
+    <div class="auto-group-jhgq-abo" id="user">
+      <div class="auto-group-gq6z-hAd">
+        <p class="profile-nickname" id="nickname">Mark Zuckerberg</p>
+        <p class="profile-username" id="username">@Zuckerbergofficial</p>
       </div>
-      <div class="writer-area-nQM" id="11:16">
-        <div class="auto-group-xfmw-6vq" id="N3hHWJQBYbdgKzvFFbXfMw">
-          <div class="writer-picture-FHw" id="11:19"></div>
-          <div class="auto-group-xxrq-BhP" id="N3hHfYdn3XvTBpqxizXxrq">
-            <p class="writer-nickname-K2u" id="5:74">Mark Zuckerberg</p>
-            <p class="writer-username-R5w" id="5:75">@Zuckerbergofficial</p>
-          </div>
-        </div>
-        <p class="writer-content-JvR" id="5:79">I am Mark</p>
+      <div class="group-follow-unfollow-btn">
+        <div class="follow-btn">Follow</div>
+        <div class="unfollow-btn">Unfollow</div>
       </div>
     </div>
+    <p class="profile-intro" id="intro">I am Mark</p>
+    <div class="group-num-follower-follwing">
+      <p class="num-following" id="4:43">0 Following</p>
+      <p class="num-followers" id="4:44">9K Followers</p>
+    </div>
   </div>
-</body>
+
+  <div class="post-section">
+    <div class="post">
+      <div class="writer-picture"></div>
+      <div class="auto-group-xxrq-BhP">
+        <p class="writer-nickname" id="5:722">Mark Zuckerberg</p>
+        <p class="writer-username" id="5:7225">@Zuckerbergofficial</p>
+      </div>
+      <p class="writer-content" id="5:79">This is my first post.</p>
+    </div>
+
+    <div class="post">
+      <div class="writer-picture"></div>
+      <div class="auto-group-xxrq-BhP">
+        <p class="writer-nickname" id="5:74">Mark Zuckerberg</p>
+        <p class="writer-username" id="5:75">@Zuckerbergofficial</p>
+      </div>
+      <p class="writer-content" id="5:7229">Great day today!</p>
+    </div>
+  </div>
+</div>
+
 <script>
   $(document).ready(function () {
     let authCookie = Cookies.get("Authorization");
@@ -55,23 +162,23 @@
       headers: {
         'Authorization': authCookie
       },
-      success: function (data,xhr) {
-        const nicknameElement = document.getElementById("nickname");
+      success: function (data, xhr) {
+        const nicknameElement = document.querySelector(".profile-nickname");
         nicknameElement.textContent = data.nickname;
 
-        const usernameElement = document.getElementById("username");
-        usernameElement.textContent = data.username;
+        const usernameElement = document.querySelector(".profile-username");
+        usernameElement.textContent = "@" + data.username;
 
-        const introElement = document.getElementById("intro");
+        const introElement = document.querySelector(".profile-intro");
         introElement.textContent = data.introduction;
         console.log(data);
-        alert("성공")
       },
       error: function (xhr) {
         console.log('실패!!')
       }
     });
   });
-
 </script>
+</body>
+
 </html>
