@@ -31,6 +31,21 @@
             margin-top: 3rem;
         }
 
+        input[type=checkbox] {
+            margin: 10px;
+            zoom: 1.5;
+        }
+
+        #admin-delete-btn {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+        }
+
+        #logout-btn {
+            margin: 20px;
+        }
+
     </style>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/js-cookie@3.0.5/dist/js.cookie.min.js"></script>
@@ -40,7 +55,23 @@
 <body>
 <div>
     <div class="header">
-        <h1>LogTown</h1>
+        <div class="row">
+            <div class="col-md-2" style="text-align: left">
+                <button type="button" class="btn btn-primary" id="logout-btn">로그아웃</button>
+            </div>
+            <div class="col-md-8">
+                <a href="/home/backoffice" style="font-size: 50px; text-align: center">
+                    LogTown
+                </a>
+            </div>
+            <div class="col-md-2">
+
+            </div>
+        </div>
+    </div>
+
+    <div style="padding: 20px; text-align: right;">
+        <button type="button" class="btn btn-danger" id="admin-delete-btn">댓글 삭제</button>
     </div>
 
     <div class="post-body">
@@ -102,6 +133,7 @@
         // const postId = urlParams.get('postId');
         let postId = document.getElementById('postIdParagraph').querySelector('span').innerText;
         let authCookie = Cookies.get("Authorization");  // cookie 중 Authorization
+        let isAdmin = false;
 
         console.log(postId);
 
@@ -139,6 +171,21 @@
                     console.log('댓글 등록 실패');
                 }
             });
+        });
+
+        // 관리자 확인
+        $.ajax({
+            type: "GET",
+            url: "/api/admin/check",
+            headers: {
+                'Authorization': authCookie
+            },
+            success: function () {
+                isAdmin = true;
+            },
+            error: function () {
+                isAdmin = false;
+            }
         });
 
         // 게시글 가져오는 부분
@@ -179,12 +226,27 @@
 
                 $('.comment-list').empty();
                 let temp_html = ``;
+
+                let checkbox = "display: none";
+
+                if (isAdmin) {
+                    checkbox = "";
+                    document.getElementById("admin-delete-btn").style.display = "block";
+                } else {
+                    document.getElementById("admin-delete-btn").style.display = "none";
+                }
+
                 xhr.commentList.forEach(function (comment) {
                     let comment_html = `
                     <div class="card" style="max-width: 50rem;">
+                    <div class="row justify-content-between">
                         <div class="col-md-1">
                             <div class="myprofile">프로필</div>
                         </div>
+                        <div class="col-md-1" style="text-align: center;">
+                              <input type="checkbox" name="admin-comment-checkbox" value=${comment.id} style="${checkbox}">
+                        </div>
+                    </div>
                         <div class="card-body">
                             <h5 class="card-title">${comment.nickname}</h5>
                             <p class="card-text">${comment.content}</p>
@@ -195,16 +257,55 @@
                     temp_html += comment_html;
                 });
                 $('.comment-list').append(temp_html);
-
             },
             error: function () {
                 console.log('글 댓글 불러오기 실패');
             }
-
         });
 
+        // 삭제 버튼 함수 매핑
+        $('#admin-delete-btn').click(function () {
+            adminDeleteComments();
+        })
+
+        // 관리자가 선택한 댓글 지우기
+        function adminDeleteComments() {
+            const checkboxes = document.getElementsByName("admin-comment-checkbox");
+            const checkedValues = [];
+
+            for (let i = 0; i < checkboxes.length; i++) {
+                if (checkboxes[i].checked) {
+                    checkedValues.push(parseInt(checkboxes[i].value));
+                }
+            }
+
+            $.ajax({
+                type: "DELETE",
+                url: "/api/admin/comments/delete",
+                contentType: 'application/json',
+                data: JSON.stringify({
+                    selectedIds: checkedValues
+                }),
+                headers: {
+                    'Authorization': authCookie
+                },
+                success: function () {
+                    alert("선택된 댓글 삭제 성공!")
+                    window.location.reload();
+                },
+                error: function (xhr) {
+                    alert("댓글 삭제 실패")
+                    console.log(xhr);
+                }
+            });
+        }
     });
+</script>
+
+<script src="/js/basic.js"></script>
+</body>
+<script>
+    $('#logout-btn').click(logout);
 
 </script>
-</body>
 </html>

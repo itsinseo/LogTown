@@ -16,7 +16,6 @@ public class AdminController {
     // 게시글 여러개 삭제
     @DeleteMapping("/posts/delete")
     public ApiResponseDto deletePosts(@RequestBody SelectedIdsDto selectedIds) {
-        System.out.println(selectedIds.toString());
         return adminService.deletePosts(selectedIds);
     }
 
