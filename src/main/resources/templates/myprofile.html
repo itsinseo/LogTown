@@ -23,9 +23,6 @@
   <link href="https://fonts.googleapis.com/css2?family=Gaegu&family=Jua&family=Mynerve&family=Nanum+Gothic&display=swap"
         rel="stylesheet">
 </head>
-
-<!-- ... (head 부분은 동일하게 유지) ... -->
-
 <body>
 <div class="container">
   <div class="sub-logo">마이페이지</div>
@@ -122,10 +119,8 @@
   // 비밀번호 변경 버튼 클릭 이벤트 설정
   function changePasswordPage() {
     if (authCookie) {
-      // Assuming the "detail-profile.html" file is in the same directory
       window.location.href = "/home/changepassword";
     } else {
-      // Redirect to the login page (replace "login.html" with your actual login page URL)
       window.location.href = "/home/mainpage";
     }
   }
