@@ -147,7 +147,6 @@
             let postId = $(this).closest('.card').attr('id');
 
             console.log(postId);
-            alert('된다');
 
             $.ajax({
                 url: `/api/posts/${postId}`,
@@ -213,8 +212,9 @@
 
                 $('.posts-feed').append(temp_html);
             },
-            error: function () {
+            error: function (xhr) {
                 alert('게시글 불러오기 실패');
+                console.log(xhr);
             }
 
         });

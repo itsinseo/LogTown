@@ -321,7 +321,7 @@
                 },
                 data: JSON.stringify(data),
                 success: function (response) {
-                    alert("게시글 수정 성공");
+                    alert("댓글 수정 성공");
                     // 새로운 텍스트로 보이도록
                     $("#comment-content-paragraph").text(newCommentContent);
 
@@ -335,7 +335,7 @@
                 },
                 error: function (xhr) {
                     alert(xhr.responseJSON.errorMessage);
-                    console.log('게시글 수정 요청 실패');
+                    console.log('댓글 수정 요청 실패');
                     location.reload();
                 }
             });
