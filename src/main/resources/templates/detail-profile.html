@@ -41,11 +41,12 @@
     .profile-username {
       color: #000000;
       font-weight: bold;
+      margin: 0;
     }
 
     .profile-intro {
       color: #000000;
-      margin-top: 15px
+      margin-top: 15px;
     }
 
     .num-following,
@@ -89,7 +90,15 @@
 
     .writer-nickname {
       color: #000000;
+      margin-top: 15px;
       font-weight: bold;
+    }
+
+    .auto-group-xxrq-BhP {
+      color: #000000;
+      display: flex;
+      margin-right: 15px;
+      margin-top: 3px;
     }
 
     .writer-username {
@@ -240,8 +249,8 @@
             let card_html = `
                                     <div class="post-section">
                                       <div class="post" id="${data.id}">
-                                        <div class="writer-picture"></div>
                                         <div class="auto-group-xxrq-BhP">
+                                          <p class="writer-picture"></p>
                                           <p class="writer-nickname" >${data.nickname}</p>
                                         </div>
                                         <p class="writer-content">${data.content}</p>
