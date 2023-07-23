@@ -49,7 +49,8 @@
     }
 
     .num-following,
-    .num-followers {
+    .num-followers,
+    .num-post{
       color: #000000;
       margin-right: 15px;
       margin-top: 3px;
@@ -116,18 +117,19 @@
     <div class="profile-picture"></div>
     <div class="auto-group-jhgq-abo" id="user">
       <div class="auto-group-gq6z-hAd">
-        <p class="profile-nickname" id="nickname">Mark Zuckerberg</p>
-        <p class="profile-username" id="username">@Zuckerbergofficial</p>
+        <p class="profile-nickname" id="nickname"> </p>
+        <p class="profile-username" id="username"> </p>
       </div>
       <div class="group-follow-unfollow-btn">
         <div class="follow-btn">Follow</div>
         <div class="unfollow-btn">Unfollow</div>
       </div>
     </div>
-    <p class="profile-intro" id="intro">I am Mark</p>
+    <p class="profile-intro" id="intro"> </p>
     <div class="group-num-follower-follwing">
-      <p class="num-following" id="4:43">0 Following</p>
-      <p class="num-followers" id="4:44">9K Followers</p>
+      <p class="num-post" id="num-fpost">0 Posts</p>
+      <p class="num-following" id="num-following">0 Following</p>
+      <p class="num-followers" id="num-followers">0 Followers</p>
     </div>
   </div>
 
@@ -140,43 +142,126 @@
       </div>
       <p class="writer-content" id="5:79">This is my first post.</p>
     </div>
-
-    <div class="post">
-      <div class="writer-picture"></div>
-      <div class="auto-group-xxrq-BhP">
-        <p class="writer-nickname" id="5:74">Mark Zuckerberg</p>
-        <p class="writer-username" id="5:75">@Zuckerbergofficial</p>
-      </div>
-      <p class="writer-content" id="5:7229">Great day today!</p>
-    </div>
   </div>
 </div>
 
 <script>
   $(document).ready(function () {
     let authCookie = Cookies.get("Authorization");
-    $.ajax({
-      type: "GET",
-      url: "/api/myself",
-      contentType: 'application/json',
-      headers: {
-        'Authorization': authCookie
-      },
-      success: function (data, xhr) {
-        const nicknameElement = document.querySelector(".profile-nickname");
-        nicknameElement.textContent = data.nickname;
 
-        const usernameElement = document.querySelector(".profile-username");
-        usernameElement.textContent = "@" + data.username;
+    // IIFE를 사용하여 closure를 생성하고 전역 변수 사용
+    (function () {
+      let username; // 이 변수는 closure에 캡슐화.
 
-        const introElement = document.querySelector(".profile-intro");
-        introElement.textContent = data.introduction;
-        console.log(data);
-      },
-      error: function (xhr) {
-        console.log('실패!!')
-      }
-    });
+      // 첫번쨰 Ajax: 사용자의 정보를 조회
+      $.ajax({
+        type: "GET",
+        url: "/api/myself",
+        contentType: 'application/json',
+        headers: {
+          'Authorization': authCookie
+        },
+        success: function (data, xhr) {
+          const nicknameElement = document.querySelector(".profile-nickname");
+          nicknameElement.textContent = data.nickname;
+
+          const usernameElement = document.querySelector(".profile-username");
+          usernameElement.textContent = "@" + data.username;
+
+          const introElement = document.querySelector(".profile-intro");
+          introElement.textContent = data.introduction;
+
+          const postsElement = document.querySelector(".num-post");
+          postsElement.textContent = data.postsCnt + " Posts";
+
+          // 팔로워/팔로우에 쓸 username 값을 받는다
+          username = data.username;
+          console.log(data);
+
+          // 팔로우 및 언팔 버튼 지정
+          const followBtn = document.querySelector(".follow-btn");
+          const unfollowBtn = document.querySelector(".unfollow-btn");
+
+          // 본인 페이지이므로 버튼이 필요 없다
+          followBtn.style.display = "none"; // 팔로우 버튼 없애기
+          unfollowBtn.style.display = "none"; // 언팔로우 버튼 없애기
+
+
+          // 첫번쨰 Ajax가 성공시 username이 담아서 두번쨰 Ajax 호출
+          getFollowCounts(username);
+        },
+        error: function () {
+          console.log('실패!!')
+        }
+      });
+    })();
+
+    // 두번쨰 Ajax: 팔로일 및 팔로워 개수 조회
+    function getFollowCounts(username) {
+      $.ajax({
+        type: "GET",
+        url: "/api/users/follow/" + username + "/followingCnt", // 인자값 username을 넣어준다
+        contentType: 'application/json',
+        headers: {
+          'Authorization': authCookie
+        },
+        success: function (data, xhr) {
+          const followingElement = document.querySelector(".num-following");
+          followingElement.textContent = data.following + " Following";
+
+          const followersElement = document.querySelector(".num-followers");
+          followersElement.textContent = data.follower + " Followers";
+
+          console.log(data);
+        },
+        error: function () {
+          console.log('실패!!')
+        }
+      });
+    }
+  });
+
+  // 게시글 가져오는 부분
+  $.ajax({
+    url: '/api/posts/followingposts?page=0',
+    type: 'GET',
+    contentType: 'application/json',
+    headers: {
+      'Authorization': authCookie  // 확실x, 이전 프로젝트에서 cookie로 로그인해서 .cookie였음
+    },
+    success: function (xhr) {
+      $('.post').empty(); // 테스트
+
+      console.log('followingposts GET 요청 성공');
+      console.log(xhr);
+
+      let temp_html = ``;
+
+      //console.log(xhr.content[0]);
+      xhr.content.forEach(function (post) {
+        console.log(post);
+
+        let card_html = `
+                                    <div class="post-section">
+                                      <div class="post">
+                                        <div class="writer-picture"></div>
+                                        <div class="auto-group-xxrq-BhP">
+                                          <p class="writer-nickname" id="${post.nickname}">Mark Zuckerberg</p>
+                                          <p class="writer-username" id="${post.username}">@Zuckerbergofficial</p>
+                                        </div>
+                                        <p class="writer-content" id="${post.content}">This is my first post.</p>
+                                      </div>
+                                    </div>
+                    `
+        temp_html += card_html;
+      })
+
+      $('.post').append(temp_html);
+    },
+    error: function () {
+      console.log('게시글 불러오기 실패');
+    }
+
   });
 </script>
 </body>

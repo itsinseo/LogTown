@@ -25,13 +25,18 @@ public class ProfileService {
         String introduction = requestDto.getIntroduction();
         String nickname = requestDto.getNickname();
 
-        if(userRepository.findByNickname(nickname).isPresent()) {
+
+        if(nickname.equals(user.getNickname())) {
+
+        }
+        else if(userRepository.findByNickname(nickname).isPresent()) {
             throw new RejectedExecutionException("중복되는 닉네임입니다.");
+        } else {
+            user.setNickname(nickname);
         }
 
         // 닉네임, 소개 수정
         user.setIntroduction(introduction);
-        user.setNickname(nickname);
 
         userRepository.save(user);
     }
