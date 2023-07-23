@@ -36,6 +36,14 @@
             margin-left: 1rem;
         }
 
+        .card-footer {
+            display: flex;
+        }
+
+        .card-footer p {
+
+        }
+
     </style>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/js-cookie@3.0.5/dist/js.cookie.min.js"></script>
@@ -117,6 +125,52 @@
 
         console.log(postId);
 
+        // 게시글 좋아요 버튼 클릭 시
+        $(document).on("click", ".card-footer #postLike", function(event) {
+            event.preventDefault();
+            console.log(postId);
+
+            $.ajax({
+                url: `/api/posts/${postId}/like`,
+                type: 'POST',
+                contentType: 'application/json',
+                headers: {
+                    'Authorization': authCookie // 클라이언트 쿠키의 값을 전달
+                },
+                success: function (xhr) {
+                    alert('좋아요 성공');
+                    location.reload();
+                },
+                error: function (xhr) {
+                    alert(xhr.responseJSON.errorMessage);
+                    location.reload();
+                }
+            });
+        });
+
+        // 게시글 좋아요 취소 버튼 클릭 시
+        $(document).on("click", ".card-footer #deleteLike", function(event) {
+            event.preventDefault();
+            console.log(postId);
+
+            $.ajax({
+                url: `/api/posts/${postId}/like`,
+                type: 'DELETE',
+                contentType: 'application/json',
+                headers: {
+                    'Authorization': authCookie // 클라이언트 쿠키의 값을 전달
+                },
+                success: function (xhr) {
+                    alert('좋아요 취소 성공');
+                    location.reload();
+                },
+                error: function (xhr) {
+                    alert(xhr.responseJSON.errorMessage);
+                    location.reload();
+                }
+            });
+        });
+
         // 게시글 - 수정 버튼 클릭 시
         $(document).on("click", "#editPostBtn", function (event) {
             event.preventDefault();
@@ -131,7 +185,7 @@
             $("#savePostBtn").show();
         });
 
-        // 게시글 저장 버튼 클릭 시
+        // 게시글 - 수정 후 게시글 저장 버튼 클릭 시
         $(document).on("click", "#savePostBtn", function (event) {
             event.preventDefault();
             console.log('게시글 수정 저장 요청');
@@ -351,8 +405,11 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="card-footer" style="color:red">
-                                                ❤
+                                            <div class="card-footer">
+                                                <p style="color:red">❤</p>
+                                                <p class="card-text">${xhr.likeCnt}</p>
+                                                <button id="postLike">좋아요</button>
+                                                <button id="deleteLike">좋아요 취소</button>
                                             </div>
                                         </div>
                                     </div>
