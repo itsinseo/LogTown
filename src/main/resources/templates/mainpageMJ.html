@@ -32,8 +32,9 @@
             width: 50px;
             height: 50px;
             font-size: 1px;
-
             text-align: center;
+            margin-top: 23px;
+            margin-left: 10px;
         }
 
         .posts-feed {
@@ -41,7 +42,6 @@
             display: grid;
             justify-content: center;
             align-items: center;
-
         }
 
         .card {
@@ -57,18 +57,29 @@
             display: flex;
         }
 
-
         .posting-input-box {
             width: 500px;
             height: 100px;
         }
-
 
         .content-box {
             margin-top: 50px;
             display: flex;
             justify-content: center;
          }
+
+        .one-post{
+            margin-bottom: 30px;
+        }
+
+        .cancle-like-btn {
+            margin-left: 12px;
+        }
+
+        .like-cancle-btn{
+            display: flex;
+            margin-left: 12px;
+        }
     </style>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/js-cookie@3.0.5/dist/js.cookie.min.js"></script>
@@ -77,8 +88,8 @@
 </head>
 <body>
 <div>
+    <div class="header-HSM" id="homeLink">log town</div>
     <div class="container">
-        <div class="header-HSM" id="homeLink">log town</div>
         <div class="content-box">
             <input type="text" class="posting-input-box" id="postContent" placeholder="내용 입력">
             <button id="submitPost">작성하기</button>
@@ -263,8 +274,10 @@
                                             <div class="card-footer">
                                                 <p style="color:red">❤</p>
                                                 <p class="card-text">${post.likeCnt}</p>
-                                                <button id="postLike">좋아요</button>
-                                                <button id="deleteLike">좋아요 취소</button>
+                                                <div class="like-cancle-btn">
+                                                    <button class= "like-btn" id="postLike">좋아요</button>
+                                                    <button class = "cancle-like-btn" id="deleteLike">좋아요 취소</button>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -332,8 +345,10 @@
                                             <div class="card-footer">
                                                 <p style="color:red">❤</p>
                                                 <p class="card-text">${post.likeCnt}</p>
-                                                <button id="postLike">좋아요</button>
-                                                <button id="deleteLike">좋아요 취소</button>
+                                                <div class="like-cancle-btn">
+                                                    <button class= "like-btn" id="postLike">좋아요</button>
+                                                    <button class = "cancle-like-btn" id="deleteLike">좋아요 취소</button>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>

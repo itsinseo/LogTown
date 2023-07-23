@@ -18,8 +18,8 @@
     .header-HSM {
       background-color: #9747FF;
       color: white;
-      padding: 10px;
-      font-size: 24px;
+      padding: 15px;
+      font-size: 50px;
       text-align: center;
     }
 
@@ -41,6 +41,7 @@
     .profile-username {
       color: #000000;
       font-weight: bold;
+      margin: 0;
     }
 
     .profile-intro {
@@ -90,6 +91,7 @@
     .writer-nickname {
       color: #000000;
       font-weight: bold;
+      margin-top: 15px;
     }
 
     .writer-username {
@@ -98,6 +100,8 @@
 
     .writer-content {
       color: #000000;
+      margin-top: 10px;
+
     }
     .group-follow-unfollow-btn{
       display: flex;
@@ -106,13 +110,15 @@
     .group-num-follower-follwing{
       display: flex;
     }
+    .writer-info {
+      display: flex;
+    }
   </style>
 </head>
 
 <body>
+<div class="header-HSM" id="homeLink">log town</div>
 <div class="container">
-  <div class="header-HSM" id="homeLink">log town</div>
-
   <div class="profile-section">
     <div class="profile-picture"></div>
     <div class="auto-group-jhgq-abo" id="user">
@@ -257,15 +263,18 @@
             let card_html = `
                                     <div class="post-section">
                                       <div class="post" id="${data.id}">
-                                        <div class="writer-picture"></div>
-                                        <div class="auto-group-xxrq-BhP">
-                                          <p class="writer-nickname" >${data.nickname}</p>
+                                        <div class="writer-info">
+                                          <div class="writer-picture"></div>
+                                          <div class="auto-group-xxrq-BhP">
+                                            <p class="writer-nickname">${data.nickname}</p>
+                                          </div>
                                         </div>
                                         <p class="writer-content">${data.content}</p>
                                         <p class="card-text"><small class="text-muted">${data.modifiedAt}</small></p>
                                         <button id="gotopost-btn">보기</button>
                                       </div>
                                     </div>
+
                     `
             temp_html += card_html;
           })
