@@ -56,7 +56,8 @@ function confirmSignin() {
             alert("로그인 성공!");
 
             // window.location.href = "/home/mainpageMJ";
-            window.location.href = "/home/mainpage";
+            // window.location.href = "/home/mainpage";
+            window.location.href = "/home/all-users-mainpage";
         })
         .fail(function (xhr) {
             alert('로그인 오류!');

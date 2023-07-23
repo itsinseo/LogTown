@@ -11,6 +11,7 @@ import java.util.List;
 public class PostResponseDto {
     private Long id;
     private String content;
+    private Long userId; // 변경
     private String nickname;
     private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;
@@ -21,6 +22,7 @@ public class PostResponseDto {
         this.id = post.getId();
         this.content = post.getContent();
         this.nickname = post.getUser().getNickname();
+        this.userId = post.getUser().getId(); // 변경
         this.likeCnt = post.getPostLikes().size();
         this.createdAt = post.getCreatedAt();
         this.modifiedAt = post.getModifiedAt();

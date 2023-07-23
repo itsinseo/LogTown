@@ -45,6 +45,14 @@
             flex-direction: row;
         }
 
+        .card-title {
+            cursor: pointer;
+        }
+
+        .card-footer {
+            display: flex;
+        }
+
     </style>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/js-cookie@3.0.5/dist/js.cookie.min.js"></script>
@@ -56,6 +64,7 @@
     <div class="header">
         <h1>LogTown</h1>
     </div>
+
     <div class="write-wrap">
         <!--        하위 두 div는 나란히 정렬-->
         <div class="write-profile">
@@ -89,9 +98,11 @@
                         </div>
                     </div>
                 </div>
-                <div class="card-footer" style="color:red">
-<!--                    <button id="gotopost">보기</button>-->
-                    ❤
+                <div class="card-footer">
+                    <p style="color:red">❤</p>
+                    <p class="card-text">127</p>
+                    <button id="postLike">좋아요</button>
+                    <button id="deleteLike">좋아요 취소</button>
                 </div>
             </div>
         </div>
@@ -106,6 +117,68 @@
         let authCookie = Cookies.get("Authorization");  // cookie 중 Authorization
         let page = 0;
 
+        // 프로필 동그라미 클릭 시
+        $('.posts-feed').on('click', '.myprofile', function () {
+            // post.userId와 post.nickname 가져오기
+            const userId = $(this).attr('id');
+            const nickname = $(this).text();
+
+            console.log('Clicked user ID:', userId);
+            console.log('Clicked nickname:', nickname);
+
+            window.location.href = `${window.location.origin}/home/detailpage/${userId}`;
+        });
+
+
+        // 게시글 좋아요 버튼 클릭 시
+        $(document).on("click", ".card-footer #postLike", function(event) {
+            event.preventDefault();
+            let postId = $(this).closest('.card').attr('id');
+
+            console.log(postId);
+
+            $.ajax({
+                url: `/api/posts/${postId}/like`,
+                type: 'POST',
+                contentType: 'application/json',
+                headers: {
+                    'Authorization': authCookie // 클라이언트 쿠키의 값을 전달
+                },
+                success: function (xhr) {
+                    alert('좋아요 성공');
+                    location.reload();
+                },
+                error: function (xhr) {
+                    alert(xhr.responseJSON.errorMessage);
+                    location.reload();
+                }
+            });
+        });
+
+        // 게시글 좋아요 취소 버튼 클릭 시
+        $(document).on("click", ".card-footer #deleteLike", function(event) {
+            event.preventDefault();
+            let postId = $(this).closest('.card').attr('id');
+
+            console.log(postId);
+
+            $.ajax({
+                url: `/api/posts/${postId}/like`,
+                type: 'DELETE',
+                contentType: 'application/json',
+                headers: {
+                    'Authorization': authCookie // 클라이언트 쿠키의 값을 전달
+                },
+                success: function (xhr) {
+                    alert('좋아요 취소 성공');
+                    location.reload();
+                },
+                error: function (xhr) {
+                    alert(xhr.responseJSON.errorMessage);
+                    location.reload();
+                }
+            });
+        });
 
         //게시글 하나 선택
         $(document).on("click","#gotopost", function(event) {
@@ -114,7 +187,6 @@
             let postId = $(this).closest('.card').attr('id');
 
             console.log(postId);
-            alert('된다');
 
             $.ajax({
                 url: `/api/posts/${postId}`,
@@ -150,28 +222,29 @@
 
                 let temp_html = ``;
 
-                //console.log(xhr.content[0]);
                 xhr.content.forEach(function (post) {
-                    console.log(post);
 
                     let card_html = `
                                     <div class="one-post" id="getOnePost">
                                         <div class="card mb-3" style="width: 50rem;" id="${post.id}">
                                             <div class="row g-0" id="goclick">
                                                 <div class="col-md-1">
-                                                    <div class="myprofile">프로필</div>
+                                                    <div class="myprofile" id="${post.userId}">${post.nickname}</div>
                                                 </div>
                                                 <div class="col-md-8">
                                                     <div class="card-body">
-                                                        <h5 class="card-title">${post.nickname}</h5>
+                                                        <h5 class="card-title" id="post-nickname-btn">${post.nickname}</h5>
                                                         <p class="card-text">${post.content}</p>
                                                         <p class="card-text"><small class="text-muted">${post.modifiedAt}</small></p>
                                                         <button id="gotopost">보기</button>
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="card-footer" style="color:red">
-                                                ❤
+                                            <div class="card-footer">
+                                                <p style="color:red">❤</p>
+                                                <p class="card-text">${post.likeCnt}</p>
+                                                <button id="postLike">좋아요</button>
+                                                <button id="deleteLike">좋아요 취소</button>
                                             </div>
                                         </div>
                                     </div>
@@ -225,19 +298,22 @@
                                         <div class="card mb-3" style="width: 50rem;" id="${post.id}">
                                             <div class="row g-0" id="goclick">
                                                 <div class="col-md-1">
-                                                    <div class="myprofile">프로필</div>
+                                                    <div class="myprofile" id="${post.userId}">${post.nickname}</div>
                                                 </div>
                                                 <div class="col-md-8">
                                                     <div class="card-body">
-                                                        <h5 class="card-title">${post.nickname}</h5>
+                                                        <h5 class="card-title"  id="post-nickname-btn">${post.nickname}</h5>
                                                         <p class="card-text">${post.content}</p>
                                                         <p class="card-text"><small class="text-muted">${post.modifiedAt}</small></p>
                                                         <button id="gotopost">보기</button>
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="card-footer" style="color:red">
-                                                ❤
+                                            <div class="card-footer">
+                                                <p style="color:red">❤</p>
+                                                <p class="card-text">${post.likeCnt}</p>
+                                                <button id="postLike">좋아요</button>
+                                                <button id="deleteLike">좋아요 취소</button>
                                             </div>
                                         </div>
                                     </div>

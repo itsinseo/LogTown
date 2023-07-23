@@ -154,6 +154,7 @@
       // let username; // 이 변수는 closure에 캡슐화.
       const urlParams = new URLSearchParams(window.location.search);
       const nickname = urlParams.get('nickname');
+      //console.log("닉네임"+ nickname);
 
       // 첫번쨰 Ajax: 사용자의 정보를 조회
       $.ajax({
@@ -195,7 +196,7 @@
               // }
           }
           username = data.username;
-
+          console.log(username)
           // 첫번쨰 Ajax가 성공시 username이 담아서 두번쨰 Ajax 호출
           getFollowCounts(username);
           getUserPosts(username);
@@ -230,26 +231,28 @@
       });
     }
 
-    function getUserPosts(username) {
+    function getUserPosts(username1) {
+      console.log("sdsds"+username1)
       $.ajax({
-        url: "/api/posts/myposts/" + username +"?page=0",
+        url: "/api/posts/myposts/" + username1 +"?page=0",
         type: 'GET',
         contentType: 'application/json',
         headers: {
           'Authorization': authCookie
         },
-        success: function (xhr,test) {
-          console.log('성공!!')
+        success: function (xhr) {
+
           $('.post-section').empty();
           let temp_html = ``;
-
+          console.log(xhr)
           // console.log(xhr.content[0]);
           xhr.content.forEach(function (data) {
+            console.log('성공!!')
             console.log(data);
 
             let card_html = `
                                     <div class="post-section">
-                                      <div class="post">
+                                      <div class="post" id="${data.id}">
                                         <div class="writer-picture"></div>
                                         <div class="auto-group-xxrq-BhP">
                                           <p class="writer-nickname" >${data.nickname}</p>

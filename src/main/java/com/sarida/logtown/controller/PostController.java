@@ -57,8 +57,8 @@ public class PostController {
     }
 
     @GetMapping("/myposts/{username}")
-    public Slice<PostResponseDto> getMyPosts(@RequestParam("page") int page, @AuthenticationPrincipal UserDetailsImpl userDetails) {
-        return postService.getMyPosts(page, userDetails);
+    public Slice<PostResponseDto> getMyPosts(@PathVariable String username, @RequestParam("page") int page) {
+        return postService.getMyPosts(username, page);
     }
 
     @GetMapping("/followingposts")

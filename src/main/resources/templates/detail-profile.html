@@ -237,11 +237,11 @@
         headers: {
           'Authorization': authCookie
         },
-        success: function (xhr,test) {
+        success: function (xhr) {
           console.log('성공!!')
           $('.post-section').empty();
           let temp_html = ``;
-
+          console.log(xhr)
           // console.log(xhr.content[0]);
           xhr.content.forEach(function (data) {
             console.log(data);

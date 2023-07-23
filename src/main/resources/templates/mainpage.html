@@ -24,6 +24,8 @@
     <div style="position: relative;">
         <button class="tab-button" onclick="openSlideTab()">☰</button>
         <div id="slideTab" class="slide-tab-content">
+            <button onclick="redirectToAllUserPosts()">Show All User's Posts</button>
+            <button onclick="redirectToFollowingUserPosts()">Show Only Following User's Posts</button>
             <button onclick="redirectToDetailPage()">Your Profile</button>
             <button onclick="myProfile()">Settings</button>
             <button onclick="logout()">Logout</button>
@@ -90,6 +92,20 @@
         slideTab.classList.toggle("show");
     }
 
+    function redirectToFollowingUserPosts() {
+        if (authCookie) {
+            window.location.href = "/home/mainpageMJ";
+        } else {
+            window.location.href = "/home/mainpage";
+        }
+    }
+    function redirectToAllUserPosts() {
+        if (authCookie) {
+            window.location.href = "/home/all-users-mainpage";
+        } else {
+            window.location.href = "/home/mainpage";
+        }
+    }
     function redirectToDetailPage() {
         if (authCookie) {
             window.location.href = "/home/detailpage";

@@ -83,10 +83,10 @@ public interface PostService {
      * 내가 쓴 게시글 보기
      *
      * @param page        페이지 번호
-     * @param userDetails 로그인된 user
+     * @param username    user
      * @return 내가 쓴 게시글 10개씩 보기
      */
-    Slice<PostResponseDto> getMyPosts(int page, UserDetailsImpl userDetails);
+    Slice<PostResponseDto> getMyPosts(String username, int page);
 
     /**
      * 팔로잉 하는 사용자 게시글 보기
