@@ -178,6 +178,7 @@
           username = data.username;
           console.log(data);
 
+          // 이거 수정요람!!
           // 팔로우 및 언팔 버튼 지정
           const followBtn = document.querySelector(".follow-btn");
           const unfollowBtn = document.querySelector(".unfollow-btn");
@@ -186,9 +187,9 @@
           followBtn.style.display = "none"; // 팔로우 버튼 없애기
           unfollowBtn.style.display = "none"; // 언팔로우 버튼 없애기
 
-
           // 첫번쨰 Ajax가 성공시 username이 담아서 두번쨰 Ajax 호출
           getFollowCounts(username);
+          getUserPosts(username);
         },
         error: function () {
           console.log('실패!!')
@@ -219,49 +220,76 @@
         }
       });
     }
-  });
 
-  // 게시글 가져오는 부분
-  $.ajax({
-    url: '/api/posts/followingposts?page=0',
-    type: 'GET',
-    contentType: 'application/json',
-    headers: {
-      'Authorization': authCookie  // 확실x, 이전 프로젝트에서 cookie로 로그인해서 .cookie였음
-    },
-    success: function (xhr) {
-      $('.post').empty(); // 테스트
+    function getUserPosts(username) {
+      $.ajax({
+        url: "/api/posts/myposts/" + username +"?page=0",
+        type: 'GET',
+        contentType: 'application/json',
+        headers: {
+          'Authorization': authCookie
+        },
+        success: function (xhr) {
+          console.log('성공!!')
+          $('.post-section').empty();
 
-      console.log('followingposts GET 요청 성공');
-      console.log(xhr);
+          let temp_html = ``;
 
-      let temp_html = ``;
+          //console.log(xhr.content[0]);
+          xhr.content.forEach(function (data) {
+            console.log(data);
 
-      //console.log(xhr.content[0]);
-      xhr.content.forEach(function (post) {
-        console.log(post);
-
-        let card_html = `
+            let card_html = `
                                     <div class="post-section">
                                       <div class="post">
                                         <div class="writer-picture"></div>
                                         <div class="auto-group-xxrq-BhP">
-                                          <p class="writer-nickname" id="${post.nickname}">Mark Zuckerberg</p>
-                                          <p class="writer-username" id="${post.username}">@Zuckerbergofficial</p>
+                                          <p class="writer-nickname" >${data.nickname}</p>
                                         </div>
-                                        <p class="writer-content" id="${post.content}">This is my first post.</p>
+                                        <p class="writer-content">${data.content}</p>
+                                        <p class="card-text"><small class="text-muted">${data.modifiedAt}</small></p>
+                                        <button id="gotopost">보기</button>
                                       </div>
                                     </div>
                     `
-        temp_html += card_html;
-      })
+            temp_html += card_html;
+          })
 
-      $('.post').append(temp_html);
-    },
-    error: function () {
-      console.log('게시글 불러오기 실패');
+          $('.post-section').append(temp_html);
+        },
+        error: function () {
+          console.log('실패!!')
+        }
+      });
     }
 
+  });
+
+  $(document).on("click","#gotopost", function(event) {
+    event.preventDefault();
+
+    let postId = $(this).closest('.card').attr('id');
+
+    console.log(postId);
+    alert('된다');
+
+    $.ajax({
+      url: `/api/posts/${postId}`,
+      type: 'GET',
+      contentType: 'application/json',
+      headers: {
+        'Authorization': authCookie // 클라이언트 쿠키의 값을 전달
+      },
+      success: function (xhr) {
+        console.log('이동');
+        //console.log(response.id);
+
+        window.location.href = `${window.location.origin}/home/onepost/${postId}`;
+      },
+      error: function () {
+        console.log('게시글 등록 error 실패');
+      }
+    });
   });
 </script>
 </body>

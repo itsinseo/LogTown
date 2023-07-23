@@ -56,7 +56,7 @@ public class PostController {
         return postService.deletePost(postId, userDetails);
     }
 
-    @GetMapping("/myposts")
+    @GetMapping("/myposts/{username}")
     public Slice<PostResponseDto> getMyPosts(@RequestParam("page") int page, @AuthenticationPrincipal UserDetailsImpl userDetails) {
         return postService.getMyPosts(page, userDetails);
     }
