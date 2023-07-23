@@ -53,6 +53,10 @@
             display: flex;
         }
 
+        #logout-btn {
+            margin: 20px;
+        }
+
     </style>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/js-cookie@3.0.5/dist/js.cookie.min.js"></script>
@@ -62,7 +66,19 @@
 <body>
 <div>
     <div class="header">
-        <h1>LogTown</h1>
+        <div class="row">
+            <div class="col-md-2" style="text-align: left">
+                <button type="button" class="btn btn-primary" id="logout-btn">로그아웃</button>
+            </div>
+            <div class="col-md-8">
+                <a href="/home/all-users-mainpage" style="font-size: 50px; text-align: center">
+                    LogTown
+                </a>
+            </div>
+            <div class="col-md-2">
+
+            </div>
+        </div>
     </div>
 
     <div class="write-wrap">
@@ -145,11 +161,11 @@
                     'Authorization': authCookie // 클라이언트 쿠키의 값을 전달
                 },
                 success: function (xhr) {
-                    alert('좋아요 성공');
+                    console.log('좋아요 성공');
                     location.reload();
                 },
                 error: function (xhr) {
-                    alert(xhr.responseJSON.errorMessage);
+                    console.log(xhr.responseJSON.errorMessage);
                     location.reload();
                 }
             });
@@ -371,5 +387,11 @@
 
     });
 </script>
+
+<script src="/js/basic.js"></script>
 </body>
+<script>
+    $('#logout-btn').click(logout);
+
+</script>
 </html>

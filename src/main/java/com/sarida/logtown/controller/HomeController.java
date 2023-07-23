@@ -39,17 +39,17 @@ public class HomeController {
         return "backoffice";
     }
 
-    @GetMapping("/home/mainpageMJ") // 민지 메인페이지
+    @GetMapping("/home/mainpageMJ") // 팔로우한 유저, 본인 게시물 페이지
     public String mainPageMJ() {
         return "mainpageMJ";
     }
 
-    @GetMapping("/home/all-users-mainpage") // 민지 메인페이지
+    @GetMapping("/home/all-users-mainpage") // 모든 유저 게시물 페이지 (메인페이지)
     public String allUsersMainPage() {
         return "all-users-mainpage";
     }
 
-    @GetMapping("/home/other-detail-profile") // 민지 메인페이지
+    @GetMapping("/home/other-detail-profile") // 다른 유저의 프로필 페이지
     public String otherDetailProfile() {
         return "other-detail-profile";
     }
