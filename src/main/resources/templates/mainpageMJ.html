@@ -8,6 +8,14 @@
             text-align: center;
         }
 
+        .header-HSM {
+            background-color: #9747FF;
+            color: white;
+            padding: 10px;
+            font-size: 24px;
+            text-align: center;
+        }
+
         .write-wrap {
             display: flex;
         }
@@ -53,6 +61,57 @@
             display: flex;
         }
 
+        .posting-section {
+            margin-top: 50px;
+        }
+
+        .posting-box {
+            border: 1px solid #000000;
+            padding: 10px;
+            margin-bottom: 20px;
+            display: flex;
+        }
+
+        .posting-input-box {
+            width: 500px;
+            height: 100px;
+        }
+
+        .writer-picture {
+            background-color: #9747FF;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: inline-block;
+            vertical-align: middle;
+            margin-right: 10px;
+        }
+
+        .content-box {
+           margin-left: auto;
+         }
+
+        .writer-nickname {
+            color: #000000;
+            margin-top: 15px;
+            font-weight: bold;
+        }
+
+        .auto-group-xxrq-BhP {
+            color: #000000;
+            /*display: flex;*/
+            margin-right: 15px;
+            margin-top: 3px;
+        }
+
+        .writer-username {
+            color: #000000;
+        }
+
+        .writer-content {
+            color: #000000;
+        }
+
         #logout-btn {
             margin: 20px;
         }
@@ -80,9 +139,25 @@
             </div>
         </div>
     </div>
+    <div class="container">
+        <div class="header-HSM">log town</div>
 
-    <div class="write-wrap">
-        <!--        하위 두 div는 나란히 정렬-->
+        <div class="posting-section">
+            <div class="posting-box">
+                <div class="writer-profile-box">
+                    <div class="writer-picture"></div>
+                </div>
+                <div class="content-box">
+                    <input type="text" class="posting-input-box" id="postContent" placeholder="내용 입력">
+                    <button id="submitPost">작성하기</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+   <!-- <div class="write-wrap">
+        &lt;!&ndash;        하위 두 div는 나란히 정렬&ndash;&gt;
         <div class="write-profile">
             <div class="myprofile">내 프로필</div>
 
@@ -95,7 +170,7 @@
                 <button id="submitPost">작성하기</button>
             </div>
         </div>
-    </div>
+    </div>-->
 
     <div class="posts-feed">
         <div class="one-post" id="getOnePost">
@@ -145,7 +220,6 @@
             window.location.href = `${window.location.origin}/home/detailpage/${userId}`;
         });
 
-
         // 게시글 좋아요 버튼 클릭 시
         $(document).on("click", ".card-footer #postLike", function(event) {
             event.preventDefault();
@@ -161,11 +235,11 @@
                     'Authorization': authCookie // 클라이언트 쿠키의 값을 전달
                 },
                 success: function (xhr) {
-                    console.log('좋아요 성공');
+                    alert('좋아요 성공');
                     location.reload();
                 },
                 error: function (xhr) {
-                    console.log(xhr.responseJSON.errorMessage);
+                    alert(xhr.responseJSON.errorMessage);
                     location.reload();
                 }
             });

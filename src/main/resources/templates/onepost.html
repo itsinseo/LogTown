@@ -31,6 +31,19 @@
             margin-top: 3rem;
         }
 
+        .card-header button{
+            float:right;
+            margin-left: 1rem;
+        }
+
+        .card-footer {
+            display: flex;
+        }
+
+        .card-footer p {
+
+        }
+
         input[type=checkbox] {
             margin: 10px;
             zoom: 1.5;
@@ -79,6 +92,10 @@
             <div class="one-post">
                 <p id="postIdParagraph" style="display: none;">postId: <span th:text="${postId}"></span></p>
                 <div class="card mb-3" style="max-width: 50rem;">
+                    <div class="card-header">
+                        <button id="updatePost">수정</button>
+                        <button id="deletePost">삭제</button>
+                    </div>
                     <div class="row g-0">
                         <div class="col-md-1">
                             <div class="myprofile">프로필</div>
@@ -86,13 +103,13 @@
                         <div class="col-md-8">
                             <div class="card-body">
                                 <h5 class="card-title">닉네임</h5>
-                                <p class="card-text">글 내용</p>
+                                <p class="card-text" id="post-content">글 내용</p>
                                 <p class="card-text"><small class="text-muted">수정시각</small></p>
                             </div>
                         </div>
                     </div>
                     <div class="card-footer" style="color:red">
-                        ❤
+                        <button class="likePost">❤</button>
                     </div>
                 </div>
             </div>
@@ -110,12 +127,17 @@
             </div>
             <div class="comment-list">
                 <div class="card" style="max-width: 50rem;">
+                    <p class="card-id" style="display:none;">댓글id</p>
+                    <div class="card-header">
+                        <button id="updateComment">수정</button>
+                        <button id="deleteComment">삭제</button>
+                    </div>
                     <div class="col-md-1">
                         <div class="myprofile">프로필</div>
                     </div>
                     <div class="card-body">
                         <h5 class="card-title">댓글 작성자</h5>
-                        <p class="card-text">댓글 내용</p>
+                        <p class="card-text" id="comment-content">댓글 내용</p>
                         <p class="card-text"><small class="text-muted">수정시각</small></p>
                     </div>
                 </div>
@@ -129,13 +151,222 @@
 
 <script>
     $(document).ready(function () {
-        // const urlParams = new URLSearchParams(window.location.search);
-        // const postId = urlParams.get('postId');
         let postId = document.getElementById('postIdParagraph').querySelector('span').innerText;
         let authCookie = Cookies.get("Authorization");  // cookie 중 Authorization
         let isAdmin = false;
 
         console.log(postId);
+
+        // 게시글 좋아요 버튼 클릭 시
+        $(document).on("click", ".card-footer #postLike", function(event) {
+            event.preventDefault();
+            console.log(postId);
+
+            $.ajax({
+                url: `/api/posts/${postId}/like`,
+                type: 'POST',
+                contentType: 'application/json',
+                headers: {
+                    'Authorization': authCookie // 클라이언트 쿠키의 값을 전달
+                },
+                success: function (xhr) {
+                    alert('좋아요 성공');
+                    location.reload();
+                },
+                error: function (xhr) {
+                    alert(xhr.responseJSON.errorMessage);
+                    location.reload();
+                }
+            });
+        });
+
+        // 게시글 좋아요 취소 버튼 클릭 시
+        $(document).on("click", ".card-footer #deleteLike", function(event) {
+            event.preventDefault();
+            console.log(postId);
+
+            $.ajax({
+                url: `/api/posts/${postId}/like`,
+                type: 'DELETE',
+                contentType: 'application/json',
+                headers: {
+                    'Authorization': authCookie // 클라이언트 쿠키의 값을 전달
+                },
+                success: function (xhr) {
+                    alert('좋아요 취소 성공');
+                    location.reload();
+                },
+                error: function (xhr) {
+                    alert(xhr.responseJSON.errorMessage);
+                    location.reload();
+                }
+            });
+        });
+
+        // 게시글 - 수정 버튼 클릭 시
+        $(document).on("click", "#editPostBtn", function (event) {
+            event.preventDefault();
+            console.log('게시글 수정 시도');
+
+            // 수정 창 띄우기
+            $("#post-content-paragraph").hide();
+            $("#edit-post-content").show();
+
+            // 버튼 보이기 바꾸기
+            $("#editPostBtn").hide();
+            $("#savePostBtn").show();
+        });
+
+        // 게시글 - 수정 후 게시글 저장 버튼 클릭 시
+        $(document).on("click", "#savePostBtn", function (event) {
+            event.preventDefault();
+            console.log('게시글 수정 저장 요청');
+
+            // 새로운 입력
+            const newPostContent = $("#edit-post-content").val();
+
+            let data = {
+                content: newPostContent
+            };
+
+            $.ajax({
+                url: `/api/posts/${postId}`,
+                type: 'PUT',
+                contentType: 'application/json',
+                headers: {
+                    'Authorization': authCookie // 클라이언트 쿠키의 값을 전달
+                },
+                data: JSON.stringify(data),
+                success: function (response) {
+                    alert("게시글 수정 성공");
+                    // 새로운 텍스트로 보이도록
+                    $("#post-content-paragraph").text(newPostContent);
+
+                    // 수정 창 보이기 바꾸기
+                    $("#post-content-paragraph").show();
+                    $("#edit-post-content").hide();
+
+                    // 버튼 보이기 바꾸기
+                    $("#editPostBtn").show();
+                    $("#savePostBtn").hide();
+                },
+                error: function (xhr) {
+                    alert(xhr.responseJSON.errorMessage);
+                    console.log('게시글 수정 요청 실패');
+                    location.reload();
+                }
+            });
+        });
+
+        // 게시글 삭제
+        $(document).on("click", "#deletePostBtn", function (event) {
+            event.preventDefault();
+            console.log('글 삭제 요청');
+
+            $.ajax({
+                url: `/api/posts/${postId}`,
+                type: 'DELETE',
+                contentType: 'application/json',
+                headers: {
+                    'Authorization': authCookie // 클라이언트 쿠키의 값을 전달
+                },
+                success: function (response) {
+
+                    alert("글 삭제 성공");
+                    window.location.href = `${window.location.origin}/home/mainpageMJ`;
+                },
+                error: function (xhr) {
+                    alert(xhr.responseJSON.errorMessage);
+                    console.log('글 삭제 요청 실패');
+                }
+            });
+        })
+
+        // 댓글 수정 버튼 클릭시
+        $(document).on("click", "#editCommentBtn", function (event) {
+            event.preventDefault();
+            console.log('댓글 수정 시도');
+
+            // 수정 창 띄우기
+            $("#comment-content-paragraph").hide();
+            $("#edit-comment-content").show();
+
+            // 버튼 보이기 바꾸기
+            $("#editCommentBtn").hide();
+            $("#saveCommentBtn").show();
+        });
+
+        //댓글 저장 버튼 클릭시
+        $(document).on("click", "#saveCommentBtn", function (event) {
+            event.preventDefault();
+            console.log('댓글 수정 저장 요청');
+
+            const card = $(this).closest('.card');
+            const commentId = card.find('.card-id').text();
+            console.log(commentId);
+
+            // 새로운 입력
+            const newCommentContent = $("#edit-comment-content").val();
+
+            let data = {
+                content: newCommentContent
+            };
+
+            $.ajax({
+                url: `/api/comments/${commentId}`,
+                type: 'PUT',
+                contentType: 'application/json',
+                headers: {
+                    'Authorization': authCookie // 클라이언트 쿠키의 값을 전달
+                },
+                data: JSON.stringify(data),
+                success: function (response) {
+                    alert("게시글 수정 성공");
+                    // 새로운 텍스트로 보이도록
+                    $("#comment-content-paragraph").text(newCommentContent);
+
+                    // 수정 창 보이기 바꾸기
+                    $("#comment-content-paragraph").show();
+                    $("#edit-comment-content").hide();
+
+                    // 버튼 보이기 바꾸기
+                    $("#editCommentBtn").show();
+                    $("#saveCommentBtn").hide();
+                },
+                error: function (xhr) {
+                    alert(xhr.responseJSON.errorMessage);
+                    console.log('게시글 수정 요청 실패');
+                    location.reload();
+                }
+            });
+        });
+
+        // 댓글삭제
+        $(document).on("click", "#deleteCommentBtn", function (event) {
+            event.preventDefault();
+            console.log('댓글 삭제 요청');
+
+            const card = $(this).closest('.card');
+            const commentId = card.find('.card-id').text();
+
+            $.ajax({
+                url: `/api/comments/${commentId}`,
+                type: 'DELETE',
+                contentType: 'application/json',
+                headers: {
+                    'Authorization': authCookie // 클라이언트 쿠키의 값을 전달
+                },
+                success: function (response) {
+
+                    alert("댓글 삭제 성공");
+                    location.reload();
+                },
+                error: function (xhr) {
+                    alert(xhr.responseJSON.errorMessage);
+                    console.log('댓글 삭제 요청 실패');
+                }
+            });
+        })
 
         // 댓글 등록
         $('#submitComment').click(function (event) {
@@ -188,7 +419,7 @@
             }
         });
 
-        // 게시글 가져오는 부분
+        // 게시글, 댓글 가져오는 부분
         $.ajax({
             url: `/api/posts/${postId}`,
             type: 'GET',
@@ -211,13 +442,21 @@
                                                 <div class="col-md-8">
                                                     <div class="card-body">
                                                         <h5 class="card-title">${xhr.nickname}</h5>
-                                                        <p class="card-text">${xhr.content}</p>
-                                                        <p class="card-text"><small class="text-muted">${xhr.modifiedAt}</small></p>
+                                                        <p class="card-text" id="post-content-paragraph">${xhr.content}</p>
+                                                        <input type="text" class="form-control" id="edit-post-content" value="${xhr.content}" style="display: none;">
+                                                        <p class="card-text"><small class="text-muted">수정시각</small></p>
+                                                        <!-- 버튼 -->
+                                                        <button id="editPostBtn">수정</button>
+                                                        <button id="savePostBtn" style="display: none;">저장</button>
+                                                        <button id="deletePostBtn">삭제</button>
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="card-footer" style="color:red">
-                                                ❤
+                                            <div class="card-footer">
+                                                <p style="color:red">❤</p>
+                                                <p class="card-text">${xhr.likeCnt}</p>
+                                                <button id="postLike">좋아요</button>
+                                                <button id="deleteLike">좋아요 취소</button>
                                             </div>
                                         </div>
                                     </div>
@@ -240,6 +479,7 @@
                     let comment_html = `
                     <div class="card" style="max-width: 50rem;">
                     <div class="row justify-content-between">
+                        <p class="card-id" style="display:none;">${comment.id}</p>
                         <div class="col-md-1">
                             <div class="myprofile">프로필</div>
                         </div>
@@ -249,8 +489,12 @@
                     </div>
                         <div class="card-body">
                             <h5 class="card-title">${comment.nickname}</h5>
-                            <p class="card-text">${comment.content}</p>
+                            <p class="card-text" id="comment-content-paragraph">${comment.content}</p>
+                            <input type="text" class="form-control" id="edit-comment-content" value="${comment.content}" style="display: none;">
                             <p class="card-text"><small class="text-muted">${comment.modifiedAt}</small></p>
+                            <button id="editCommentBtn">수정</button>
+                            <button id="saveCommentBtn" style="display: none;">저장</button>
+                            <button id="deleteCommentBtn">삭제</button>
                         </div>
                     </div>`
 

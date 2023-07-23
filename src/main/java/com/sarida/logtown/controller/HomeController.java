@@ -71,8 +71,9 @@ public class HomeController {
         return "changepassword";
     }
 
-    @GetMapping("/home/detailpage")
-    public String detailpage() {
+    @GetMapping("/home/detailpage/{userId}")
+    public String detailpage(@PathVariable Long userId, Model model) {
+        model.addAttribute("userId", userId);
         return "detail-profile";
     }
 
