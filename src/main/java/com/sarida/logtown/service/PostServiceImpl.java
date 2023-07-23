@@ -130,11 +130,15 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public Slice<PostResponseDto> getMyPosts(int page, UserDetailsImpl userDetails) {
+    public Slice<PostResponseDto> getMyPosts(String username, int page) {
         Sort sort = Sort.by(Sort.Direction.DESC, "modifiedAt");
         Pageable pageable = PageRequest.of(page, PAGE_SIZE, sort);
 
-        Slice<Post> postSlice = postRepository.findAllByUser(userDetails.getUser(), pageable);
+        User user = userRepository.findByUsername(username).orElseThrow( ()
+        -> new IllegalArgumentException("존재하지 않는 유저입니다")
+        );
+
+        Slice<Post> postSlice = postRepository.findAllByUser(user, pageable);
 
         return postSlice.map(PostResponseDto::new);
     }

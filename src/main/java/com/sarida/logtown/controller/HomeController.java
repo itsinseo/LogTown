@@ -44,6 +44,16 @@ public class HomeController {
         return "mainpageMJ";
     }
 
+    @GetMapping("/home/all-users-mainpage") // 민지 메인페이지
+    public String allUsersMainPage() {
+        return "all-users-mainpage";
+    }
+
+    @GetMapping("/home/other-detail-profile") // 민지 메인페이지
+    public String otherDetailProfile() {
+        return "other-detail-profile";
+    }
+
     @GetMapping("/home/onepost/{postId}")
     public String getOnePost(@PathVariable Long postId, Model model) {
         model.addAttribute("postId", postId);

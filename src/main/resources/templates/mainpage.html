@@ -21,6 +21,16 @@
     <div class="container">
         <div class="sub-logo">로그인(토큰 인증) 성공!</div>
     </div>
+    <div style="position: relative;">
+        <button class="tab-button" onclick="openSlideTab()">☰</button>
+        <div id="slideTab" class="slide-tab-content">
+            <button onclick="redirectToAllUserPosts()">Show All User's Posts</button>
+            <button onclick="redirectToFollowingUserPosts()">Show Only Following User's Posts</button>
+            <button onclick="redirectToDetailPage()">Your Profile</button>
+            <button onclick="myProfile()">Settings</button>
+            <button onclick="logout()">Logout</button>
+        </div>
+    </div>
     <div class="button-container" style="background-color: aquamarine; margin: 10px; font-family: 'Jua', sans-serif;">
         메인페이지 자체는 인증 상관없이 접근 허용<br>
         그러나 메인페이지 로딩 시 동적으로 게시물을 가져오는 메서드를 호출,<br>
@@ -31,10 +41,42 @@
          style="background-color: burlywood; margin: 10px; font-size: 20px">
         게시글 목록
     </div>
-    <button onclick="redirectToDetailPage()">상세페이지</button>
-    <button onclick="myProfile()">마이프로필</button>
 </div>
 </body>
+<style>
+    /* Slide tab button style */
+    .tab-button {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        z-index: 999;
+        font-size: 20px;
+        background: none;
+        border: none;
+        cursor: pointer;
+    }
+
+    /* Slide tab content style */
+    .slide-tab-content {
+        position: absolute;
+        top: 0;
+        right: -250px; /* Start the slide tab off-screen */
+        width: 250px;
+        background-color: #f9f9f9;
+        padding: 20px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        transition: right 0.3s ease;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+    }
+
+    /* Show the slide tab when it's open */
+    .slide-tab-content.show {
+        right: 0;
+    }
+</style>
+
 <script>
     document.addEventListener("DOMContentLoaded", function () {
         authCookie = Cookies.get("Authorization");
@@ -45,26 +87,44 @@
         postListSample.append(postSample);
     });
 
-    function redirectToDetailPage() {
-        console.log("Test");
+    function openSlideTab() {
+        let slideTab = document.getElementById("slideTab");
+        slideTab.classList.toggle("show");
+    }
+
+    function redirectToFollowingUserPosts() {
         if (authCookie) {
-            // Assuming the "detail-profile.html" file is in the same directory
-            console.log("Test2");
+            window.location.href = "/home/mainpageMJ";
+        } else {
+            window.location.href = "/home/mainpage";
+        }
+    }
+    function redirectToAllUserPosts() {
+        if (authCookie) {
+            window.location.href = "/home/all-users-mainpage";
+        } else {
+            window.location.href = "/home/mainpage";
+        }
+    }
+    function redirectToDetailPage() {
+        if (authCookie) {
             window.location.href = "/home/detailpage";
         } else {
-            // Redirect to the login page (replace "login.html" with your actual login page URL)
             window.location.href = "/home/mainpage";
         }
     }
 
     function myProfile() {
         if (authCookie) {
-            // Assuming the "detail-profile.html" file is in the same directory
             window.location.href = "/home/myprofile";
         } else {
-            // Redirect to the login page (replace "login.html" with your actual login page URL)
             window.location.href = "/home/mainpage";
         }
+    }
+
+    function logout() {
+        Cookies.remove("Authorization");
+        window.location.href = "/home";
     }
 </script>
 </html>

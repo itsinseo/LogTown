@@ -55,21 +55,9 @@ function confirmSignin() {
             });
             alert("로그인 성공!");
 
-            let authCookie = Cookies.get("Authorization");
-
-            $.ajax({
-                type: "GET",
-                url: "/api/admin/check",
-                headers: {
-                    'Authorization': authCookie
-                },
-            })
-                .done(function () {
-                    window.location.href = "/home/backoffice";
-                })
-                .fail(function () {
-                    window.location.href = "/home/mainpageMJ";
-                });
+            // window.location.href = "/home/mainpageMJ";
+            // window.location.href = "/home/mainpage";
+            window.location.href = "/home/all-users-mainpage";
         })
         .fail(function (xhr) {
             alert('로그인 오류!');
