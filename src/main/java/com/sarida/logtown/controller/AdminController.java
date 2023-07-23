@@ -1,8 +1,9 @@
 package com.sarida.logtown.controller;
 
 import com.sarida.logtown.dto.*;
-import com.sarida.logtown.service.*;
+import com.sarida.logtown.service.AdminService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Slice;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -15,6 +16,7 @@ public class AdminController {
     // 게시글 여러개 삭제
     @DeleteMapping("/posts/delete")
     public ApiResponseDto deletePosts(@RequestBody SelectedIdsDto selectedIds) {
+        System.out.println(selectedIds.toString());
         return adminService.deletePosts(selectedIds);
     }
 
@@ -39,6 +41,12 @@ public class AdminController {
         return adminService.getPostsByPage(page, isAsc);
     }
 
+    // 글 전체 보기 (Slice)
+    @GetMapping("/sliceposts")
+    public Slice<PostResponseDto> getSlicePosts(@RequestParam("page") int page) {
+        return adminService.getSlicePosts(page);
+    }
+
     // 댓글 전체 보기 (Page)
     @GetMapping("/comments")
     public PageCommentsDto getCommentsByPage(
@@ -57,4 +65,8 @@ public class AdminController {
         return adminService.getUserInfosByPage(page, isAsc);
     }
 
+    @GetMapping("/check")
+    public void checkAdmin() {
+        // ajax 호출로 ROLE 체크를 위한 빈 메서드
+    }
 }

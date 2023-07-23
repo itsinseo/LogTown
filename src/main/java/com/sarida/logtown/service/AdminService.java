@@ -1,6 +1,7 @@
 package com.sarida.logtown.service;
 
 import com.sarida.logtown.dto.*;
+import org.springframework.data.domain.Slice;
 
 public interface AdminService {
 
@@ -55,4 +56,11 @@ public interface AdminService {
      */
     PageCommentsDto getCommentsByPage(int page, boolean isAsc);
 
+    /**
+     * 게시글 전체 보기 (Slice)
+     *
+     * @param page 페이지 번호
+     * @return 게시글 목록
+     */
+    Slice<PostResponseDto> getSlicePosts(int page);
 }

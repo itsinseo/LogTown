@@ -8,10 +8,7 @@ import com.sarida.logtown.repository.CommentRepository;
 import com.sarida.logtown.repository.PostRepository;
 import com.sarida.logtown.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -105,4 +102,15 @@ public class AdminServiceImpl implements AdminService {
         return new PageUserInfosDto(userInfoPage.map(UserInfoResponseDto::new));
     }
 
+    @Override
+    public Slice<PostResponseDto> getSlicePosts(int page) {
+        // 페이징
+        Sort sort = Sort.by(Sort.Direction.DESC, "modifiedAt");
+        Pageable pageable = PageRequest.of(page, PAGE_SIZE, sort);
+
+        // 전체 게시글 목록
+        Slice<Post> postSlice = postRepository.findAll(pageable);
+
+        return postSlice.map(PostResponseDto::new);
+    }
 }

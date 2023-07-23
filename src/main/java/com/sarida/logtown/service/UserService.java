@@ -59,7 +59,8 @@ public class UserService {
         userRepository.save(user);
     }
 
-    public void signIn(SigninRequestDto requestDto) {
+    // 리턴 타입 void -> User 로 변경됨
+    public User signIn(SigninRequestDto requestDto) {
         String username = requestDto.getUsername();
         String password = requestDto.getPassword();
 
@@ -70,5 +71,7 @@ public class UserService {
         if (!passwordEncoder.matches(password, user.getPassword())) {
             throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
         }
+
+        return user;
     }
 }

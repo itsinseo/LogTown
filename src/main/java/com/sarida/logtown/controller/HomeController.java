@@ -4,7 +4,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 public class HomeController {
@@ -28,6 +27,16 @@ public class HomeController {
     @GetMapping("/home/mainpage") // !!임시 테스트페이지
     public String mainPage() {
         return "mainpage";
+    }
+
+    @GetMapping("/home/testpage") // !!임시 테스트페이지 2
+    public String testPage() {
+        return "testpage";
+    }
+
+    @GetMapping("/home/backoffice")
+    public String backoffice() {
+        return "backoffice";
     }
 
     @GetMapping("/home/mainpageMJ") // 민지 메인페이지

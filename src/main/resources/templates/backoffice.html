@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>민지 메인페이지</title>
+    <title>Admin 메인페이지</title>
     <style>
         .header {
             text-align: center;
@@ -45,6 +45,21 @@
             flex-direction: row;
         }
 
+        input[type=checkbox] {
+            margin: 10px;
+            zoom: 1.5;
+        }
+
+        #admin-delete-btn {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+        }
+
+        #logout-btn {
+            margin: 20px;
+        }
+
     </style>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/js-cookie@3.0.5/dist/js.cookie.min.js"></script>
@@ -54,7 +69,19 @@
 <body>
 <div>
     <div class="header">
-        <h1>LogTown</h1>
+        <div class="row">
+            <div class="col-md-2" style="text-align: left">
+                <button type="button" class="btn btn-primary" id="logout-btn">로그아웃</button>
+            </div>
+            <div class="col-md-8">
+                <a href="/home/backoffice" style="font-size: 50px; text-align: center">
+                    LogTown
+                </a>
+            </div>
+            <div class="col-md-2">
+
+            </div>
+        </div>
     </div>
     <div class="write-wrap">
         <!--        하위 두 div는 나란히 정렬-->
@@ -88,14 +115,71 @@
                             <button id="gotopost">보기</button>
                         </div>
                     </div>
+                    <div class="col-md-1" style="background-color: chartreuse;">
+                        <input type="checkbox" name="admin-post-checkbox" value="1">
+                    </div>
                 </div>
                 <div class="card-footer" style="color:red">
-<!--                    <button id="gotopost">보기</button>-->
+                    <!--                    <button id="gotopost">보기</button>-->
+                    ❤
+                </div>
+            </div>
+        </div>
+        <div class="one-post" id="getOnePost">
+            <div class="card mb-3" style="max-width: 50rem;">
+                <div class="row g-0" id="goclick">
+                    <div class="col-md-1">
+                        <div class="myprofile">프로필</div>
+                    </div>
+                    <div class="col-md-10">
+                        <div class="card-body">
+                            <h5 class="card-title">Card title2</h5>
+                            <p class="card-text">This is a wider card with supporting text below as a natural lead-in to
+                                additional content. This content is a little bit longer.</p>
+                            <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+                            <button id="gotopost">보기</button>
+                        </div>
+                    </div>
+                    <div class="col-md-1" style="background-color: chartreuse;">
+                        <input type="checkbox" name="admin-post-checkbox" value="2">
+                    </div>
+                </div>
+                <div class="card-footer" style="color:red">
+                    <!--                    <button id="gotopost">보기</button>-->
+                    ❤
+                </div>
+            </div>
+        </div>
+        <div class="one-post" id="getOnePost">
+            <div class="card mb-3" style="max-width: 50rem;">
+                <div class="row g-0" id="goclick">
+                    <div class="col-md-1">
+                        <div class="myprofile">프로필</div>
+                    </div>
+                    <div class="col-md-10">
+                        <div class="card-body">
+                            <h5 class="card-title">Card title3</h5>
+                            <p class="card-text">This is a wider card with supporting text below as a natural lead-in to
+                                additional content. This content is a little bit longer.</p>
+                            <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+                            <button id="gotopost">보기</button>
+                        </div>
+                    </div>
+                    <div class="col-md-1" style="background-color: chartreuse;">
+                        <input type="checkbox" name="admin-post-checkbox" value="3">
+                    </div>
+                </div>
+                <div class="card-footer" style="color:red">
+                    <!--                    <button id="gotopost">보기</button>-->
                     ❤
                 </div>
             </div>
         </div>
         <div id="listEnd"></div>
+    </div>
+
+    <div style="padding: 20px; text-align: right;">
+        <button type="button" class="btn btn-danger" id="admin-delete-btn">게시글 삭제</button>
     </div>
 
 </div>
@@ -106,9 +190,8 @@
         let authCookie = Cookies.get("Authorization");  // cookie 중 Authorization
         let page = 0;
 
-
         //게시글 하나 선택
-        $(document).on("click","#gotopost", function(event) {
+        $(document).on("click", "#gotopost", function (event) {
             event.preventDefault();
 
             let postId = $(this).closest('.card').attr('id');
@@ -125,32 +208,28 @@
                 },
                 success: function (xhr) {
                     console.log('이동');
-                    //console.log(response.id);
 
                     window.location.href = `${window.location.origin}/home/onepost/${postId}`;
                 },
                 error: function () {
-                    console.log('게시글 등록 error 실패');
+                    console.log('게시글 이동 error');
                 }
             });
         })
 
         // 게시글 가져오는 부분
         $.ajax({
-            url: '/api/posts/followingposts?page=0',
+            url: '/api/admin/sliceposts?page=0',
             type: 'GET',
             contentType: 'application/json',
             headers: {
-                'Authorization': authCookie  // 확실x, 이전 프로젝트에서 cookie로 로그인해서 .cookie였음
+                'Authorization': authCookie
             },
             success: function (xhr) {
-                console.log('followingposts GET 요청 성공');
-                console.log(xhr);
                 $('.posts-feed').empty();
 
                 let temp_html = ``;
 
-                //console.log(xhr.content[0]);
                 xhr.content.forEach(function (post) {
                     console.log(post);
 
@@ -161,13 +240,16 @@
                                                 <div class="col-md-1">
                                                     <div class="myprofile">프로필</div>
                                                 </div>
-                                                <div class="col-md-8">
+                                                <div class="col-md-10">
                                                     <div class="card-body">
                                                         <h5 class="card-title">${post.nickname}</h5>
                                                         <p class="card-text">${post.content}</p>
                                                         <p class="card-text"><small class="text-muted">${post.modifiedAt}</small></p>
                                                         <button id="gotopost">보기</button>
                                                     </div>
+                                                </div>
+                                                <div class="col-md-1" style="text-align: center">
+                                                    <input type="checkbox" name="admin-post-checkbox" value="${post.id}">
                                                 </div>
                                             </div>
                                             <div class="card-footer" style="color:red">
@@ -182,14 +264,13 @@
                 $('.posts-feed').append(temp_html);
             },
             error: function () {
-                console.log('게시글 불러오기 실패');
+                alert('게시글 불러오기 실패');
             }
 
         });
 
         // 스크롤 끝나면 다음 slice 가져오기
         $(function () {
-            //let page = 0;
             $(window).scroll(function () {
                 if ($(window).scrollTop() + $(window).height() >= $(document).height()) {
                     if (page === -1) {
@@ -199,7 +280,7 @@
                     // 다음 page 요청
                     page++;
                     $.ajax({
-                        url: '/api/posts/followingposts?page=' + page,
+                        url: '/api/admin/sliceposts?page=' + page,
                         type: 'GET',
                         contentType: 'application/json',
                         headers: {
@@ -227,13 +308,16 @@
                                                 <div class="col-md-1">
                                                     <div class="myprofile">프로필</div>
                                                 </div>
-                                                <div class="col-md-8">
+                                                <div class="col-md-10">
                                                     <div class="card-body">
                                                         <h5 class="card-title">${post.nickname}</h5>
                                                         <p class="card-text">${post.content}</p>
                                                         <p class="card-text"><small class="text-muted">${post.modifiedAt}</small></p>
                                                         <button id="gotopost">보기</button>
                                                     </div>
+                                                </div>
+                                                <div class="col-md-1" style="text-align: center">
+                                                    <input type="checkbox" name="admin-post-checkbox" value="${post.id}">
                                                 </div>
                                             </div>
                                             <div class="card-footer" style="color:red">
@@ -293,7 +377,49 @@
             });
         });
 
+        // 삭제 버튼 함수 매핑
+        $('#admin-delete-btn').click(function () {
+            adminDeletePosts();
+        })
+
+        // 관리자가 선택한 게시물 지우기
+        function adminDeletePosts() {
+            const checkboxes = document.getElementsByName("admin-post-checkbox");
+            const checkedValues = [];
+
+            for (let i = 0; i < checkboxes.length; i++) {
+                if (checkboxes[i].checked) {
+                    checkedValues.push(parseInt(checkboxes[i].value));
+                }
+            }
+
+            $.ajax({
+                type: "DELETE",
+                url: "/api/admin/posts/delete",
+                contentType: 'application/json',
+                data: JSON.stringify({
+                    selectedIds: checkedValues
+                }),
+                headers: {
+                    'Authorization': authCookie
+                },
+                success: function () {
+                    alert("선택된 게시글 삭제 성공!")
+                    window.location.reload();
+                },
+                error: function (xhr) {
+                    alert("게시글 삭제 실패")
+                    console.log(xhr);
+                }
+            });
+        }
     });
 </script>
+
+<script src="/js/basic.js"></script>
 </body>
+<script>
+    $('#logout-btn').click(logout);
+
+</script>
 </html>
