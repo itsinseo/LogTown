@@ -8,14 +8,15 @@ public class UserResponseDto {
     private String username;
     private String nickname;
     private String introduction;
-//    private Integer followersCnt;
-//    private Integer followingCnt;
     private Integer postsCnt;
 
-    public UserResponseDto(User user) {
+    private Boolean isMaster;
+
+    public UserResponseDto(User user, boolean isMaster) {
         this.username = user.getUsername();
         this.nickname = user.getNickname();
         this.introduction = user.getIntroduction();
         this.postsCnt = user.getMyPostList().size();
+        this.isMaster = isMaster;
     }
 }

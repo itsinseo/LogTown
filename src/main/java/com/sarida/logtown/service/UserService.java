@@ -19,11 +19,20 @@ public class UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
 
-    public UserResponseDto getSelectUsername(String username) {
-        Optional<User> other = userRepository.findByUsername(username);
+    public UserResponseDto getSelectNickname(String nickname, User user) {
+        boolean isMaster;
+
+        Optional<User> other = userRepository.findByNickname(nickname);
+
+        if(nickname.equals(user.getNickname())){
+            isMaster = true;
+        } else {
+            isMaster = false;
+        }
+
 
         if (other.isPresent()) {
-            return new UserResponseDto(other.get());
+            return new UserResponseDto(other.get(), isMaster);
         } else {
             throw new IllegalArgumentException("존재하지 않는 사용자입니다.");
         }
@@ -33,7 +42,7 @@ public class UserService {
         Optional<User> me = userRepository.findByUsername(user.getUsername());
 
         if (me.isPresent()) {
-            return new UserResponseDto(me.get());
+            return new UserResponseDto(me.get(),true);
         } else {
             throw new IllegalArgumentException("존재하지 않는 사용자입니다.");
         }

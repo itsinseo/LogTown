@@ -21,6 +21,14 @@
     <div class="container">
         <div class="sub-logo">로그인(토큰 인증) 성공!</div>
     </div>
+    <div style="position: relative;">
+        <button class="tab-button" onclick="openSlideTab()">☰</button>
+        <div id="slideTab" class="slide-tab-content">
+            <button onclick="redirectToDetailPage()">상세페이지</button>
+            <button onclick="myProfile()">마이프로필</button>
+            <button onclick="logout()">로그아웃</button>
+        </div>
+    </div>
     <div class="button-container" style="background-color: aquamarine; margin: 10px; font-family: 'Jua', sans-serif;">
         메인페이지 자체는 인증 상관없이 접근 허용<br>
         그러나 메인페이지 로딩 시 동적으로 게시물을 가져오는 메서드를 호출,<br>
@@ -31,10 +39,44 @@
          style="background-color: burlywood; margin: 10px; font-size: 20px">
         게시글 목록
     </div>
-    <button onclick="redirectToDetailPage()">상세페이지</button>
-    <button onclick="myProfile()">마이프로필</button>
 </div>
 </body>
+<style>
+    /* Existing styles... */
+
+    /* Slide tab button style */
+    .tab-button {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        z-index: 999;
+        font-size: 20px;
+        background: none;
+        border: none;
+        cursor: pointer;
+    }
+
+    /* Slide tab content style */
+    .slide-tab-content {
+        position: absolute;
+        top: 0;
+        right: -250px; /* Start the slide tab off-screen */
+        width: 250px;
+        background-color: #f9f9f9;
+        padding: 20px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        transition: right 0.3s ease;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+    }
+
+    /* Show the slide tab when it's open */
+    .slide-tab-content.show {
+        right: 0;
+    }
+</style>
+
 <script>
     document.addEventListener("DOMContentLoaded", function () {
         authCookie = Cookies.get("Authorization");
@@ -44,6 +86,11 @@
                         </div>`;
         postListSample.append(postSample);
     });
+
+    function openSlideTab() {
+        let slideTab = document.getElementById("slideTab");
+        slideTab.classList.toggle("show");
+    }
 
     function redirectToDetailPage() {
         console.log("Test");
@@ -65,6 +112,13 @@
             // Redirect to the login page (replace "login.html" with your actual login page URL)
             window.location.href = "/home/mainpage";
         }
+    }
+
+    function logout() {
+        // Assuming you have a logout function to clear the authentication token or any session data
+        // For example, you can use the "Cookies.remove" function from the "js-cookie" library
+        Cookies.remove("Authorization");
+        window.location.href = "/home"; // Redirect to the main page after logout
     }
 </script>
 </html>

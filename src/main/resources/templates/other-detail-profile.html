@@ -148,15 +148,17 @@
 <script>
   $(document).ready(function () {
     let authCookie = Cookies.get("Authorization");
+    let username; // 이 변수는 closure에 캡슐화.
 
-    // IIFE를 사용하여 closure를 생성하고 전역 변수 사용
     (function () {
-      let username; // 이 변수는 closure에 캡슐화.
+      // let username; // 이 변수는 closure에 캡슐화.
+      const urlParams = new URLSearchParams(window.location.search);
+      const nickname = urlParams.get('nickname');
 
       // 첫번쨰 Ajax: 사용자의 정보를 조회
       $.ajax({
         type: "GET",
-        url: "/api/myself",
+        url: "/api/users/nickname/" + nickname,
         contentType: 'application/json',
         headers: {
           'Authorization': authCookie
@@ -174,17 +176,25 @@
           const postsElement = document.querySelector(".num-post");
           postsElement.textContent = data.postsCnt + " Posts";
 
-          // 팔로워/팔로우에 쓸 username 값을 받는다
-          username = data.username;
-          console.log(data);
-
           // 팔로우 및 언팔 버튼 지정
           const followBtn = document.querySelector(".follow-btn");
           const unfollowBtn = document.querySelector(".unfollow-btn");
 
-          // 본인 페이지이므로 버튼이 필요 없다
-          followBtn.style.display = "none"; // 팔로우 버튼 없애기
-          unfollowBtn.style.display = "none"; // 언팔로우 버튼 없애기
+          // console.log(data);
+          if(data.isMaster) {
+            // 본인 페이지이므로 버튼이 필요 없다
+            followBtn.style.display = "none"; // 팔로우 버튼 없애기
+            unfollowBtn.style.display = "none"; // 언팔로우 버튼 없애기
+          } else {
+              // const isFollowing = true; // 로직 설정해줘야함
+              //
+              // if (isFollowing) {
+              //   followBtn.style.display = "none";
+              // } else {
+              //   unfollowBtn.style.display = "none";
+              // }
+          }
+          username = data.username;
 
           // 첫번쨰 Ajax가 성공시 username이 담아서 두번쨰 Ajax 호출
           getFollowCounts(username);
@@ -239,7 +249,7 @@
 
             let card_html = `
                                     <div class="post-section">
-                                      <div class="post" id="${data.id}">
+                                      <div class="post">
                                         <div class="writer-picture"></div>
                                         <div class="auto-group-xxrq-BhP">
                                           <p class="writer-nickname" >${data.nickname}</p>
@@ -261,37 +271,78 @@
       });
     }
 
-    $(document).on("click",".gotopost-btn", function(event) {
+    // 팔로우 버튼 눌렀을 떄
+    $(document).on("click",".follow-btn", function(event) {
       event.preventDefault();
-
-      let authCookie = Cookies.get("Authorization"); // 필요?
-
-      let postId = $(this).closest('.post').attr('id');
-
-      console.log(postId);
-      alert('된다');
+      let authCookie = Cookies.get("Authorization");
 
       $.ajax({
-        url: `/api/posts/${postId}`,
-        type: 'GET',
+        url: `/api/users/follow/` + username,
+        type: 'POST',
         contentType: 'application/json',
         headers: {
           'Authorization': authCookie // 클라이언트 쿠키의 값을 전달
         },
-        success: function (xhr) {
-          console.log('이동');
-          //console.log(response.id);
-
-          window.location.href = `${window.location.origin}/home/onepost/${postId}`;
+        success: function () {
+          alert("팔로우 완료");
+          window.location.reload();
         },
         error: function () {
-          console.log('게시글 등록 error 실패');
+          alert("팔로우 실패");
         }
       });
     });
+
+    // 언팔로우 버튼 눌렀을 떄
+    $(document).on("click",".unfollow-btn", function(event) {
+      event.preventDefault();
+      let authCookie = Cookies.get("Authorization");
+
+      $.ajax({
+        url: `/api/users/follow/` + username,
+        type: 'DELETE',
+        contentType: 'application/json',
+        headers: {
+          'Authorization': authCookie // 클라이언트 쿠키의 값을 전달
+        },
+        success: function () {
+          alert("언팔로우 완료");
+          window.location.reload();
+        },
+        error: function () {
+          alert("언팔로우 실패");
+        }
+      });
+    });
+
   });
 
+  $(document).on("click",".gotopost-btn", function(event) {
+    event.preventDefault();
 
+    let postId = $(this).closest('.post').attr('id');
+
+    console.log(postId);
+    alert('된다');
+
+    $.ajax({
+      url: `/api/posts/${postId}`,
+      type: 'GET',
+      contentType: 'application/json',
+      headers: {
+        'Authorization': authCookie // 클라이언트 쿠키의 값을 전달
+      },
+      success: function (xhr) {
+        console.log('이동');
+        //console.log(response.id);
+
+        window.location.href = `${window.location.origin}/home/onepost/${postId}`;
+      },
+      error: function () {
+        console.log('게시글 등록 error 실패');
+      }
+    });
+  });
 </script>
 </body>
 

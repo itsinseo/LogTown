@@ -37,15 +37,14 @@ public class UserController {
     private final NaverService naverService;
 
     @ResponseBody
-    @GetMapping("/users/{username}")
-    public UserResponseDto getUserInfo(@PathVariable String username) {
-        return userService.getSelectUsername(username);
+    @GetMapping("/users/nickname/{nickname}") // 변경되었음
+    public UserResponseDto getUserInfo(@PathVariable String nickname, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        return userService.getSelectNickname(nickname, userDetails.getUser());
     }
 
     @ResponseBody
     @GetMapping("/myself")
     public UserResponseDto getMyself(@AuthenticationPrincipal UserDetailsImpl userDetails) {
-        System.out.println("================myself================");
         return userService.getMyself(userDetails.getUser());
     }
 
