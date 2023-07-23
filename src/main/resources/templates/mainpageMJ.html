@@ -117,14 +117,18 @@
         let authCookie = Cookies.get("Authorization");  // cookie 중 Authorization
         let page = 0;
 
-        // 프로필 닉네임 클릭 시
-        $(".card-title").on("click", function(event) {
-            event.preventDefault();
+        // 프로필 동그라미 클릭 시
+        $('.posts-feed').on('click', '.myprofile', function () {
+            // post.userId와 post.nickname 가져오기
+            const userId = $(this).attr('id');
+            const nickname = $(this).text();
 
-            const clickedNickname = $(this).data("nickname");
-            console.log(clickedNickname);
-            window.location.href = `${window.location.origin}/detail-profile.html?nickname=${encodeURIComponent(clickedNickname)}`;
+            console.log('Clicked user ID:', userId);
+            console.log('Clicked nickname:', nickname);
+
+            window.location.href = `${window.location.origin}/home/detailpage/${userId}`;
         });
+
 
         // 게시글 좋아요 버튼 클릭 시
         $(document).on("click", ".card-footer #postLike", function(event) {
@@ -225,11 +229,11 @@
                                         <div class="card mb-3" style="width: 50rem;" id="${post.id}">
                                             <div class="row g-0" id="goclick">
                                                 <div class="col-md-1">
-                                                    <div class="myprofile">프로필</div>
+                                                    <div class="myprofile" id="${post.userId}">${post.nickname}</div>
                                                 </div>
                                                 <div class="col-md-8">
                                                     <div class="card-body">
-                                                        <h5 class="card-title">${post.nickname}</h5>
+                                                        <h5 class="card-title" id="post-nickname-btn">${post.nickname}</h5>
                                                         <p class="card-text">${post.content}</p>
                                                         <p class="card-text"><small class="text-muted">${post.modifiedAt}</small></p>
                                                         <button id="gotopost">보기</button>
@@ -294,11 +298,11 @@
                                         <div class="card mb-3" style="width: 50rem;" id="${post.id}">
                                             <div class="row g-0" id="goclick">
                                                 <div class="col-md-1">
-                                                    <div class="myprofile">프로필</div>
+                                                    <div class="myprofile" id="${post.userId}">${post.nickname}</div>
                                                 </div>
                                                 <div class="col-md-8">
                                                     <div class="card-body">
-                                                        <h5 class="card-title" data-nickname="${post.nickname}">${post.nickname}</h5>
+                                                        <h5 class="card-title"  id="post-nickname-btn">${post.nickname}</h5>
                                                         <p class="card-text">${post.content}</p>
                                                         <p class="card-text"><small class="text-muted">${post.modifiedAt}</small></p>
                                                         <button id="gotopost">보기</button>
