@@ -419,6 +419,24 @@
             }
         });
 
+        // 단건 게시글 닉네임 클릭 시
+        $('.post-main').on('click', '.writer-nickname', function (event) {
+            event.preventDefault();
+
+            const clickedNickname = $(this).text().trim();
+            // 닉네임을 URL 파라미터로 추가하여 detail-profile.html로 이동합니다.
+            window.location.href = `${window.location.origin}/home/other-detail-profile?nickname=${encodeURIComponent(clickedNickname)}`;
+        });
+
+        // 단건 게시글에 있는 댓글의 닉네임 클릭 시
+        $('.comment-list\n').on('click', '.comment-nickname\n', function (event) {
+            event.preventDefault();
+
+            const clickedNickname = $(this).text().trim();
+            // 닉네임을 URL 파라미터로 추가하여 detail-profile.html로 이동합니다.
+            window.location.href = `${window.location.origin}/home/other-detail-profile?nickname=${encodeURIComponent(clickedNickname)}`;
+        });
+
         // 게시글, 댓글 가져오는 부분
         $.ajax({
             url: `/api/posts/${postId}`,
@@ -437,11 +455,11 @@
                                         <div class="card mb-3" style="width: 50rem;">
                                             <div class="row g-0" id="goclick">
                                                 <div class="col-md-1">
-                                                    <div class="myprofile">프로필</div>
+                                                    <div class="myprofile"></div>
                                                 </div>
                                                 <div class="col-md-8">
                                                     <div class="card-body">
-                                                        <h5 class="card-title">${xhr.nickname}</h5>
+                                                        <h5 class="writer-nickname">${xhr.nickname}</h5>
                                                         <p class="card-text" id="post-content-paragraph">${xhr.content}</p>
                                                         <input type="text" class="form-control" id="edit-post-content" value="${xhr.content}" style="display: none;">
                                                         <p class="card-text"><small class="text-muted">수정시각</small></p>
@@ -481,14 +499,14 @@
                     <div class="row justify-content-between">
                         <p class="card-id" style="display:none;">${comment.id}</p>
                         <div class="col-md-1">
-                            <div class="myprofile">프로필</div>
+                            <div class="myprofile"></div>
                         </div>
                         <div class="col-md-1" style="text-align: center;">
                               <input type="checkbox" name="admin-comment-checkbox" value=${comment.id} style="${checkbox}">
                         </div>
                     </div>
                         <div class="card-body">
-                            <h5 class="card-title">${comment.nickname}</h5>
+                            <h5 class="comment-nickname">${comment.nickname}</h5>
                             <p class="card-text" id="comment-content-paragraph">${comment.content}</p>
                             <input type="text" class="form-control" id="edit-comment-content" value="${comment.content}" style="display: none;">
                             <p class="card-text"><small class="text-muted">${comment.modifiedAt}</small></p>

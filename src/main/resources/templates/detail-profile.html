@@ -121,8 +121,7 @@
 
 <body>
 <div class="container">
-    <div class="header-HSM">log town</div>
-
+    <div class="header-HSM" id="homeLink">log town</div>
   <div class="profile-section">
     <div class="profile-picture"></div>
     <div class="auto-group-jhgq-abo" id="user">
@@ -156,6 +155,10 @@
 </div>
 
 <script>
+    document.getElementById("homeLink").addEventListener("click", function() {
+        window.location.href = "/home/all-users-mainpage";
+    });
+
   $(document).ready(function () {
     let authCookie = Cookies.get("Authorization");
 

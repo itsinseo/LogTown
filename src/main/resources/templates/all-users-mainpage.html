@@ -8,9 +8,14 @@
       text-align: center;
     }
 
-    .write-wrap {
-      display: flex;
+    .header-HSM {
+      background-color: #9747FF;
+      color: white;
+      padding: 15px;
+      font-size: 50px;
+      text-align: center;
     }
+
 
     .write-wrap .write-profile {
       width: 10%;
@@ -53,8 +58,21 @@
       display: flex;
     }
 
-    #logout-btn {
-      margin: 20px;
+    .posting-input-box {
+      width: 500px;
+      height: 100px;
+    }
+
+    .content-box {
+      margin-top: 50px;
+      display: flex;
+      justify-content: center;
+    }
+
+    .writer-nickname {
+      color: #000000;
+      margin-top: 15px;
+      font-weight: bold;
     }
 
   </style>
@@ -66,36 +84,30 @@
 <body>
 <div>
   <div class="header">
-    <div class="row">
-      <div class="col-md-2" style="text-align: left">
-        <button type="button" class="btn btn-primary" id="logout-btn">로그아웃</button>
-      </div>
-      <div class="col-md-8">
-        <a href="/home/all-users-mainpage" style="font-size: 50px; text-align: center">
-          LogTown
-        </a>
-      </div>
-      <div class="col-md-2">
-
-      </div>
+  </div>
+  <div class="container">
+    <div class="header-HSM" id="homeLink">log town</div>
+    <div class="content-box">
+      <input type="text" class="posting-input-box" id="postContent" placeholder="내용 입력">
+      <button id="submitPost">작성하기</button>
     </div>
   </div>
 
-  <div class="write-wrap">
-    <!--        하위 두 div는 나란히 정렬-->
-    <div class="write-profile">
-      <div class="myprofile">내 프로필</div>
+<!--  <div class="write-wrap">-->
+<!--    &lt;!&ndash;        하위 두 div는 나란히 정렬&ndash;&gt;-->
+<!--    <div class="write-profile">-->
+<!--      <div class="myprofile">내 프로필</div>-->
 
-    </div>
-    <div class="write-box">
-      <div class="content-box">
-        <textarea id="postContent" placeholder="내용 입력"></textarea>
-      </div>
-      <div class="under">
-        <button id="submitPost">작성하기</button>
-      </div>
-    </div>
-  </div>
+<!--    </div>-->
+<!--    <div class="write-box">-->
+<!--      <div class="content-box">-->
+<!--        <textarea id="postContent" placeholder="내용 입력"></textarea>-->
+<!--      </div>-->
+<!--      <div class="under">-->
+<!--        <button id="submitPost">작성하기</button>-->
+<!--      </div>-->
+<!--    </div>-->
+<!--  </div>-->
 
   <div class="posts-feed">
     <div class="one-post" id="getOnePost">
@@ -129,6 +141,9 @@
 
 <script>
   $(document).ready(function () {
+    document.getElementById("homeLink").addEventListener("click", function() {
+      window.location.href = "/home/all-users-mainpage";
+    });
 
     let authCookie = Cookies.get("Authorization");  // cookie 중 Authorization
     let page = 0;
@@ -208,13 +223,10 @@
           console.log('게시글 등록 error 실패');
         }
       });
-    })
+    });
 
-    // 프로필 동그라미 클릭 시
-    $('.posts-feed').on('click', '.myprofile', function (event) {
-      // post.userId와 post.nickname 가져오기
-      // const userId = $(this).attr('id');
-      // const nickname = $(this).text();
+    // 닉네임 클릭 시
+    $('.posts-feed').on('click', '.writer-nickname', function (event) {
       event.preventDefault();
 
       const clickedNickname = $(this).text().trim();
@@ -244,7 +256,7 @@
                                         <div class="card mb-3" style="width: 50rem;" id="${post.id}">
                                             <div class="row g-0" id="goclick">
                                                 <div class="col-md-1">
-                                                    <div class="myprofile" id="${post.userId}">${post.nickname}</div>
+                                                    <div class="myprofile" id="${post.userId}"></div>
                                                 </div>
                                                 <div class="col-md-8">
                                                     <div class="card-body">
@@ -383,14 +395,9 @@
         }
       });
     });
-
   });
 </script>
 
 <script src="/js/basic.js"></script>
 </body>
-<script>
-  $('#logout-btn').click(logout);
-
-</script>
 </html>
