@@ -90,7 +90,6 @@
                     </div>
                 </div>
                 <div class="card-footer" style="color:red">
-<!--                    <button id="gotopost">보기</button>-->
                     ❤
                 </div>
             </div>
@@ -114,7 +113,7 @@
             let postId = $(this).closest('.card').attr('id');
 
             console.log(postId);
-            alert('된다');
+            //alert('된다');
 
             $.ajax({
                 url: `/api/posts/${postId}`,
