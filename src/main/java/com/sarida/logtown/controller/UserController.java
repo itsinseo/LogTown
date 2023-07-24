@@ -54,7 +54,7 @@ public class UserController {
     @PostMapping("/auth/signup")
     public ResponseEntity<ApiResponseDto> signUp(@RequestBody @Valid SignupRequestDto requestDto, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
-            throw new IllegalArgumentException("아이디/비밀번호의 구성이 올바르지 않습니다.");
+            return ResponseEntity.badRequest().body(new ApiResponseDto("아이디/비밀번호의 구성이 올바르지 않습니다.", HttpStatus.BAD_REQUEST.value()));
         }
 
         try {
