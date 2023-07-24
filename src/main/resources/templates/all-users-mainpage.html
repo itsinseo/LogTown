@@ -8,9 +8,14 @@
       text-align: center;
     }
 
-    .write-wrap {
-      display: flex;
+    .header-HSM {
+      background-color: #9747FF;
+      color: white;
+      padding: 15px;
+      font-size: 50px;
+      text-align: center;
     }
+
 
     .write-wrap .write-profile {
       width: 10%;
@@ -28,8 +33,9 @@
       width: 50px;
       height: 50px;
       font-size: 1px;
-
       text-align: center;
+      margin-top: 23px;
+      margin-left: 10px;
     }
 
     .posts-feed {
@@ -53,49 +59,110 @@
       display: flex;
     }
 
-    #logout-btn {
-      margin: 20px;
+    .posting-input-box {
+      width: 500px;
+      height: 100px;
+    }
+
+    .content-box {
+      margin-top: 50px;
+      display: flex;
+      justify-content: center;
+    }
+
+    .writer-nickname {
+      color: #000000;
+      margin-top: 15px;
+      font-weight: bold;
+    }
+
+    .one-post{
+      margin-bottom: 30px;
+    }
+
+    .cancle-like-btn {
+      margin-left: 12px;
+    }
+
+    .like-cancle-btn{
+      display: flex;
+      margin-left: 12px;
+    }
+    /* Slide tab button style */
+    .tab-button {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      z-index: 999;
+      font-size: 20px;
+      background: none;
+      border: none;
+      cursor: pointer;
+    }
+
+    /* Slide tab content style */
+    .slide-tab-content {
+      position: absolute;
+      top: 0;
+      right: -250px; /* Start the slide tab off-screen */
+      width: 250px;
+      background-color: #f9f9f9;
+      padding: 20px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      transition: right 0.3s ease;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+    }
+
+    /* Show the slide tab when it's open */
+    .slide-tab-content.show {
+      right: 0;
     }
 
   </style>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/js-cookie@3.0.5/dist/js.cookie.min.js"></script>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
 </head>
 <body>
 <div>
   <div class="header">
-    <div class="row">
-      <div class="col-md-2" style="text-align: left">
-        <button type="button" class="btn btn-primary" id="logout-btn">로그아웃</button>
+  </div>
+  <div class="header-HSM" id="homeLink">log town</div>
+  <div class="container">
+    <div style="position: relative;">
+      <button class="tab-button" onclick="openSlideTab()">☰</button>
+      <div id="slideTab" class="slide-tab-content">
+        <button onclick="redirectToAllUserPosts()">Show All User's Posts</button>
+        <button onclick="redirectToFollowingUserPosts()">Show Only Following User's Posts</button>
+        <button onclick="redirectToDetailPage()">Your Profile</button>
+        <button onclick="myProfile()">Settings</button>
+        <button onclick="logout()">Logout</button>
       </div>
-      <div class="col-md-8">
-        <a href="/home/all-users-mainpage" style="font-size: 50px; text-align: center">
-          LogTown
-        </a>
-      </div>
-      <div class="col-md-2">
-
-      </div>
+    </div>
+    <div class="content-box">
+      <input type="text" class="posting-input-box" id="postContent" placeholder="내용 입력">
+      <button id="submitPost">작성하기</button>
     </div>
   </div>
 
-  <div class="write-wrap">
-    <!--        하위 두 div는 나란히 정렬-->
-    <div class="write-profile">
-      <div class="myprofile">내 프로필</div>
+<!--  <div class="write-wrap">-->
+<!--    &lt;!&ndash;        하위 두 div는 나란히 정렬&ndash;&gt;-->
+<!--    <div class="write-profile">-->
+<!--      <div class="myprofile">내 프로필</div>-->
 
-    </div>
-    <div class="write-box">
-      <div class="content-box">
-        <textarea id="postContent" placeholder="내용 입력"></textarea>
-      </div>
-      <div class="under">
-        <button id="submitPost">작성하기</button>
-      </div>
-    </div>
-  </div>
+<!--    </div>-->
+<!--    <div class="write-box">-->
+<!--      <div class="content-box">-->
+<!--        <textarea id="postContent" placeholder="내용 입력"></textarea>-->
+<!--      </div>-->
+<!--      <div class="under">-->
+<!--        <button id="submitPost">작성하기</button>-->
+<!--      </div>-->
+<!--    </div>-->
+<!--  </div>-->
 
   <div class="posts-feed">
     <div class="one-post" id="getOnePost">
@@ -128,7 +195,34 @@
 </div>
 
 <script>
+  function openSlideTab() {
+    let slideTab = document.getElementById("slideTab");
+    slideTab.classList.toggle("show");
+  }
+  function redirectToAllUserPosts() {
+    window.location.href = "/home/all-users-mainpage";
+  }
+  function redirectToFollowingUserPosts() {
+    window.location.href = "/home/mainpageMJ";
+  }
+
+  function redirectToDetailPage() {
+    window.location.href = "/home/detailpage";
+  }
+
+  function myProfile() {
+    window.location.href = "/home/myprofile";
+  }
+
+  function logout() {
+    Cookies.remove("Authorization");
+    window.location.href = "/home";
+  }
+
   $(document).ready(function () {
+    document.getElementById("homeLink").addEventListener("click", function() {
+      window.location.href = "/home/all-users-mainpage";
+    });
 
     let authCookie = Cookies.get("Authorization");  // cookie 중 Authorization
     let page = 0;
@@ -208,13 +302,10 @@
           console.log('게시글 등록 error 실패');
         }
       });
-    })
+    });
 
-    // 프로필 동그라미 클릭 시
-    $('.posts-feed').on('click', '.myprofile', function (event) {
-      // post.userId와 post.nickname 가져오기
-      // const userId = $(this).attr('id');
-      // const nickname = $(this).text();
+    // 닉네임 클릭 시
+    $('.posts-feed').on('click', '.writer-nickname', function (event) {
       event.preventDefault();
 
       const clickedNickname = $(this).text().trim();
@@ -244,7 +335,7 @@
                                         <div class="card mb-3" style="width: 50rem;" id="${post.id}">
                                             <div class="row g-0" id="goclick">
                                                 <div class="col-md-1">
-                                                    <div class="myprofile" id="${post.userId}">${post.nickname}</div>
+                                                    <div class="myprofile" id="${post.userId}"></div>
                                                 </div>
                                                 <div class="col-md-8">
                                                     <div class="card-body">
@@ -258,8 +349,10 @@
                                             <div class="card-footer">
                                                 <p style="color:red">❤</p>
                                                 <p class="card-text">${post.likeCnt}</p>
-                                                <button id="postLike">좋아요</button>
-                                                <button id="deleteLike">좋아요 취소</button>
+                                                <div class="like-cancle-btn">
+                                                    <button class= "like-btn" id="postLike">좋아요</button>
+                                                    <button class = "cancle-like-btn" id="deleteLike">좋아요 취소</button>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -327,8 +420,10 @@
                                             <div class="card-footer">
                                                 <p style="color:red">❤</p>
                                                 <p class="card-text">${post.likeCnt}</p>
-                                                <button id="postLike">좋아요</button>
-                                                <button id="deleteLike">좋아요 취소</button>
+                                                <div class="like-cancle-btn">
+                                                    <button class= "like-btn" id="postLike">좋아요</button>
+                                                    <button class = "cancle-like-btn" id="deleteLike">좋아요 취소</button>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -383,14 +478,9 @@
         }
       });
     });
-
   });
 </script>
 
 <script src="/js/basic.js"></script>
 </body>
-<script>
-  $('#logout-btn').click(logout);
-
-</script>
 </html>

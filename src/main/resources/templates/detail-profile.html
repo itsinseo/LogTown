@@ -18,8 +18,8 @@
         .header-HSM {
             background-color: #9747FF;
             color: white;
-            padding: 10px;
-            font-size: 24px;
+            padding: 15px;
+            font-size: 50px;
             text-align: center;
         }
 
@@ -120,9 +120,8 @@
 </head>
 
 <body>
+<div class="header-HSM" id="homeLink">log town</div>
 <div class="container">
-    <div class="header-HSM">log town</div>
-
   <div class="profile-section">
     <div class="profile-picture"></div>
     <div class="auto-group-jhgq-abo" id="user">
@@ -156,6 +155,10 @@
 </div>
 
 <script>
+    document.getElementById("homeLink").addEventListener("click", function() {
+        window.location.href = "/home/all-users-mainpage";
+    });
+
   $(document).ready(function () {
     let authCookie = Cookies.get("Authorization");
 

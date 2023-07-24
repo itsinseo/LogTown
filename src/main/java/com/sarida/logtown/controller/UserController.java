@@ -87,7 +87,8 @@ public class UserController {
         cookie.setPath("/");
         response.addCookie(cookie);
 
-        return "redirect:/home/mainpage";
+//        return "redirect:/home/mainpage";
+        return "redirect:/home/all-users-mainpage";
     }
 
     @GetMapping("/auth/naver/callback")
@@ -98,6 +99,7 @@ public class UserController {
         cookie.setPath("/");
         response.addCookie(cookie);
 
-        return "redirect:/home/mainpage";
+//        return "redirect:/home/mainpage";
+        return "redirect:/home/all-users-mainpage";
     }
 }

@@ -11,13 +11,9 @@
         .header-HSM {
             background-color: #9747FF;
             color: white;
-            padding: 10px;
-            font-size: 24px;
+            padding: 15px;
+            font-size: 50px;
             text-align: center;
-        }
-
-        .write-wrap {
-            display: flex;
         }
 
         .write-wrap .write-profile {
@@ -36,8 +32,9 @@
             width: 50px;
             height: 50px;
             font-size: 1px;
-
             text-align: center;
+            margin-top: 23px;
+            margin-left: 10px;
         }
 
         .posts-feed {
@@ -45,7 +42,6 @@
             display: grid;
             justify-content: center;
             align-items: center;
-
         }
 
         .card {
@@ -61,61 +57,88 @@
             display: flex;
         }
 
-        .posting-section {
-            margin-top: 50px;
-        }
-
-        .posting-box {
-            border: 1px solid #000000;
-            padding: 10px;
-            margin-bottom: 20px;
-            display: flex;
-        }
-
         .posting-input-box {
             width: 500px;
             height: 100px;
         }
 
-        .writer-picture {
-            background-color: #9747FF;
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            display: inline-block;
-            vertical-align: middle;
-            margin-right: 10px;
-        }
-
         .content-box {
-           margin-left: auto;
+            margin-top: 50px;
+            display: flex;
+            justify-content: center;
          }
 
-        .writer-nickname {
-            color: #000000;
-            margin-top: 15px;
-            font-weight: bold;
+        .one-post{
+            margin-bottom: 30px;
         }
 
-        .auto-group-xxrq-BhP {
-            color: #000000;
-            /*display: flex;*/
-            margin-right: 15px;
-            margin-top: 3px;
+        .cancle-like-btn {
+            margin-left: 12px;
         }
 
-        .writer-username {
-            color: #000000;
+        .like-cancle-btn{
+            display: flex;
+            margin-left: 12px;
+        }
+        .tab-button {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            z-index: 999;
+            font-size: 20px;
+            background: none;
+            border: none;
+            cursor: pointer;
         }
 
-        .writer-content {
-            color: #000000;
+        /* Slide tab content style */
+        .slide-tab-content {
+            position: absolute;
+            top: 0;
+            right: -250px; /* Start the slide tab off-screen */
+            width: 250px;
+            background-color: #f9f9f9;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: right 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
         }
 
-        #logout-btn {
-            margin: 20px;
+        /* Show the slide tab when it's open */
+        .slide-tab-content.show {
+            right: 0;
+        }.tab-button {
+             position: absolute;
+             top: 10px;
+             right: 10px;
+             z-index: 999;
+             font-size: 20px;
+             background: none;
+             border: none;
+             cursor: pointer;
+         }
+
+        /* Slide tab content style */
+        .slide-tab-content {
+            position: absolute;
+            top: 0;
+            right: -250px; /* Start the slide tab off-screen */
+            width: 250px;
+            background-color: #f9f9f9;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: right 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
         }
 
+        /* Show the slide tab when it's open */
+        .slide-tab-content.show {
+            right: 0;
+        }
     </style>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/js-cookie@3.0.5/dist/js.cookie.min.js"></script>
@@ -124,34 +147,21 @@
 </head>
 <body>
 <div>
-    <div class="header">
-        <div class="row">
-            <div class="col-md-2" style="text-align: left">
-                <button type="button" class="btn btn-primary" id="logout-btn">로그아웃</button>
-            </div>
-            <div class="col-md-8">
-                <a href="/home/all-users-mainpage" style="font-size: 50px; text-align: center">
-                    LogTown
-                </a>
-            </div>
-            <div class="col-md-2">
-
+    <div class="header-HSM" id="homeLink">log town</div>
+    <div class="container">
+        <div style="position: relative;">
+            <button class="tab-button" onclick="openSlideTab()">☰</button>
+            <div id="slideTab" class="slide-tab-content">
+                <button onclick="redirectToAllUserPosts()">Show All User's Posts</button>
+                <button onclick="redirectToFollowingUserPosts()">Show Only Following User's Posts</button>
+                <button onclick="redirectToDetailPage()">Your Profile</button>
+                <button onclick="myProfile()">Settings</button>
+                <button onclick="logout()">Logout</button>
             </div>
         </div>
-    </div>
-    <div class="container">
-        <div class="header-HSM">log town</div>
-
-        <div class="posting-section">
-            <div class="posting-box">
-                <div class="writer-profile-box">
-                    <div class="writer-picture"></div>
-                </div>
-                <div class="content-box">
-                    <input type="text" class="posting-input-box" id="postContent" placeholder="내용 입력">
-                    <button id="submitPost">작성하기</button>
-                </div>
-            </div>
+        <div class="content-box">
+            <input type="text" class="posting-input-box" id="postContent" placeholder="내용 입력">
+            <button id="submitPost">작성하기</button>
         </div>
     </div>
 
@@ -203,22 +213,37 @@
 </div>
 
 <script>
+    function openSlideTab() {
+        let slideTab = document.getElementById("slideTab");
+        slideTab.classList.toggle("show");
+    }
+    function redirectToAllUserPosts() {
+        window.location.href = "/home/all-users-mainpage";
+    }
+    function redirectToFollowingUserPosts() {
+        window.location.href = "/home/mainpageMJ";
+    }
+
+    function redirectToDetailPage() {
+        window.location.href = "/home/detailpage";
+    }
+
+    function myProfile() {
+        window.location.href = "/home/myprofile";
+    }
+
+    function logout() {
+        Cookies.remove("Authorization");
+        window.location.href = "/home";
+    }
+
+    document.getElementById("homeLink").addEventListener("click", function() {
+        window.location.href = "/home/all-users-mainpage";
+    });
     $(document).ready(function () {
 
         let authCookie = Cookies.get("Authorization");  // cookie 중 Authorization
         let page = 0;
-
-        // 프로필 동그라미 클릭 시
-        $('.posts-feed').on('click', '.myprofile', function () {
-            // post.userId와 post.nickname 가져오기
-            const userId = $(this).attr('id');
-            const nickname = $(this).text();
-
-            console.log('Clicked user ID:', userId);
-            console.log('Clicked nickname:', nickname);
-
-            window.location.href = `${window.location.origin}/home/detailpage/${userId}`;
-        });
 
         // 게시글 좋아요 버튼 클릭 시
         $(document).on("click", ".card-footer #postLike", function(event) {
@@ -297,6 +322,15 @@
             });
         })
 
+        // 팔로우관련 게시글 닉네임 클릭 시
+        $('.posts-feed').on('click', '.follow-writer', function (event) {
+            event.preventDefault();
+
+            const clickedNickname = $(this).text().trim();
+            // 닉네임을 URL 파라미터로 추가하여 detail-profile.html로 이동합니다.
+            window.location.href = `${window.location.origin}/home/other-detail-profile?nickname=${encodeURIComponent(clickedNickname)}`;
+        });
+
         // 게시글 가져오는 부분
         $.ajax({
             url: '/api/posts/followingposts?page=0',
@@ -319,11 +353,11 @@
                                         <div class="card mb-3" style="width: 50rem;" id="${post.id}">
                                             <div class="row g-0" id="goclick">
                                                 <div class="col-md-1">
-                                                    <div class="myprofile" id="${post.userId}">${post.nickname}</div>
+                                                    <div class="myprofile" id="${post.userId}"></div>
                                                 </div>
                                                 <div class="col-md-8">
                                                     <div class="card-body">
-                                                        <h5 class="card-title" id="post-nickname-btn">${post.nickname}</h5>
+                                                        <h5 class="follow-writer" id="post-nickname-btn">${post.nickname}</h5>
                                                         <p class="card-text">${post.content}</p>
                                                         <p class="card-text"><small class="text-muted">${post.modifiedAt}</small></p>
                                                         <button id="gotopost">보기</button>
@@ -333,8 +367,10 @@
                                             <div class="card-footer">
                                                 <p style="color:red">❤</p>
                                                 <p class="card-text">${post.likeCnt}</p>
-                                                <button id="postLike">좋아요</button>
-                                                <button id="deleteLike">좋아요 취소</button>
+                                                <div class="like-cancle-btn">
+                                                    <button class= "like-btn" id="postLike">좋아요</button>
+                                                    <button class = "cancle-like-btn" id="deleteLike">좋아요 취소</button>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -402,8 +438,10 @@
                                             <div class="card-footer">
                                                 <p style="color:red">❤</p>
                                                 <p class="card-text">${post.likeCnt}</p>
-                                                <button id="postLike">좋아요</button>
-                                                <button id="deleteLike">좋아요 취소</button>
+                                                <div class="like-cancle-btn">
+                                                    <button class= "like-btn" id="postLike">좋아요</button>
+                                                    <button class = "cancle-like-btn" id="deleteLike">좋아요 취소</button>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -464,8 +502,4 @@
 
 <script src="/js/basic.js"></script>
 </body>
-<script>
-    $('#logout-btn').click(logout);
-
-</script>
 </html>

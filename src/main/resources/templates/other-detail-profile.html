@@ -18,8 +18,8 @@
     .header-HSM {
       background-color: #9747FF;
       color: white;
-      padding: 10px;
-      font-size: 24px;
+      padding: 15px;
+      font-size: 50px;
       text-align: center;
     }
 
@@ -41,6 +41,7 @@
     .profile-username {
       color: #000000;
       font-weight: bold;
+      margin: 0;
     }
 
     .profile-intro {
@@ -90,6 +91,7 @@
     .writer-nickname {
       color: #000000;
       font-weight: bold;
+      margin-top: 15px;
     }
 
     .writer-username {
@@ -98,6 +100,8 @@
 
     .writer-content {
       color: #000000;
+      margin-top: 10px;
+
     }
     .group-follow-unfollow-btn{
       display: flex;
@@ -106,13 +110,15 @@
     .group-num-follower-follwing{
       display: flex;
     }
+    .writer-info {
+      display: flex;
+    }
   </style>
 </head>
 
 <body>
+<div class="header-HSM" id="homeLink">log town</div>
 <div class="container">
-  <div class="header-HSM">log town</div>
-
   <div class="profile-section">
     <div class="profile-picture"></div>
     <div class="auto-group-jhgq-abo" id="user">
@@ -146,6 +152,10 @@
 </div>
 
 <script>
+  document.getElementById("homeLink").addEventListener("click", function() {
+    window.location.href = "/home/all-users-mainpage";
+  });
+
   $(document).ready(function () {
     let authCookie = Cookies.get("Authorization");
     let username; // 이 변수는 closure에 캡슐화.
@@ -253,15 +263,18 @@
             let card_html = `
                                     <div class="post-section">
                                       <div class="post" id="${data.id}">
-                                        <div class="writer-picture"></div>
-                                        <div class="auto-group-xxrq-BhP">
-                                          <p class="writer-nickname" >${data.nickname}</p>
+                                        <div class="writer-info">
+                                          <div class="writer-picture"></div>
+                                          <div class="auto-group-xxrq-BhP">
+                                            <p class="writer-nickname">${data.nickname}</p>
+                                          </div>
                                         </div>
                                         <p class="writer-content">${data.content}</p>
                                         <p class="card-text"><small class="text-muted">${data.modifiedAt}</small></p>
-                                        <button class="gotopost-btn">보기</button>
+                                        <button id="gotopost-btn">보기</button>
                                       </div>
                                     </div>
+
                     `
             temp_html += card_html;
           })
@@ -318,32 +331,30 @@
       });
     });
 
-  });
+    $(document).on("click","#gotopost-btn", function(event) {
+      event.preventDefault();
 
-  $(document).on("click",".gotopost-btn", function(event) {
-    event.preventDefault();
+      let postId = $(this).closest('.post').attr('id');
 
-    let postId = $(this).closest('.post').attr('id');
+      console.log("id:"+ postId);
 
-    console.log(postId);
-    alert('된다');
+      $.ajax({
+        url: `/api/posts/${postId}`,
+        type: 'GET',
+        contentType: 'application/json',
+        headers: {
+          'Authorization': authCookie // 클라이언트 쿠키의 값을 전달
+        },
+        success: function (xhr) {
+          console.log('이동');
+          //console.log(response.id);
 
-    $.ajax({
-      url: `/api/posts/${postId}`,
-      type: 'GET',
-      contentType: 'application/json',
-      headers: {
-        'Authorization': authCookie // 클라이언트 쿠키의 값을 전달
-      },
-      success: function (xhr) {
-        console.log('이동');
-        //console.log(response.id);
-
-        window.location.href = `${window.location.origin}/home/onepost/${postId}`;
-      },
-      error: function () {
-        console.log('게시글 등록 error 실패');
-      }
+          window.location.href = `${window.location.origin}/home/onepost/${postId}`;
+        },
+        error: function () {
+          console.log('게시글 등록 error 실패');
+        }
+      });
     });
   });
 </script>
