@@ -48,11 +48,17 @@
 https://www.notion.so/6-3ba60bc9156e4ffda2906a3e687bd604
 
 # ERD
+<img width="665" alt="image" src="https://github.com/itsinseo/LogTown/assets/40707686/726a14b5-a852-4f08-9bfd-f97f7e0cd478">
 
 # API 명세서
 https://www.notion.so/26b62f7b2b8b45b5b0b90746e449ad89?v=3c9b36c2f386418db58c77454c63d98d
 
+# 시연영상
+https://www.youtube.com/watch?v=vDVzfcpUEMI&ab_channel=%EA%B9%80%EC%9D%B8%EC%84%9C
+
 <br>
+
+-------
 
 ## 👨‍👩‍👧‍👦 사리다 팀
 
