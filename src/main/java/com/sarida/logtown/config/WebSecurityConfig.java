@@ -57,8 +57,11 @@ public class WebSecurityConfig {
                 authorizeHttpRequests
                         .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll() // resources 접근 허용 설정
                         .requestMatchers("/api/auth/**").permitAll() // '/api/auth/'로 시작하는 요청 모두 접근 허가
+                        .requestMatchers("/api/upload/**").permitAll() // '/api/auth/'로 시작하는 요청 모두 접근 허가
+                        .requestMatchers("/api/list/**").permitAll() // '/api/auth/'로 시작하는 요청 모두 접근 허가
                         .requestMatchers("/api/admin/**").hasRole("ADMIN") // '/api/admin/'로 시작하는 요청 ADMIN만 접근 허가
                         .requestMatchers(HttpMethod.GET, "/home/**").permitAll() // 뷰 페이지 !!임시
+                        .requestMatchers(HttpMethod.GET, "/upload/**").permitAll() // 뷰 페이지 !!임시
                         .anyRequest().authenticated() // 그 외 모든 요청 인증처리
         );
 
