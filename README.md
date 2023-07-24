@@ -54,11 +54,11 @@ https://www.notion.so/26b62f7b2b8b45b5b0b90746e449ad89?v=3c9b36c2f386418db58c774
 
 <br>
 
-## 👨‍👩‍👧‍👦 7전8기 팀
+## 👨‍👩‍👧‍👦 사리다 팀
 
 | [🚩김인서](https://github.com/itsinseo) | [상의성](https://github.com/uiseongsang) | [임수영](https://github.com/snowyoung20) | [손민지](https://github.com/Minji-Sohn2) |
 |:-------------------------------------:|:------------------------------------:|:-------------------------------------:|:----------------------------------------:|
-| ![image](https://github.com/itsinseo/LogTown/assets/40707686/5cb9b1ec-ecde-4916-964d-1c11d1156b50) | ![image](https://github.com/itsinseo/LogTown/assets/40707686/df1f85b4-6282-499f-84b0-ad41b9f840fe) | ![image](https://github.com/itsinseo/LogTown/assets/40707686/34d9986a-680d-48fd-915f-18910502ab20) | ![image](https://github.com/itsinseo/LogTown/assets/40707686/791f94d0-234c-4aab-a536-6210af649667)|
+| ![image](https://github.com/itsinseo/LogTown/assets/40707686/5cb9b1ec-ecde-4916-964d-1c11d1156b50) | ![image](https://github.com/itsinseo/LogTown/assets/40707686/df1f85b4-6282-499f-84b0-ad41b9f840fe) | ![image](https://github.com/itsinseo/LogTown/assets/40707686/34d9986a-680d-48fd-915f-18910502ab20) | ![image](https://github.com/itsinseo/LogTown/assets/40707686/4bbe2deb-43e7-4b0d-a475-90dfeaaab0ce) |
 |              BACK-END               |              BACK-END               |              BACK-END               |                BACK-END                 |
 
 <br>
